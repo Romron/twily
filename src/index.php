@@ -5,24 +5,22 @@
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Twily -- PHP</title>
+   <title>Twily</title>
 </head>
 
 <body>
 
-   <h1>Twily -- PHP --</h1>
+   <h1>Twily</h1>
 
-   <img src="img/about-img2.png" alt="">
-   <img src="img/абстракция.jpg" alt="">
-   <img src="img/абстракция-2.jpg" alt="">
+   <form action="">
+      <div class="block-controls">
+         <div class="initial-data">Исходные данные</div>
+         <div class="button" id="parser-start-button" type="submit">Старт парсера</div>
+      </div>
+   </form>
 
-   <div class="test">
-
-   </div>
-
-
-   <div class="test">
-
+   <div class="block-results">
+      Блок результатов
    </div>
 
 </body>

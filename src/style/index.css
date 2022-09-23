@@ -3,10 +3,58 @@
 
 
 body {
-   font-family: 'Raleway-SemiBoldItalic';
-   background-color: rgb(217, 230, 241);
+   font-family: 'Montserrat-MediumItalic';
+   background-color: rgb(228, 228, 228);
    user-select: none;
 }
+
+.block-controls,
+.block-results {
+   display: flex;
+   position: relative;
+   border: 2px solid #9e9fa8;
+   margin: 10px;
+   justify-content: flex-end;
+   align-items: center;
+
+}
+
+
+
+.block-results {
+   min-height: 100px;
+   padding: 10px;
+   justify-content: center;
+}
+
+
+.button,
+.initial-data {
+   width: 200px;
+   height: 100px;
+   border: 1px solid #bbbbc2;
+   border-radius: 5px;
+   margin: 5px;
+
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+.initial-data {
+   flex-grow: 1;
+}
+
+
+
+
+
+
+
+
+
+
+
 
 .test {
    width: 2000px;
