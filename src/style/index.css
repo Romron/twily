@@ -8,25 +8,33 @@ body {
    user-select: none;
 }
 
+.wrap {
+   margin: 10px;
+   /* border: 1px solid #0515fd; */
+
+}
+
+h1 {
+   color: #656175;
+}
+
 .block-controls,
 .block-results {
    display: flex;
    position: relative;
    border: 2px solid #9e9fa8;
-   margin: 10px;
    justify-content: flex-end;
    align-items: center;
+   margin-bottom: 10px;
 
 }
-
-
 
 .block-results {
    min-height: 100px;
    padding: 10px;
    justify-content: center;
-}
 
+}
 
 .button,
 .initial-data {

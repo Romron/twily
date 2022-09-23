@@ -10,17 +10,17 @@
 
 <body>
 
-   <h1>Twily</h1>
-
-   <form action="">
-      <div class="block-controls">
-         <div class="initial-data">Исходные данные</div>
-         <div class="button" id="parser-start-button" type="submit">Старт парсера</div>
+   <div class="wrap">
+      <h1>Twily</h1>
+      <form action="">
+         <div class="block-controls">
+            <div class="initial-data">Исходные данные</div>
+            <div class="button" id="parser-start-button" type="submit">Старт парсера</div>
+         </div>
+      </form>
+      <div class="block-results">
+         Блок результатов
       </div>
-   </form>
-
-   <div class="block-results">
-      Блок результатов
    </div>
 
 </body>
