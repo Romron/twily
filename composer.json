@@ -1,0 +1,11 @@
+{
+    "name": "beregulenko/twily",
+    "authors": [
+        {
+            "name": "Romron",
+            "email": "Romron@ukr.net"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}

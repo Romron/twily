@@ -1,2 +1,3 @@
 import './index.html';
-import './index.css';
+import './index.php';      // добавить loader
+import './style/index.css';

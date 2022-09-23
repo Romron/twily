@@ -1,0 +1,18 @@
+@import '../style/normalize.css';
+@import '../fonts/fonts.css';
+
+
+body {
+   font-family: 'Raleway-SemiBoldItalic';
+   background-color: rgb(217, 230, 241);
+   user-select: none;
+}
+
+.test {
+   width: 2000px;
+   height: 2000px;
+   background-color: rgb(211, 18, 18);
+
+
+   margin: 50px;
+}
