@@ -2,6 +2,7 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 // const laravelMixPlugin = require("laravel-mix");
+const CopyPlugin = require("copy-webpack-plugin");
 
 const mode = process.env.NODE_ENV || 'development'   // автоматическая установка режима разработки
 const devMode = mode === 'development'
@@ -32,6 +33,21 @@ module.exports = {
       new MiniCssExtractPlugin({
          filename: '[name].[contenthash].css'
       }),
+      // new CopyPlugin({
+      //    patterns: [
+      //       { from: path.resolve(__dirname, 'src', 'libs/module_php/'), to: 'libs/module_php/' }
+      //    ],
+      //    options: []
+      // }),
+      new CopyPlugin(      // этот синтаксис устаревший поддерживает плагин до версии 5.1.1
+         [
+            { from: path.resolve(__dirname, 'src', 'libs/module_php/'), to: 'libs/module_php/' }
+         ]
+      )
+
+
+
+
       // new laravelMixPlugin({
       //    template: path.resolve(__dirname, 'src', 'index.php'),
       // })
