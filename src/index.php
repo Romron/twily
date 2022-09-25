@@ -9,7 +9,6 @@
 </head>
 
 <body>
-
    <div class="wrap">
       <h1>Twily</h1>
       <form action="">
@@ -20,6 +19,16 @@
       </form>
       <div class="block-results">
          Блок результатов
+
+         <?php
+
+         echo phpinfo();
+
+         ?>
+
+
+
+
       </div>
    </div>
 
