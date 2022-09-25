@@ -18,6 +18,16 @@ module.exports = {
       // port: 3000,    // смена порта при необходимости
       // open: true,    // открывает страницу при запуске сервера
       // hot: true,     // горячая перезагрузка браузер может не коректно работать 
+
+      // contentBase: path.join(__dirname, '/dist/'),
+
+      // static: {
+      //    directory: path.resolve(__dirname, '/dist/')
+      // },
+
+      // devMiddleware: {
+      //    publicPath: '/dist/'
+      // },
    },
    entry: ['@babel/polyfill', path.resolve(__dirname, 'src', 'index.js')],
    output: {
