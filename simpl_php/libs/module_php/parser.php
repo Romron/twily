@@ -16,16 +16,20 @@ require __DIR__ . '../../../../vendor/autoload.php';
  * Requires curl enabled in php.ini
  **/
 
-$url = 'https://sandbox-api.coinmarketcap.com/v1/cryptocurrency/listings/latest';
+// $url = 'https://sandbox-api.coinmarketcap.com/v1/cryptocurrency/listings/latest';
+$url = 'https://sandbox-api.coinmarketcap.com/v1/cryptocurrency/listings/historical';
 $parameters = [
    'start' => '1',
+   'id' => '1',
    'limit' => '5000',
    'convert' => 'USD'
 ];
 
 $headers = [
    'Accepts: application/json',
-   'X-CMC_PRO_API_KEY: b54bcf4d-1bca-4e8e-9a24-22ff2c3d462c'
+   'X-CMC_PRO_API_KEY: b54bcf4d-1bca-4e8e-9a24-22ff2c3d462c',      // пробный из примера
+   'X-CMC_PRO_API_KEY: 659ccdef-4ff8-48c0-8635-66a3f43876c4'      // мой
+
 ];
 $qs = http_build_query($parameters); // query string encode the parameters
 $request = "{$url}?{$qs}"; // create the request URL
