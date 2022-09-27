@@ -16,6 +16,7 @@ require __DIR__ . '../../../../vendor/autoload.php';
  * Requires curl enabled in php.ini
  **/
 
+// https://coinmarketcap.com/api/documentation/v1/#operation/getV1CryptocurrencyMap
 // $url = 'https://sandbox-api.coinmarketcap.com/v1/cryptocurrency/listings/latest';
 $url = 'https://sandbox-api.coinmarketcap.com/v1/cryptocurrency/listings/historical';
 $parameters = [
