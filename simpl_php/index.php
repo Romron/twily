@@ -19,7 +19,6 @@
          <div class="block-controls">
             <div class="initial-data">
                <h3>Источник данных pro.coinmarketcap.com</h3>
-               <!-- https://pro.coinmarketcap.com/account/   :   Coinmarketcap--343714-->
             </div>
             <div class="button" id="parser-start-button" type="submit">Старт парсера</div>
          </div>
