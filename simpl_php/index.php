@@ -15,14 +15,14 @@
    <!-- //http://localhost/twily/simpl_php/index.php -->
    <div class="wrap">
       <h1>Twily</h1>
-      <form action="">
-         <div class="block-controls">
-            <div class="initial-data">
-               <h3>Источник данных pro.coinmarketcap.com</h3>
-            </div>
-            <div class="button" id="parser-start-button" type="submit">Старт парсера</div>
+      <!-- <form action=""> -->
+      <div class="block-controls">
+         <div class="initial-data">
+            <h3>Источник данных pro.coinmarketcap.com</h3>
          </div>
-      </form>
+         <div class="button" id="parser-start-button" type="submit">Старт парсера</div>
+      </div>
+      <!-- </form> -->
       <div id="block-results" class="block-results">
          Блок результатов
 

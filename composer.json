@@ -1,6 +1,7 @@
 {
     "require": {
         "imangazaliev/didom": "^2.0",
-        "guzzlehttp/guzzle": "^7.5"
+        "guzzlehttp/guzzle": "^7.5",
+        "vittominacori/coinmarketcap-php": "^1.1"
     }
 }
