@@ -104,3 +104,8 @@ $file_status = file_put_contents($file, $json);
 echo '<pre>';
 print_r($data);
 echo '</pre>';
+<<<<<<< HEAD
+=======
+curl_close($curl); // Close request
+
+>>>>>>> 296caae4440b87d1548144f04df2525ec06157bb
