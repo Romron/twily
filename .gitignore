@@ -1,6 +1,6 @@
-/webpack/vendor
 /webpack/node_modules
 /webpack/dist
+/webpack/vendor
 
 /laravel-mix/node_modules
 /laravel-mix/public/build
