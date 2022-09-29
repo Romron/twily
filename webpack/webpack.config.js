@@ -15,15 +15,30 @@ module.exports = {
    target,
    devtool,
    devServer: {
-      // port: 3000,    // смена порта при необходимости
+      port: 3000,    // смена порта при необходимости
       // open: true,    // открывает страницу при запуске сервера
       // hot: true,     // горячая перезагрузка браузер может не коректно работать 
+      // npm run start
+      static: {
+         directory: path.join(__dirname, 'dist'),
+      },
+      proxy: {
+         '/libs_p/**':
+         // '/**':
+         {
+            // path: /./,
+            // target: "http://localhost:80/twily/simpl_php/libs/module_php/parser.php",
+            // http://localhost/twily/simpl_php/libs/module_php/parser.php
+            // target: 'http://localhost:80/twily/simpl_php',
+            target: 'http://localhost:80/',
 
-      // contentBase: path.join(__dirname, '/dist/'),
-
-      // static: {
-      //    directory: path.resolve(__dirname, '/dist/')
-      // },
+         },
+         // router: {
+         //    // when request.headers.host == 'dev.localhost:3000',
+         //    // override target 'http://www.example.org' to 'http://localhost:8000'
+         //    'localhost:3000': 'http://localhost:80',
+         // },
+      },
 
       // devMiddleware: {
       //    publicPath: '/dist/'
@@ -43,15 +58,10 @@ module.exports = {
       new MiniCssExtractPlugin({
          filename: '[name].[contenthash].css'
       }),
-      // new CopyPlugin({
-      //    patterns: [
-      //       { from: path.resolve(__dirname, 'src', 'libs/module_php/'), to: 'libs/module_php/' }
-      //    ],
-      //    options: []
-      // }),
       new CopyPlugin(      // этот синтаксис устаревший поддерживает плагин до версии 5.1.1
          [
-            { from: path.resolve(__dirname, 'src', 'libs/module_php/'), to: 'libs/module_php/' }
+            { from: path.resolve(__dirname, 'src', 'libs/module_php/'), to: 'libs/module_php/' },
+            { from: path.resolve(__dirname, 'src', 'data/'), to: 'data/' },
          ]
       )
 
@@ -135,3 +145,5 @@ module.exports = {
    },
 
 }
+
+
