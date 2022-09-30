@@ -1,16 +1,32 @@
 {
     "private": true,
     "scripts": {
-        "dev": "vite",
-        "build": "vite build"
+        "dev": "npm run development",
+        "development": "mix",
+        "watch": "mix watch",
+        "watch-poll": "mix watch -- --watch-options-poll=1000",
+        "hot": "mix watch --hot",
+        "prod": "npm run production",
+        "production": "mix --production"
     },
+    "browserslist": [
+        "defaults",
+        "ie 11"
+    ],
     "devDependencies": {
-        "axios": "^0.27",
         "copy-webpack-plugin": "^5.1.1",
+        "imagemin-mozjpeg": "^9.0.0",
         "imagemin-webpack-plugin": "^2.4.2",
-        "laravel-vite-plugin": "^0.6.0",
-        "lodash": "^4.17.19",
+        "laravel-mix": "^6.0.6",
+        "laravel-mix-polyfill": "^3.0.0",
+        "laravel-mix-webp": "^0.1.1",
         "postcss": "^8.1.14",
-        "vite": "^3.0.0"
+        "postcss-sort-media-queries": "^3.2.3",
+        "sass": "^1.32.5",
+        "sass-loader": "^10.1.1",
+        "svg-spritemap-webpack-plugin": "^3.8.3"
+    },
+    "dependencies": {
+        "svg4everybody": "^2.1.9"
     }
 }
