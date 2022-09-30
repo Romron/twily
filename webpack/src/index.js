@@ -23,7 +23,7 @@ window.onload = function () {
 
 // let url = 'libs/module_php/parser.php';
 // let url = 'http://localhost/twily/simpl_php/libs/module_php/parser.php';
-let url = 'http://localhost:3000/simpl_php/libs_p/module_php/parser.php';
+let url = 'libs_p/module_php/parser.php';
 function ajaxGet(url, callbackfunction) {
    let func = callbackfunction || function (data) { }
 

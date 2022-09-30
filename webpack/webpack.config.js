@@ -22,15 +22,15 @@ module.exports = {
       static: {
          directory: path.join(__dirname, 'dist'),
       },
-      proxy: {
-         // '/libs_p/**':
-         'http://localhost:3000/':
+      proxy: {    // для выполнения php скриптов нужно перенаправить запросы к php файлам  на сервер http://127.0.0.1:80/ но НЕ РАБОТАЕТ!!
+         '/libs_p/':
+         // 'http://localhost:3000/':
          {
             // path: /./,
             // target: "http://localhost:80/twily/simpl_php/libs/module_php/parser.php",
             // http://localhost/twily/simpl_php/libs/module_php/parser.php
             // target: 'http://localhost:80/twily/simpl_php',
-            target: 'http://localhost:80/',
+            target: 'http://127.0.0.1:80/',
 
          },
          // router: {
