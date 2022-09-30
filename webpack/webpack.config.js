@@ -23,7 +23,7 @@ module.exports = {
          directory: path.join(__dirname, 'dist'),
       },
       proxy: {    // для выполнения php скриптов нужно перенаправить запросы к php файлам  на сервер http://127.0.0.1:80/ но НЕ РАБОТАЕТ!!
-         '/libs_p/':
+         '/libs_p/*':
          // 'http://localhost:3000/':
          {
             // path: /./,
@@ -31,6 +31,7 @@ module.exports = {
             // http://localhost/twily/simpl_php/libs/module_php/parser.php
             // target: 'http://localhost:80/twily/simpl_php',
             target: 'http://127.0.0.1:80/',
+            "changeOrigin": true,
 
          },
          // router: {
