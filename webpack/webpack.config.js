@@ -23,8 +23,8 @@ module.exports = {
          directory: path.join(__dirname, 'dist'),
       },
       proxy: {
-         '/libs_p/**':
-         // '/**':
+         // '/libs_p/**':
+         'http://localhost:3000/':
          {
             // path: /./,
             // target: "http://localhost:80/twily/simpl_php/libs/module_php/parser.php",
