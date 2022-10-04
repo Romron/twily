@@ -5,7 +5,9 @@
 body {
    font-family: 'Montserrat-MediumItalic';
    background-color: rgb(228, 228, 228);
-   user-select: none;
+   scrollbar-width: thin;
+   scrollbar-color: #9fa2c0 #c7c8cb;
+
 }
 
 .wrap {
@@ -16,6 +18,7 @@ body {
 
 h1 {
    color: #656175;
+   font-family: 'Montserrat-MediumItalic';
 }
 
 .block-controls,
@@ -53,6 +56,14 @@ h1 {
 
 .initial-data {
    flex-grow: 1;
+   font-size: 13px;
+   padding-top: 5px;
+}
+
+.initBlocks {
+   overflow-y: scroll;
+   height: inherit;
+   color: #656175;
 }
 
 .footer-wrap {}

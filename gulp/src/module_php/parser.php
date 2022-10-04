@@ -90,19 +90,16 @@ require __DIR__ . '../../../../vendor/autoload.php';
 
 
 
+// рабочий вариант
+$file = $_SERVER['DOCUMENT_ROOT'] . '/twily/gulp/src/module_php/date.json';
 
+// $json = file_get_contents('https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol=BTC&market=UAH&apikey=9PKRO03JZ2KF9LEV');
+// $data = json_decode($json, true);
+// $file_status = file_put_contents($file, $json);
 
-
-$json = file_get_contents('https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol=BTC&market=UAH&apikey=9PKRO03JZ2KF9LEV');
-
-$data = json_decode($json, true);
-
-$file = 'date.json';
-$file_status = file_put_contents($file, $json);
+$data_file = file_get_contents($file);         // для тестов из  файла
 
 
 echo '<pre>';
-print_r($data);
+print_r($data_file);
 echo '</pre>';
-
-// echo phpinfo();

@@ -16,6 +16,7 @@ const fonter = require('gulp-fonter');
 
 const phpFiles = [
    './src/**/*.php',
+   './src/**/*.json',      // временно! 
    '!./src/parts/*.*',     // т.к. fileinclude ...
 ]
 
@@ -58,7 +59,7 @@ function styles() {
 function script() {
    return gulp.src(jsFile)
       .pipe(fileinclude())    // подключает так же как и HTML @@include('filename.js')
-      .pipe(uglify({ toplevel: true }))
+      // .pipe(uglify({ toplevel: true }))   // закрыл на время тестов
       .pipe(gulp.dest('./build/js'))
       .pipe(browserSync.stream());
 }
