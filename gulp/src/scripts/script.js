@@ -13,7 +13,8 @@ window.onload = function () {
          let a = initBlock_1.CreateBlock('#initial-data');
          let b = initBlock_2.CreateBlock('#initial-data');
 
-
+         document.querySelector('#initial-data').append(a);
+         document.querySelector('#initial-data').append(b);
 
          // InitBlock('#initBlock_1', '#initial-data', data);
          // InitBlock('#initBlock_2', '#initial-data', '**************');
@@ -48,7 +49,6 @@ class InitBlocks {
    }
 
    CreateBlock(idTargetBlock) {
-      // this.NewBlock = document.getElementById(idNewBlock);
       if (!document.getElementById(this.idNewBlock)) {
          this.NewBlock = document.createElement('div');
          this.NewBlock.id = this.idNewBlock;
@@ -56,8 +56,9 @@ class InitBlocks {
          this.NewBlock.innerHTML = this.data;
          document.querySelector(idTargetBlock).innerHTML = '';
          document.querySelector(idTargetBlock).style.justifyContent = 'space-between';
-         document.querySelector(idTargetBlock).append(this.NewBlock);
+         // document.querySelector(idTargetBlock).append(this.NewBlock);
       }
+      return this.NewBlock;
    }
 
 
