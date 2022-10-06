@@ -10,7 +10,7 @@ window.onload = function () {
 
       const initBlock_2 = new Init('#initBlock_2', prepData);
 
-      initBlock_1.CreateBlock('#initial-data');
+      initBlock_1.CreateBlock('#initial-data', '40%');
       initBlock_2.CreateBlock('#initial-data', "50%");
 
    });
@@ -84,7 +84,7 @@ function PreparationData(data) {
       .forEach((key) => {
 
          // console.log(str['Time Series (Digital Currency Daily)'][key]['1b. open (USD)']);
-         console.log(candles[key]['1b. open (USD)']);
+         // console.log(candles[key]['1b. open (USD)']);
       });
 
 
@@ -93,10 +93,14 @@ function PreparationData(data) {
 
 function canvas() {
 
-   const canvas = document.getElementById('#canv-1');
+   const canvas = document.getElementById('canv-1');
    const ctx = canvas.getContext('2d');
    ctx.fillRect(100, 100, 50, 50);
 
+   ctx.beginPath();
+   ctx.moveTo(500, 300);
+   ctx.lineTo(400, 550);
+   ctx.stroke();
 
 
 }
