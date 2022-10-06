@@ -100,6 +100,10 @@ $file = $_SERVER['DOCUMENT_ROOT'] . '/twily/gulp/src/module_php/date.json';
 $data_file = file_get_contents($file);         // для тестов из  файла
 
 
-echo '<pre>';
-print_r($data_file);
-echo '</pre>';
+// echo '<pre>';
+// print_r($data_file);
+// echo '</pre>';
+
+// echo '<pre>';
+echo $data_file;
+// echo '</pre>';

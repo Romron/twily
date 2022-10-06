@@ -1,28 +1,27 @@
 window.onload = function () {
    let url = './module_php/parser.php';
 
-   document.querySelector('#parser-start-button').onclick = function () {
-      ajaxGet(url, function (data) {
-         // InitBlock(data, 'initBlock_1');
-         const initBlock_1 = new InitBlocks('#initBlock_1', data);
-         const initBlock_2 = new InitBlocks('#initBlock_2', '**************');
+   // document.querySelector('#parser-start-button').onclick = function () {
+   ajaxGet(url, function (data) {
 
-         console.log(initBlock_1);
-         console.log(initBlock_2);
+      let usrStr = '<pre>' + data + '<pre>';    // что бы можно было нормально читать 
+      const initBlock_1 = new Init('#initBlock_1', usrStr);
+      let prepData = PreparationData(data);
 
-         let a = initBlock_1.CreateBlock('#initial-data');
-         let b = initBlock_2.CreateBlock('#initial-data');
+      const initBlock_2 = new Init('#initBlock_2', prepData);
 
-         document.querySelector('#initial-data').append(a);
-         document.querySelector('#initial-data').append(b);
+      initBlock_1.CreateBlock('#initial-data');
+      initBlock_2.CreateBlock('#initial-data', "50%");
 
-         // InitBlock('#initBlock_1', '#initial-data', data);
-         // InitBlock('#initBlock_2', '#initial-data', '**************');
-         PreparationData(data);
-      });
-   }
+   });
+
+   canvas();
+
+
+
+
+   // }
 }
-
 
 
 function ajaxGet(url, callbackfunction) {
@@ -41,48 +40,63 @@ function ajaxGet(url, callbackfunction) {
 
 }
 
-class InitBlocks {
+class Init {
    constructor(idNewBlock, data) {
       this.idNewBlock = idNewBlock;
-      // this.idTargetBlock = idTargetBlock;
       this.data = data;
    }
 
-   CreateBlock(idTargetBlock) {
+   CreateBlock(idTargetBlock, widthNewBlock = '') {
+      this.widthNewBlock = widthNewBlock;
+
       if (!document.getElementById(this.idNewBlock)) {
          this.NewBlock = document.createElement('div');
          this.NewBlock.id = this.idNewBlock;
          this.NewBlock.classList.add('initBlocks');
          this.NewBlock.innerHTML = this.data;
-         document.querySelector(idTargetBlock).innerHTML = '';
-         document.querySelector(idTargetBlock).style.justifyContent = 'space-between';
-         // document.querySelector(idTargetBlock).append(this.NewBlock);
+
+         let str = document.querySelector(idTargetBlock).textContent;
+         if ((/Исходные данные/i).test(str) != false) {
+            document.querySelector(idTargetBlock).textContent = '';
+         }
+         this.NewBlock.style.width = this.widthNewBlock;
+         document.querySelector(idTargetBlock).append(this.NewBlock);
       }
       return this.NewBlock;
    }
 
-
 }
 
-
-// function InitBlock(idNewBlock, idTargetBlock, data) {
-//    this.NewBlock = document.getElementById(idNewBlock);
-//    this.idTargetBlock = idTargetBlock;
-//    this.data = data;
-//    // console.log(idTargetBlock);
-
-//    if (!this.NewBlock) {
-//       this.NewBlock = document.createElement('div');
-//       console.log(this.NewBlock);
-//       this.NewBlock.id = this.idNewBlock;
-//       this.NewBlock.classList.add('initBlocks');
-//       this.NewBlock.innerHTML = this.data;
-//       document.querySelector(idTargetBlock).innerHTML = '';
-//       document.querySelector(idTargetBlock).style.justifyContent = 'space-between';
-//       document.querySelector(idTargetBlock).append(this.NewBlock);
-//    }
-// }
-
 function PreparationData(data) {
+   /**
+    * Преобразует данные в удобный формат
+    * 
+    */
+   let resultsData;
+   let str = JSON.parse(data);
+
+
+   let candles = str['Time Series (Digital Currency Daily)'];
+
+   resultsData = Object
+      // .keys(str['Time Series (Digital Currency Daily)'])
+      .keys(candles)
+      .forEach((key) => {
+
+         // console.log(str['Time Series (Digital Currency Daily)'][key]['1b. open (USD)']);
+         console.log(candles[key]['1b. open (USD)']);
+      });
+
+
+   return resultsData;
+}
+
+function canvas() {
+
+   const canvas = document.getElementById('#canv-1');
+   const ctx = canvas.getContext('2d');
+   ctx.fillRect(100, 100, 50, 50);
+
+
 
 }

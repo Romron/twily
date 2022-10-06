@@ -18,12 +18,11 @@
             <div class="button" id="parser-start-button" type="submit">Старт парсера</div>
          </div>
       </form>
-      <div id="block-results" class="block-results">
-         Блок результатов
+      <!-- <div id="block-results" class="block-results"> -->
+      <canvas id="canv-1" width="1200" height="600">
 
-
-
-      </div>
+      </canvas>
+      <!-- </div> -->
       <!-- автоматом удаляет закрывающюу кавычку тега php ???? -->
       <!-- @@include('./parts/footer.php') -->
 
