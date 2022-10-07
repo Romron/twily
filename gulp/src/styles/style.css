@@ -72,12 +72,22 @@ h1 {
    scrollbar-color: #b6b7c3 #c7c8cb;
    border: 1px solid #bbbbc2;
    border-radius: 5px;
-   margin: 5px;
+   padding: 5px;
+   /* margin: 5px; */
 }
 
 .block-results {
    border: 2px solid #9e9fa8;
    border-radius: 5px;
+
+   display: flex;
+   justify-content: space-between;
+}
+
+#formuls-block {
+   margin: 0 10px;
+   display: flex;
+   justify-content: center;
 }
 
 #canv-1 {
@@ -86,7 +96,6 @@ h1 {
    border: 2px solid #051df8;
    border-radius: 5px;
    align-self: center;
-
 
 
 }
