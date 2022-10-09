@@ -19,10 +19,8 @@
          </div>
       </form>
       <div id="block-results" class="block-results">
-         Блок результатов
-
-
-
+         <canvas id="canv-1" width="1200" height="600"></canvas>
+         <!-- <div id="formuls-block"></div> -->
       </div>
       <!-- автоматом удаляет закрывающюу кавычку тега php ???? -->
       <!-- @@include('./parts/footer.php') -->
