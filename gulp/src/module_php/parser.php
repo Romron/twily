@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__ . '../../../../vendor/autoload.php';
+// require __DIR__ . '../../../../vendor/autoload.php';
 
 // $url = 'https://ru.tradingview.com/chart/?symbol=BITSTAMP%3ABTCUSD';
 // $url = 'https://ru.tradingview.com/chart/BTCUSD/Dvkxre6w-testovaya-ideya-po-rostu-bitka/';
@@ -91,7 +91,7 @@ require __DIR__ . '../../../../vendor/autoload.php';
 
 
 // рабочий вариант
-$file = $_SERVER['DOCUMENT_ROOT'] . '/twily/gulp/src/module_php/date.json';
+$file = $_SERVER['DOCUMENT_ROOT'] . '/gulp/src/module_php/date.json';
 
 // $json = file_get_contents('https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol=BTC&market=UAH&apikey=9PKRO03JZ2KF9LEV');
 // $data = json_decode($json, true);
