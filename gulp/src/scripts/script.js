@@ -117,25 +117,35 @@ function formulas() {
    let wCanvas = Canvas.width;
 
    let arrFormuls = [
-      // title_1 = '<b>' + 'Инверсия координат' + '</b><br>',
-      'Y = hCanvas - Y`',
-      'X = X`',
+      'yi = hCanvas - y` - инверсия координат',
+      'xi = x`',
+      '',
       'h - высота canvas в CSS',
-      'hd = h * 2  - высота canvas в HTML',
+      'hd = h*2- высота canvas в HTML',
+      'wd = w*2- ширина canvas в HTML',
       'p - padding  canvas для поля графика ',
-      'hv = hd - p*2  - высота поля для графика в canvas'
-      // title_2 = '',
+      'hv = hd - p*2  - высота поля графика в canvas',
+      'wv = wd',
+      'Y = hd - p - yi * yRatio ',
+      'yRatio = hv / deltaY',
+      'deltaY = maxY - minY',
+      'xRatio = wv / (lengthX-2)',
+      'lengthX - количество точек по Х',
+
    ];
 
 
 
-   let strResult = arrFormuls.map((q) => {
-      console.log(q);
-      q = q + '<br>';
-      console.log(q);
-   })
+   // let strResult = arrFormuls.map((q) => {
+   //    console.log(q);
+   //    q = q + '<br>';
+   //    console.log(q);
+   // })
 
-   console.log("strResult = ", strResult);
+
+   strResult = arrFormuls.join('<br>')
+
+   // console.log("strResult = ", strResult);
 
    // strResult = form_1 + '<br>' + form_2 + '<br>' + form_3 + '<br>' + form_4 + '<br>' + form_5 + '<br>' + form_6;
    const initBlock_3 = new Init('#formuls-block', strResult);
