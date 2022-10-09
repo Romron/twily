@@ -1,23 +1,15 @@
+const
+   WIDTH = 1200,
+   HEIGHT = 600,
+   WIDTH_DPI = WIDTH * 2,
+   HEIGHT_DPI = HEIGHT * 2;
+
+
 window.onload = function () {
    let url = './module_php/parser.php';
 
    // document.querySelector('#parser-start-button').onclick = function () {
-   ajaxGet(url, function (data) {
-
-      let usrStr = '<pre>' + data + '<pre>';    // что бы можно было нормально читать 
-      const initBlock_1 = new Init('#initBlock_1', usrStr);
-      let prepData = PreparationData(data);
-
-      const initBlock_2 = new Init('#initBlock_2', prepData);
-
-
-      initBlock_1.CreateBlock('#initial-data', '400px');
-      initBlock_2.CreateBlock('#initial-data', "auto");
-
-
-      formulas();
-
-   });
+   ajaxGet(url);
 
    canvas();
 
@@ -28,21 +20,34 @@ window.onload = function () {
 }
 
 
-function ajaxGet(url, callbackfunction) {
-   let func = callbackfunction || function (data) { }
+function ajaxGet() {
 
+   return new Promise((resolve, reject) => {
+      q().then(data => {
+         console.log(data);
+      })
+
+   })
+
+
+}
+
+
+function q() {
    let request = new XMLHttpRequest();
+   let url = './module_php/parser.php'
 
    request.onreadystatechange = function () {
       if (request.readyState == 4 && request.status == 200) {
-         func(request.responseText);
+         return request.responseText
       }
    }
 
    request.open('GET', url);
    request.send();
-
 }
+
+
 
 class Init {
    constructor(idNewBlock, data) {
@@ -76,7 +81,8 @@ function PreparationData(data) {
     * Преобразует данные в удобный формат
     * 
     */
-   let resultsData;
+   let arrResultsData = [];
+   let arrData = [];
    let str = JSON.parse(data);
 
 
@@ -88,17 +94,28 @@ function PreparationData(data) {
       .forEach((key) => {
 
          // console.log(str['Time Series (Digital Currency Daily)'][key]['1b. open (USD)']);
+         // console.log(candles[key]);
          // console.log(candles[key]['1b. open (USD)']);
+         arrResultsData.push(candles[key]['1b. open (USD)']);
       });
 
-
-   return resultsData;
+   strResult = arrResultsData.join('<br>')
+   arrData = [
+      arrResultsData,   // для дальнейшей обработки в коде
+      strResult   // для вывода на экран
+   ]
+   return arrData;
 }
 
 function canvas() {
 
    const canvas = document.getElementById('canv-1');
    const ctx = canvas.getContext('2d');
+   canvas.style.width = WIDTH;
+   canvas.style.height = HEIGHT;
+   canvas.width = WIDTH_DPI;
+   canvas.height = HEIGHT_DPI;
+
    ctx.fillRect(100, 100, 50, 50);
 
    ctx.beginPath();
@@ -106,6 +123,7 @@ function canvas() {
    ctx.lineTo(400, 550);
    ctx.stroke();
 
+   // console.log("data = ", data);
 
 }
 
@@ -131,6 +149,8 @@ function formulas() {
       'deltaY = maxY - minY',
       'xRatio = wv / (lengthX-2)',
       'lengthX - количество точек по Х',
+      'count_Y = 5, количество горизонтальных линий сетки',
+      'textSize = (maxY - minY)/count_Y, количество горизонтальных линий сетки',
 
    ];
 
