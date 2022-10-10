@@ -8,11 +8,17 @@ const
 window.onload = function () {
    let url = './module_php/parser.php';
 
-   // document.querySelector('#parser-start-button').onclick = function () {
-   ajaxGet(url);
+   let promise = new Promise(function (resolve, reject) {
+      ajaxGet(url, function (data) {
 
-   canvas();
+         // console.log("data = ", data);
+         resolve(console.log('************', data));
 
+      });
+
+      // console.log(q);
+
+   });
 
 
 
@@ -20,17 +26,25 @@ window.onload = function () {
 }
 
 
-function ajaxGet() {
+function ajaxGet(url, callbackfunction) {
+   let func = callbackfunction || function (data) { }
 
-   return new Promise((resolve, reject) => {
-      q().then(data => {
-         console.log(data);
-      })
+   let request = new XMLHttpRequest();
 
-   })
+   request.onreadystatechange = function () {
+      if (request.readyState == 4 && request.status == 200) {
+         func(request.responseText);
+      }
+   }
 
+   request.open('GET', url);
+   request.send();
 
+   // return request.responseText
 }
+
+
+
 
 
 function q() {
