@@ -2,7 +2,9 @@ const
    WIDTH = 1200,
    HEIGHT = 600,
    WIDTH_DPI = WIDTH * 2,
-   HEIGHT_DPI = HEIGHT * 2;
+   HEIGHT_DPI = HEIGHT * 2,
+   ROWS_AMOUNT = 5;
+
 
 
 window.onload = function () {
@@ -142,59 +144,59 @@ function canvas(data) {
    canvas.width = WIDTH_DPI;
    canvas.height = HEIGHT_DPI;
 
-   let dataTest = data.slice(0, 10);
-   // console.log("dataTest = ", dataTest);
+
+   let minY = Math.min.apply(null, data);
+   let maxY = Math.max.apply(null, data);
+
+   const PADDING = 120;
+   const STEP_ROWS = maxY / ROWS_AMOUNT / 100;
+   console.log("STEP_ROWS = ", STEP_ROWS);
+
+   console.log("minY = ", minY);
+   console.log("maxY = ", maxY);
+
+   // отрисовка горизонтальных линий сетки
 
    ctx.beginPath();
-   let k = [];
+   ctx.lineWidth = 1;
+   ctx.strokeStyle = '#b1b0b0';
+   ctx.font = '30px Arial';
+   for (let i = 1; i <= ROWS_AMOUNT; i++) {
+      const y = STEP_ROWS * i;
+      ctx.moveTo(0, y);
+      ctx.lineTo(WIDTH_DPI, y);
+      ctx.fillText((HEIGHT_DPI - y) * 100, WIDTH_DPI - PADDING, y);
+
+
+
+      // console.log(" y = ", y);
+   }
+
+
+
+
+
+
+
+   ctx.stroke();
+   ctx.closePath();
+   // отрисовка графика
+
+   // let dataTest = data.slice(0, 10);   // для тестов
 
    let dataTest_2 = data.map((num, index) => {
-      return k = [index * 10, num / 100];
-      // return num * 2;
-
+      return [index * 3, num / 70];
    })
+   ctx.beginPath();
 
    ctx.lineWidth = 4;
    ctx.strokeStyle = '#f00808';
-
-   console.log("dataTest_2 = ", dataTest_2);
-
    for (const [x, y] of dataTest_2) {
-
-      console.log("x = ", x);
-      console.log("y = ", y);
 
       ctx.lineTo(x, HEIGHT_DPI - y);
    }
    ctx.stroke();
    ctx.closePath();
-
-
-   let dataTest1 = [
-      [0, 0],
-      [200, 200],
-      [400, 100],
-      [600, 300],
-      [800, 50],
-
-   ]
-
-   ctx.beginPath();
-   ctx.lineWidth = 4;
-   ctx.strokeStyle = '#055a13';
-
-
-
-
-   for (const [x, y] of dataTest1) {
-
-      // console.log("x = ", x);
-      // console.log("y = ", HEIGHT_DPI - y);
-
-      ctx.lineTo(x, HEIGHT_DPI - y);
-   }
-   ctx.stroke();
-   ctx.closePath()
 
 
 }
