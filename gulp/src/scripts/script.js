@@ -8,21 +8,28 @@ const
 window.onload = function () {
    let url = './module_php/parser.php';
 
-   let promise = new Promise(function (resolve, reject) {
-      ajaxGet(url, function (data) {
-
-         // console.log("data = ", data);
-         resolve(console.log('************', data));
-
-      });
-
-      // console.log(q);
-
+   let jaxPromise = new Promise(function (resolve, reject) {
+      ajaxGet(url, function (data) { resolve(data); });
    });
 
+   jaxPromise.then((result) => {
+      let data = result;
+      // для визуализации на экране
+      let usrStr = '<pre>' + data + '<pre>';    // что бы можно было нормально читать
+      const initBlock_1 = new Init('#initBlock_1', usrStr);
+      let prepData = PreparationData(data);
+      const initBlock_2 = new Init('#initBlock_2', prepData[1]);
+      initBlock_1.CreateBlock('#initial-data', '400px');
+      initBlock_2.CreateBlock('#initial-data', "auto");
+      formulas();
+
+      // работа canvas
+      canvas(prepData[0]);
 
 
-   // }
+   },
+   );
+
 }
 
 
@@ -30,7 +37,6 @@ function ajaxGet(url, callbackfunction) {
    let func = callbackfunction || function (data) { }
 
    let request = new XMLHttpRequest();
-
    request.onreadystatechange = function () {
       if (request.readyState == 4 && request.status == 200) {
          func(request.responseText);
@@ -40,28 +46,7 @@ function ajaxGet(url, callbackfunction) {
    request.open('GET', url);
    request.send();
 
-   // return request.responseText
 }
-
-
-
-
-
-function q() {
-   let request = new XMLHttpRequest();
-   let url = './module_php/parser.php'
-
-   request.onreadystatechange = function () {
-      if (request.readyState == 4 && request.status == 200) {
-         return request.responseText
-      }
-   }
-
-   request.open('GET', url);
-   request.send();
-}
-
-
 
 class Init {
    constructor(idNewBlock, data) {
@@ -121,32 +106,7 @@ function PreparationData(data) {
    return arrData;
 }
 
-function canvas() {
-
-   const canvas = document.getElementById('canv-1');
-   const ctx = canvas.getContext('2d');
-   canvas.style.width = WIDTH;
-   canvas.style.height = HEIGHT;
-   canvas.width = WIDTH_DPI;
-   canvas.height = HEIGHT_DPI;
-
-   ctx.fillRect(100, 100, 50, 50);
-
-   ctx.beginPath();
-   ctx.moveTo(500, 300);
-   ctx.lineTo(400, 550);
-   ctx.stroke();
-
-   // console.log("data = ", data);
-
-}
-
 function formulas() {
-   let Canvas = document.querySelector('#canv-1');
-   // let arrFormuls;
-
-   let hCanvas = Canvas.height;
-   let wCanvas = Canvas.width;
 
    let arrFormuls = [
       'yi = hCanvas - y` - инверсия координат',
@@ -168,20 +128,74 @@ function formulas() {
 
    ];
 
-
-
-   // let strResult = arrFormuls.map((q) => {
-   //    console.log(q);
-   //    q = q + '<br>';
-   //    console.log(q);
-   // })
-
-
    strResult = arrFormuls.join('<br>')
-
-   // console.log("strResult = ", strResult);
-
-   // strResult = form_1 + '<br>' + form_2 + '<br>' + form_3 + '<br>' + form_4 + '<br>' + form_5 + '<br>' + form_6;
    const initBlock_3 = new Init('#formuls-block', strResult);
    initBlock_3.CreateBlock('#block-results', "auto");
 }
+
+function canvas(data) {
+
+   const canvas = document.getElementById('canv-1');
+   const ctx = canvas.getContext('2d');
+   canvas.style.width = WIDTH;
+   canvas.style.height = HEIGHT;
+   canvas.width = WIDTH_DPI;
+   canvas.height = HEIGHT_DPI;
+
+   let dataTest = data.slice(0, 10);
+   // console.log("dataTest = ", dataTest);
+
+   ctx.beginPath();
+   let k = [];
+
+   let dataTest_2 = data.map((num, index) => {
+      return k = [index * 10, num / 100];
+      // return num * 2;
+
+   })
+
+   ctx.lineWidth = 4;
+   ctx.strokeStyle = '#f00808';
+
+   console.log("dataTest_2 = ", dataTest_2);
+
+   for (const [x, y] of dataTest_2) {
+
+      console.log("x = ", x);
+      console.log("y = ", y);
+
+      ctx.lineTo(x, HEIGHT_DPI - y);
+   }
+   ctx.stroke();
+   ctx.closePath();
+
+
+   let dataTest1 = [
+      [0, 0],
+      [200, 200],
+      [400, 100],
+      [600, 300],
+      [800, 50],
+
+   ]
+
+   ctx.beginPath();
+   ctx.lineWidth = 4;
+   ctx.strokeStyle = '#055a13';
+
+
+
+
+   for (const [x, y] of dataTest1) {
+
+      // console.log("x = ", x);
+      // console.log("y = ", HEIGHT_DPI - y);
+
+      ctx.lineTo(x, HEIGHT_DPI - y);
+   }
+   ctx.stroke();
+   ctx.closePath()
+
+
+}
+
