@@ -111,33 +111,28 @@ function canvas() {
 
 function formulas() {
    let Canvas = document.querySelector('#canv-1');
-   // let arrFormuls;
-
    let hCanvas = Canvas.height;
    let wCanvas = Canvas.width;
 
    let arrFormuls = [
       // title_1 = '<b>' + 'Инверсия координат' + '</b><br>',
-      'Y = hCanvas - Y`',
+      'y` = hCanvas - y',
+      'y - исходные координаты точки ',
+      'y` - координаты точки ????? ',
       'X = X`',
       'h - высота canvas в CSS',
-      'hd = h * 2  - высота canvas в HTML',
       'p - padding  canvas для поля графика ',
-      'hv = hd - p*2  - высота поля для графика в canvas'
-      // title_2 = '',
+      'hv = hd - p*2  - высота поля для графика в canvas',
+      'hd = h * 2  - высота canvas в HTML',
+      'Y = hd - p - yi * yRotio',
+      'yRotio = hv / delta_Y',
+      'delta_Y = y_max - y_min',
    ];
 
 
 
-   let strResult = arrFormuls.map((q) => {
-      console.log(q);
-      q = q + '<br>';
-      console.log(q);
-   })
 
-   console.log("strResult = ", strResult);
-
-   // strResult = form_1 + '<br>' + form_2 + '<br>' + form_3 + '<br>' + form_4 + '<br>' + form_5 + '<br>' + form_6;
+   let strResult = arrFormuls.join('<br>')
    const initBlock_3 = new Init('#formuls-block', strResult);
    initBlock_3.CreateBlock('#block-results', "auto");
 }
