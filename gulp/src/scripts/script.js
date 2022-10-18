@@ -2,7 +2,11 @@ const
    WIDTH = 1200,
    HEIGHT = 600,
    WIDTH_DPI = WIDTH * 2,
-   HEIGHT_DPI = HEIGHT * 2;
+   HEIGHT_DPI = HEIGHT * 2,
+   ROWS_AMOUNT = 5,
+   PADDING = 50,
+   VIEW_HEIGT = HEIGHT_DPI - PADDING * 2;
+
 
 
 window.onload = function () {
@@ -24,7 +28,7 @@ window.onload = function () {
       formulas();
 
       // работа canvas
-      canvas(prepData[0]);
+      canvas(prepData[2]);
 
 
    },
@@ -78,30 +82,32 @@ class Init {
 function PreparationData(data) {
    /**
     * Преобразует данные в удобный формат
+    * разварачивает масив по датам 
     * 
     */
    let arrResultsData = [];
    let arrData = [];
    let str = JSON.parse(data);
 
-
    let candles = str['Time Series (Digital Currency Daily)'];
 
-   resultsData = Object
-      // .keys(str['Time Series (Digital Currency Daily)'])
-      .keys(candles)
-      .forEach((key) => {
+   // console.log("candles = ", candles);
 
-         // console.log(str['Time Series (Digital Currency Daily)'][key]['1b. open (USD)']);
-         // console.log(candles[key]);
-         // console.log(candles[key]['1b. open (USD)']);
-         arrResultsData.push(candles[key]['1b. open (USD)']);
-      });
+   // console.log("Object.keys(candles) = ", Object.keys(candles));
 
+   resultsData = Object.keys(candles).forEach((key) => {
+      arrResultsData.push(candles[key]['1b. open (USD)']);
+   });
+
+
+
+
+   arrResultsData = arrResultsData.reverse();
    strResult = arrResultsData.join('<br>')
    arrData = [
-      arrResultsData,   // для дальнейшей обработки в коде
-      strResult   // для вывода на экран
+      arrResultsData,   // для тестов
+      strResult,   // для вывода на экран
+      candles,    // для чистовика
    ]
    return arrData;
 }
@@ -142,60 +148,114 @@ function canvas(data) {
    canvas.width = WIDTH_DPI;
    canvas.height = HEIGHT_DPI;
 
-   let dataTest = data.slice(0, 10);
-   // console.log("dataTest = ", dataTest);
+
+   grid_lines(ctx, data);
+
+   //движение мыши
+   let y = 0;
+   let x = 0;
+   canvas.addEventListener('mousemove', (e) => {
+      console.log('x1 =', x);
+      console.log('y1 =', y);
+
+      ctx.beginPath();
+
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = '#f00808';
+
+      ctx.arc(e.offsetX * 2, e.offsetY * 2, 10, 0, Math.PI * 2);
+
+      ctx.stroke();
+      ctx.closePath();
+      console.log('x2 =', x);
+      console.log('y2 =', y);
+      y = e.offsetY;
+      x = e.offsetX;
+      console.log('x3 =', x);
+      console.log('y3 =', y);
+
+   });
+
+
+
+   // отрисовка графика
 
    ctx.beginPath();
-   let k = [];
 
-   let dataTest_2 = data.map((num, index) => {
-      return k = [index * 10, num / 100];
-      // return num * 2;
-
-   })
-
-   ctx.lineWidth = 4;
+   ctx.lineWidth = 3;
    ctx.strokeStyle = '#f00808';
 
-   console.log("dataTest_2 = ", dataTest_2);
+   resultsData = Object.keys(data).reverse().forEach((key, x) => {
 
-   for (const [x, y] of dataTest_2) {
+      ctx.lineTo(x * 2.2, HEIGHT_DPI - data[key]['1b. open (USD)'] / 100 - PADDING);
 
-      console.log("x = ", x);
-      console.log("y = ", y);
+   });
 
-      ctx.lineTo(x, HEIGHT_DPI - y);
+   ctx.stroke();
+   ctx.closePath();
+
+   return {
+      destroy() {
+         canvas.removeEventListener('mousemove', mousemove)
+      }
    }
+}
+
+function mousemove({ clientX, clientY }, ctx) {
+   console.log(clientX);
+   console.log(clientY);
+
+   ctx.beginPath();
+
+   ctx.lineWidth = 1;
+   ctx.strokeStyle = '#f00808';
+
+   arc(clientX, clientY, 10, 0, Math.PI * 2);
+
+   ctx.stroke();
+   ctx.closePath();
+
+}
+
+
+
+
+function grid_lines(ctx, data) {
+   // отрисовка горизонтальных линий сетки
+
+   ctx.beginPath();
+   ctx.lineWidth = 1;
+   ctx.strokeStyle = '#b1b0b0';
+   ctx.font = '30px Arial';
+
+   for (let i = 00; i <= HEIGHT_DPI; i += 100) {
+      ctx.moveTo(0, HEIGHT_DPI - i - PADDING);
+      ctx.lineTo(WIDTH_DPI, HEIGHT_DPI - i - PADDING);
+      ctx.fillText(i * 100, WIDTH_DPI - 100, HEIGHT_DPI - i - PADDING);
+   }
+
+   ctx.stroke();
+   ctx.closePath();
+
+   // отрисовка вертикальных линий
+
+   ctx.beginPath();
+
+
+   // ctx.lineWidth = 1;
+   ctx.strokeStyle = '#b1b0b0';
+   ctx.font = '20px Arial';
+
+   resultsData = Object.keys(data).reverse().forEach((key, x) => {
+
+      // ctx.lineTo(x * 2.2, HEIGHT_DPI - data[key]['1b. open (USD)'] / 100 - PADDING);
+      ctx.fillText(key, x * 2.2, HEIGHT_DPI - 20);
+
+   });
+
    ctx.stroke();
    ctx.closePath();
 
 
-   let dataTest1 = [
-      [0, 0],
-      [200, 200],
-      [400, 100],
-      [600, 300],
-      [800, 50],
-
-   ]
-
-   ctx.beginPath();
-   ctx.lineWidth = 4;
-   ctx.strokeStyle = '#055a13';
-
-
-
-
-   for (const [x, y] of dataTest1) {
-
-      // console.log("x = ", x);
-      // console.log("y = ", HEIGHT_DPI - y);
-
-      ctx.lineTo(x, HEIGHT_DPI - y);
-   }
-   ctx.stroke();
-   ctx.closePath()
-
 
 }
-
