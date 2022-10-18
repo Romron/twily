@@ -1,30 +1,35 @@
+const
+   WIDTH = 1200,
+   HEIGHT = 600,
+   WIDTH_DPI = WIDTH * 2,
+   HEIGHT_DPI = HEIGHT * 2;
+
+
 window.onload = function () {
    let url = './module_php/parser.php';
 
-   // document.querySelector('#parser-start-button').onclick = function () {
-   ajaxGet(url, function (data) {
-
-      let usrStr = '<pre>' + data + '<pre>';    // что бы можно было нормально читать 
-      const initBlock_1 = new Init('#initBlock_1', usrStr);
-      let prepData = PreparationData(data);
-
-      const initBlock_2 = new Init('#initBlock_2', prepData);
-
-
-      initBlock_1.CreateBlock('#initial-data', '400px');
-      initBlock_2.CreateBlock('#initial-data', "auto");
-
-
-      formulas();
-
+   let jaxPromise = new Promise(function (resolve, reject) {
+      ajaxGet(url, function (data) { resolve(data); });
    });
 
-   canvas();
+   jaxPromise.then((result) => {
+      let data = result;
+      // для визуализации на экране
+      let usrStr = '<pre>' + data + '<pre>';    // что бы можно было нормально читать
+      const initBlock_1 = new Init('#initBlock_1', usrStr);
+      let prepData = PreparationData(data);
+      const initBlock_2 = new Init('#initBlock_2', prepData[1]);
+      initBlock_1.CreateBlock('#initial-data', '400px');
+      initBlock_2.CreateBlock('#initial-data', "auto");
+      formulas();
+
+      // работа canvas
+      canvas(prepData[0]);
 
 
+   },
+   );
 
-
-   // }
 }
 
 
@@ -32,7 +37,6 @@ function ajaxGet(url, callbackfunction) {
    let func = callbackfunction || function (data) { }
 
    let request = new XMLHttpRequest();
-
    request.onreadystatechange = function () {
       if (request.readyState == 4 && request.status == 200) {
          func(request.responseText);
@@ -76,7 +80,8 @@ function PreparationData(data) {
     * Преобразует данные в удобный формат
     * 
     */
-   let resultsData;
+   let arrResultsData = [];
+   let arrData = [];
    let str = JSON.parse(data);
 
 
@@ -88,51 +93,109 @@ function PreparationData(data) {
       .forEach((key) => {
 
          // console.log(str['Time Series (Digital Currency Daily)'][key]['1b. open (USD)']);
+         // console.log(candles[key]);
          // console.log(candles[key]['1b. open (USD)']);
+         arrResultsData.push(candles[key]['1b. open (USD)']);
       });
 
-
-   return resultsData;
-}
-
-function canvas() {
-
-   const canvas = document.getElementById('canv-1');
-   const ctx = canvas.getContext('2d');
-   ctx.fillRect(100, 100, 50, 50);
-
-   ctx.beginPath();
-   ctx.moveTo(500, 300);
-   ctx.lineTo(400, 550);
-   ctx.stroke();
-
-
+   strResult = arrResultsData.join('<br>')
+   arrData = [
+      arrResultsData,   // для дальнейшей обработки в коде
+      strResult   // для вывода на экран
+   ]
+   return arrData;
 }
 
 function formulas() {
-   let Canvas = document.querySelector('#canv-1');
-   let hCanvas = Canvas.height;
-   let wCanvas = Canvas.width;
 
    let arrFormuls = [
-      // title_1 = '<b>' + 'Инверсия координат' + '</b><br>',
-      'y` = hCanvas - y',
-      'y - исходные координаты точки ',
-      'y` - координаты точки ????? ',
-      'X = X`',
+      'yi = hCanvas - y` - инверсия координат',
+      'xi = x`',
+      '',
       'h - высота canvas в CSS',
+      'hd = h*2- высота canvas в HTML',
+      'wd = w*2- ширина canvas в HTML',
       'p - padding  canvas для поля графика ',
-      'hv = hd - p*2  - высота поля для графика в canvas',
-      'hd = h * 2  - высота canvas в HTML',
-      'Y = hd - p - yi * yRotio',
-      'yRotio = hv / delta_Y',
-      'delta_Y = y_max - y_min',
+      'hv = hd - p*2  - высота поля графика в canvas',
+      'wv = wd',
+      'Y = hd - p - yi * yRatio ',
+      'yRatio = hv / deltaY',
+      'deltaY = maxY - minY',
+      'xRatio = wv / (lengthX-2)',
+      'lengthX - количество точек по Х',
+      'count_Y = 5, количество горизонтальных линий сетки',
+      'textSize = (maxY - minY)/count_Y, количество горизонтальных линий сетки',
+
    ];
 
-
-
-
-   let strResult = arrFormuls.join('<br>')
+   strResult = arrFormuls.join('<br>')
    const initBlock_3 = new Init('#formuls-block', strResult);
    initBlock_3.CreateBlock('#block-results', "auto");
 }
+
+function canvas(data) {
+
+   const canvas = document.getElementById('canv-1');
+   const ctx = canvas.getContext('2d');
+   canvas.style.width = WIDTH;
+   canvas.style.height = HEIGHT;
+   canvas.width = WIDTH_DPI;
+   canvas.height = HEIGHT_DPI;
+
+   let dataTest = data.slice(0, 10);
+   // console.log("dataTest = ", dataTest);
+
+   ctx.beginPath();
+   let k = [];
+
+   let dataTest_2 = data.map((num, index) => {
+      return k = [index * 10, num / 100];
+      // return num * 2;
+
+   })
+
+   ctx.lineWidth = 4;
+   ctx.strokeStyle = '#f00808';
+
+   console.log("dataTest_2 = ", dataTest_2);
+
+   for (const [x, y] of dataTest_2) {
+
+      console.log("x = ", x);
+      console.log("y = ", y);
+
+      ctx.lineTo(x, HEIGHT_DPI - y);
+   }
+   ctx.stroke();
+   ctx.closePath();
+
+
+   let dataTest1 = [
+      [0, 0],
+      [200, 200],
+      [400, 100],
+      [600, 300],
+      [800, 50],
+
+   ]
+
+   ctx.beginPath();
+   ctx.lineWidth = 4;
+   ctx.strokeStyle = '#055a13';
+
+
+
+
+   for (const [x, y] of dataTest1) {
+
+      // console.log("x = ", x);
+      // console.log("y = ", HEIGHT_DPI - y);
+
+      ctx.lineTo(x, HEIGHT_DPI - y);
+   }
+   ctx.stroke();
+   ctx.closePath()
+
+
+}
+

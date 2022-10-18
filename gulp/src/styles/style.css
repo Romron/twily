@@ -65,19 +65,19 @@ h1 {
    /* overflow-y: scroll; */
    overflow-y: auto;
    height: inherit;
-   color: #6485ce;
+   color: #443fdc;
    line-height: 20px;
    width: 30%;
    scrollbar-width: thin;
    scrollbar-color: #b6b7c3 #c7c8cb;
    border: 1px solid #bbbbc2;
    border-radius: 5px;
-   padding: 5px;
+   padding: 10px;
    /* margin: 5px; */
 }
 
 .block-results {
-   border: 2px solid #9e9fa8;
+   /* border: 2px solid #9e9fa8; */
    border-radius: 5px;
 
    display: flex;
@@ -93,10 +93,10 @@ h1 {
 #canv-1 {
    width: 1200px;
    height: 600px;
-   border: 2px solid #051df8;
    border-radius: 5px;
    align-self: center;
 
+   border: 1px solid #9ea8a0;
 
 }
 
