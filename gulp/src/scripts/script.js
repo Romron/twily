@@ -4,8 +4,10 @@ const
    WIDTH_DPI = WIDTH * 2,
    HEIGHT_DPI = HEIGHT * 2,
    ROWS_AMOUNT = 5,
-   PADDING = 50,
-   VIEW_HEIGT = HEIGHT_DPI - PADDING * 2;
+   PADDING_X = 30,
+   VIEW_HEIGT = HEIGHT_DPI - PADDING_X * 2,
+   scaleX = 2.4,
+   scaleY = 1;
 
 
 
@@ -90,9 +92,10 @@ function canvas(data) {
    canvas.width = WIDTH_DPI;
    canvas.height = HEIGHT_DPI;
 
-   const scaleX = 2.2;
-   const scaleY = 200;
 
+
+   console.log("scaleY = ", scaleY);
+   console.log("scaleX = ", scaleX);
 
    grid_lines(ctx, data, scaleX, scaleY);
 
@@ -132,7 +135,7 @@ function canvas(data) {
 
    resultsData = Object.keys(data).reverse().forEach((key, x) => {
 
-      ctx.lineTo(x * scaleX, HEIGHT_DPI - data[key]['1b. open (USD)'] / scaleY - PADDING);
+      ctx.lineTo(x * scaleX, HEIGHT_DPI - data[key]['1b. open (USD)'] / 100 * scaleY - PADDING_X);
 
    });
 
@@ -163,34 +166,63 @@ function grid_lines(ctx, data, scaleX, scaleY) {
 
    let x = WIDTH_DPI;
    // let y = HEIGHT_DPI / scaleY;
-   let y = HEIGHT_DPI // scaleY;
-   console.log("y = ", y);
+   // let y = HEIGHT_DPI // scaleY;
 
-   for (let i = 0; i <= HEIGHT_DPI; i = i + 100) {
-      console.log("i = ", i);
-      console.log("y - i = ", Math.abs(y - i));
-      ctx.moveTo(0, Math.abs(y - i));
-      ctx.lineTo(x, Math.abs(y - i));
+   for (let i = 0; i < HEIGHT_DPI; i = i + 100) {
 
 
-      ctx.fillText(i * 100, x - 100, HEIGHT_DPI - Math.abs(y - i));
+      ctx.moveTo(0, HEIGHT_DPI - Math.abs(HEIGHT_DPI - i) * scaleY - PADDING_X);
+      ctx.lineTo(x, HEIGHT_DPI - Math.abs(HEIGHT_DPI - i) * scaleY - PADDING_X);
+
+
+      ctx.fillText(HEIGHT_DPI - i, x - 100, HEIGHT_DPI - Math.abs(HEIGHT_DPI - i) * scaleY - PADDING_X);
    }
 
    ctx.stroke();
    ctx.closePath();
 
    // отрисовка вертикальных линий
+   // ctx.beginPath();
+   // // ctx.lineWidth = 1;
+   // ctx.strokeStyle = '#000';
+   // ctx.font = '20px Arial';
+
+   // for (let i = 0; i < WIDTH_DPI; i += 100) {
+
+   //    ctx.moveTo(i * scaleX, 0);
+   //    ctx.lineTo(i * scaleX, HEIGHT_DPI);
+   //    ctx.fillText(i, i * scaleX, HEIGHT_DPI - 10);
+
+   // }
+   // ctx.stroke();
+   // ctx.closePath();
+
 
    ctx.beginPath();
-
-
-   // ctx.lineWidth = 1;
-   ctx.strokeStyle = '#b1b0b0';
+   // // ctx.lineWidth = 1;
+   ctx.strokeStyle = '#0556fa';
    ctx.font = '20px Arial';
 
+   let q = 1;
+   let str = '';
+   let str_1 = '';
+   let str_2 = '';
+   let str_3 = '';
    resultsData = Object.keys(data).reverse().forEach((key, x) => {
+      if (key.endsWith('01')) {
+         str_1 = key.slice(8, 10);
+         str_2 = key.slice(5, 7);
+         str_3 = key.slice(0, 4).slice(2, 4);
+         str = `${str_1}.${str_2}.${str_3}`;
+         ctx.moveTo(x * scaleX, 0);
+         ctx.lineTo(x * scaleX, HEIGHT_DPI - PADDING_X);
+         ctx.fillText(str, x * scaleX - 50, HEIGHT_DPI - 10);
+
+         q++;
+
+      }
       // ctx.lineTo(x * 2.2, HEIGHT_DPI - data[key]['1b. open (USD)'] / 100 - PADDING);
-      ctx.fillText(key, x * 2.2, HEIGHT_DPI - 20, 200);
+      // ctx.fillText(key, x * 2.2, HEIGHT_DPI - 20, 200);
 
    });
 
