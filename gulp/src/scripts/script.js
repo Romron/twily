@@ -59,6 +59,7 @@ class Init {
    }
 
    CreateBlock(idTargetBlock, widthNewBlock = '') {
+
       this.widthNewBlock = widthNewBlock;
 
       if (!document.getElementById(this.idNewBlock)) {
@@ -216,9 +217,6 @@ function mousemove({ clientX, clientY }, ctx) {
    ctx.closePath();
 
 }
-
-
-
 
 function grid_lines(ctx, data) {
    // отрисовка горизонтальных линий сетки
