@@ -80,6 +80,128 @@ class Init {
 
 }
 
+
+function canvas(data) {
+
+   const canvas = document.getElementById('canv-1');
+   const ctx = canvas.getContext('2d');
+   canvas.style.width = WIDTH;
+   canvas.style.height = HEIGHT;
+   canvas.width = WIDTH_DPI;
+   canvas.height = HEIGHT_DPI;
+
+   const scaleX = 2.2;
+   const scaleY = 200;
+
+
+   grid_lines(ctx, data, scaleX, scaleY);
+
+   // //движение мыши
+   // let y = 0;
+   // let x = 0;
+   // canvas.addEventListener('mousemove', (e) => {
+   //    console.log('x1 =', x);
+   //    console.log('y1 =', y);
+
+   //    ctx.beginPath();
+
+   //    ctx.lineWidth = 1;
+   //    ctx.strokeStyle = '#f00808';
+
+   //    ctx.arc(e.offsetX * 2, e.offsetY * 2, 10, 0, Math.PI * 2);
+
+   //    ctx.stroke();
+   //    ctx.closePath();
+   //    console.log('x2 =', x);
+   //    console.log('y2 =', y);
+   //    y = e.offsetY;
+   //    x = e.offsetX;
+   //    console.log('x3 =', x);
+   //    console.log('y3 =', y);
+
+   // });
+
+
+
+   // отрисовка графика
+
+   ctx.beginPath();
+
+   ctx.lineWidth = 3;
+   ctx.strokeStyle = '#f00808';
+
+   resultsData = Object.keys(data).reverse().forEach((key, x) => {
+
+      ctx.lineTo(x * scaleX, HEIGHT_DPI - data[key]['1b. open (USD)'] / scaleY - PADDING);
+
+   });
+
+   ctx.stroke();
+   ctx.closePath();
+
+   return {
+      destroy() {
+         canvas.removeEventListener('mousemove', mousemove)
+      }
+   }
+}
+
+function canvasScaling() {
+
+}
+
+
+
+
+function grid_lines(ctx, data, scaleX, scaleY) {
+   // отрисовка горизонтальных линий сетки
+
+   ctx.beginPath();
+   ctx.lineWidth = 1;
+   ctx.strokeStyle = '#b1b0b0';
+   ctx.font = '30px Arial';
+
+   let x = WIDTH_DPI;
+   // let y = HEIGHT_DPI / scaleY;
+   let y = HEIGHT_DPI // scaleY;
+   console.log("y = ", y);
+
+   for (let i = 0; i <= HEIGHT_DPI; i = i + 100) {
+      console.log("i = ", i);
+      console.log("y - i = ", Math.abs(y - i));
+      ctx.moveTo(0, Math.abs(y - i));
+      ctx.lineTo(x, Math.abs(y - i));
+
+
+      ctx.fillText(i * 100, x - 100, HEIGHT_DPI - Math.abs(y - i));
+   }
+
+   ctx.stroke();
+   ctx.closePath();
+
+   // отрисовка вертикальных линий
+
+   ctx.beginPath();
+
+
+   // ctx.lineWidth = 1;
+   ctx.strokeStyle = '#b1b0b0';
+   ctx.font = '20px Arial';
+
+   resultsData = Object.keys(data).reverse().forEach((key, x) => {
+      // ctx.lineTo(x * 2.2, HEIGHT_DPI - data[key]['1b. open (USD)'] / 100 - PADDING);
+      ctx.fillText(key, x * 2.2, HEIGHT_DPI - 20, 200);
+
+   });
+
+   ctx.stroke();
+   ctx.closePath();
+
+
+
+}
+
+
 function PreparationData(data) {
    /**
     * Преобразует данные в удобный формат
@@ -140,67 +262,8 @@ function formulas() {
    initBlock_3.CreateBlock('#block-results', "auto");
 }
 
-function canvas(data) {
 
-   const canvas = document.getElementById('canv-1');
-   const ctx = canvas.getContext('2d');
-   canvas.style.width = WIDTH;
-   canvas.style.height = HEIGHT;
-   canvas.width = WIDTH_DPI;
-   canvas.height = HEIGHT_DPI;
-
-
-   grid_lines(ctx, data);
-
-   //движение мыши
-   let y = 0;
-   let x = 0;
-   canvas.addEventListener('mousemove', (e) => {
-      console.log('x1 =', x);
-      console.log('y1 =', y);
-
-      ctx.beginPath();
-
-      ctx.lineWidth = 1;
-      ctx.strokeStyle = '#f00808';
-
-      ctx.arc(e.offsetX * 2, e.offsetY * 2, 10, 0, Math.PI * 2);
-
-      ctx.stroke();
-      ctx.closePath();
-      console.log('x2 =', x);
-      console.log('y2 =', y);
-      y = e.offsetY;
-      x = e.offsetX;
-      console.log('x3 =', x);
-      console.log('y3 =', y);
-
-   });
-
-
-
-   // отрисовка графика
-
-   ctx.beginPath();
-
-   ctx.lineWidth = 3;
-   ctx.strokeStyle = '#f00808';
-
-   resultsData = Object.keys(data).reverse().forEach((key, x) => {
-
-      ctx.lineTo(x * 2.2, HEIGHT_DPI - data[key]['1b. open (USD)'] / 100 - PADDING);
-
-   });
-
-   ctx.stroke();
-   ctx.closePath();
-
-   return {
-      destroy() {
-         canvas.removeEventListener('mousemove', mousemove)
-      }
-   }
-}
+// ============   черновик   ======================
 
 function mousemove({ clientX, clientY }, ctx) {
    console.log(clientX);
@@ -215,45 +278,5 @@ function mousemove({ clientX, clientY }, ctx) {
 
    ctx.stroke();
    ctx.closePath();
-
-}
-
-function grid_lines(ctx, data) {
-   // отрисовка горизонтальных линий сетки
-
-   ctx.beginPath();
-   ctx.lineWidth = 1;
-   ctx.strokeStyle = '#b1b0b0';
-   ctx.font = '30px Arial';
-
-   for (let i = 00; i <= HEIGHT_DPI; i += 100) {
-      ctx.moveTo(0, HEIGHT_DPI - i - PADDING);
-      ctx.lineTo(WIDTH_DPI, HEIGHT_DPI - i - PADDING);
-      ctx.fillText(i * 100, WIDTH_DPI - 100, HEIGHT_DPI - i - PADDING);
-   }
-
-   ctx.stroke();
-   ctx.closePath();
-
-   // отрисовка вертикальных линий
-
-   ctx.beginPath();
-
-
-   // ctx.lineWidth = 1;
-   ctx.strokeStyle = '#b1b0b0';
-   ctx.font = '20px Arial';
-
-   resultsData = Object.keys(data).reverse().forEach((key, x) => {
-
-      // ctx.lineTo(x * 2.2, HEIGHT_DPI - data[key]['1b. open (USD)'] / 100 - PADDING);
-      ctx.fillText(key, x * 2.2, HEIGHT_DPI - 20);
-
-   });
-
-   ctx.stroke();
-   ctx.closePath();
-
-
 
 }
