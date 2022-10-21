@@ -6,7 +6,7 @@ const
    ROWS_AMOUNT = 5,
    PADDING_X = 30,
    VIEW_HEIGT = HEIGHT_DPI - PADDING_X * 2,
-   scaleX = 2.4,
+   scaleX = 3.8,
    scaleY = 1;
 
 
@@ -31,7 +31,6 @@ window.onload = function () {
 
       // работа canvas
       canvas(prepData[2]);
-
 
    },
    );
@@ -94,53 +93,25 @@ function canvas(data) {
 
 
 
-   console.log("scaleY = ", scaleY);
-   console.log("scaleX = ", scaleX);
 
-   grid_lines(ctx, data, scaleX, scaleY);
-
-   // //движение мыши
-   // let y = 0;
-   // let x = 0;
-   // canvas.addEventListener('mousemove', (e) => {
-   //    console.log('x1 =', x);
-   //    console.log('y1 =', y);
-
-   //    ctx.beginPath();
-
-   //    ctx.lineWidth = 1;
-   //    ctx.strokeStyle = '#f00808';
-
-   //    ctx.arc(e.offsetX * 2, e.offsetY * 2, 10, 0, Math.PI * 2);
-
-   //    ctx.stroke();
-   //    ctx.closePath();
-   //    console.log('x2 =', x);
-   //    console.log('y2 =', y);
-   //    y = e.offsetY;
-   //    x = e.offsetX;
-   //    console.log('x3 =', x);
-   //    console.log('y3 =', y);
-
-   // });
-
+   grid_lines(ctx, data);
 
 
    // отрисовка графика
 
-   ctx.beginPath();
+   // ctx.beginPath();
 
-   ctx.lineWidth = 3;
-   ctx.strokeStyle = '#f00808';
+   // ctx.lineWidth = 3;
+   // ctx.strokeStyle = '#f00808';
 
-   resultsData = Object.keys(data).reverse().forEach((key, x) => {
+   // resultsData = Object.keys(data).reverse().forEach((key, x) => {
 
-      ctx.lineTo(x * scaleX, HEIGHT_DPI - data[key]['1b. open (USD)'] / 100 * scaleY - PADDING_X);
+   //    ctx.lineTo(x * scaleX, HEIGHT_DPI - data[key]['1b. open (USD)'] / 100 * scaleY - PADDING_X);
 
-   });
+   // });
 
-   ctx.stroke();
-   ctx.closePath();
+   // ctx.stroke();
+   // ctx.closePath();
 
    return {
       destroy() {
@@ -156,54 +127,21 @@ function canvasScaling() {
 
 
 
-function grid_lines(ctx, data, scaleX, scaleY) {
+function grid_lines(ctx, data) {
    // отрисовка горизонтальных линий сетки
 
    ctx.beginPath();
    ctx.lineWidth = 1;
-   ctx.strokeStyle = '#b1b0b0';
+   ctx.strokeStyle = '#B1AFB3';
    ctx.font = '30px Arial';
 
-   let x = WIDTH_DPI;
-   // let y = HEIGHT_DPI / scaleY;
-   // let y = HEIGHT_DPI // scaleY;
-
    for (let i = 0; i < HEIGHT_DPI; i = i + 100) {
-
-
       ctx.moveTo(0, HEIGHT_DPI - Math.abs(HEIGHT_DPI - i) * scaleY - PADDING_X);
-      ctx.lineTo(x, HEIGHT_DPI - Math.abs(HEIGHT_DPI - i) * scaleY - PADDING_X);
-
-
-      ctx.fillText(HEIGHT_DPI - i, x - 100, HEIGHT_DPI - Math.abs(HEIGHT_DPI - i) * scaleY - PADDING_X);
+      ctx.lineTo(WIDTH_DPI, HEIGHT_DPI - Math.abs(HEIGHT_DPI - i) * scaleY - PADDING_X);
+      ctx.fillText(HEIGHT_DPI - i, WIDTH_DPI - 100, HEIGHT_DPI - Math.abs(HEIGHT_DPI - i) * scaleY - PADDING_X);
    }
-
-   ctx.stroke();
-   ctx.closePath();
-
-   // отрисовка вертикальных линий
-   // ctx.beginPath();
-   // // ctx.lineWidth = 1;
-   // ctx.strokeStyle = '#000';
-   // ctx.font = '20px Arial';
-
-   // for (let i = 0; i < WIDTH_DPI; i += 100) {
-
-   //    ctx.moveTo(i * scaleX, 0);
-   //    ctx.lineTo(i * scaleX, HEIGHT_DPI);
-   //    ctx.fillText(i, i * scaleX, HEIGHT_DPI - 10);
-
-   // }
-   // ctx.stroke();
-   // ctx.closePath();
-
-
-   ctx.beginPath();
-   // // ctx.lineWidth = 1;
-   ctx.strokeStyle = '#0556fa';
    ctx.font = '20px Arial';
 
-   let q = 1;
    let str = '';
    let str_1 = '';
    let str_2 = '';
@@ -214,22 +152,17 @@ function grid_lines(ctx, data, scaleX, scaleY) {
          str_2 = key.slice(5, 7);
          str_3 = key.slice(0, 4).slice(2, 4);
          str = `${str_1}.${str_2}.${str_3}`;
-         ctx.moveTo(x * scaleX, 0);
-         ctx.lineTo(x * scaleX, HEIGHT_DPI - PADDING_X);
-         ctx.fillText(str, x * scaleX - 50, HEIGHT_DPI - 10);
-
-         q++;
+         ctx.moveTo(Math.round(x * scaleX), 0);
+         ctx.lineTo(Math.round(x * scaleX), HEIGHT_DPI - PADDING_X);
+         ctx.fillText(str, Math.round(x * scaleX) - 50, HEIGHT_DPI - 10);
 
       }
-      // ctx.lineTo(x * 2.2, HEIGHT_DPI - data[key]['1b. open (USD)'] / 100 - PADDING);
-      // ctx.fillText(key, x * 2.2, HEIGHT_DPI - 20, 200);
 
    });
 
+
    ctx.stroke();
    ctx.closePath();
-
-
 
 }
 
@@ -291,7 +224,8 @@ function formulas() {
 
    strResult = arrFormuls.join('<br>')
    const initBlock_3 = new Init('#formuls-block', strResult);
-   initBlock_3.CreateBlock('#block-results', "auto");
+   // initBlock_3.CreateBlock('#block-results', "auto");
+   // initBlock_3.CreateBlock('.block-controls', "auto");
 }
 
 
