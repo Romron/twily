@@ -1,12 +1,12 @@
 const
-   WIDTH = 1200,
+   WIDTH = 1800,
    HEIGHT = 600,
    WIDTH_DPI = WIDTH * 2,
    HEIGHT_DPI = HEIGHT * 2,
    ROWS_AMOUNT = 5,
-   PADDING_X = 30,
-   VIEW_HEIGT = HEIGHT_DPI - PADDING_X * 2,
-   scaleX = 3.8,
+   PADDING_Y = 30,
+   VIEW_HEIGT = HEIGHT_DPI - PADDING_Y * 2,
+   scaleX = 3.5,
    scaleY = 1;
 
 
@@ -81,7 +81,6 @@ class Init {
 
 }
 
-
 function canvas(data) {
 
    const canvas = document.getElementById('canv-1');
@@ -90,55 +89,91 @@ function canvas(data) {
    canvas.style.height = HEIGHT;
    canvas.width = WIDTH_DPI;
    canvas.height = HEIGHT_DPI;
+   let raf;
 
 
 
+   const proxy = new Proxy({}, {
+      set(...args) {
+         const result = Reflect.set(...args);
+         raf = requestAnimationFrame(paint)
 
-   grid_lines(ctx, data);
+         return result;
+      }
+   });
+
+   function clear() {
+      ctx.clearRect(0, 0, WIDTH_DPI, HEIGHT_DPI);
+   }
+   canvas.addEventListener('mousemove', mousemove);
+   function mousemove({ clientX, clientY }, ctx) {
+      // console.log('X = ', clientX);
+      // console.log('Y = ', clientY);
+      proxy.mouse = {
+         x: clientX,
+         y: clientY,
+      }
 
 
-   // отрисовка графика
+   }
 
-   // ctx.beginPath();
+   function paint() {
+      console.log("proxy.mouse.x = ", proxy.mouse.x);
+      console.log("proxy.mouse.y = ", proxy.mouse.y);
+      clear();
 
-   // ctx.lineWidth = 3;
-   // ctx.strokeStyle = '#f00808';
+      grid_lines(ctx, data);
+      // отрисовка графика
+      ctx.beginPath();
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = '#f00808';
+      resultsData = Object.keys(data).reverse().forEach((key, x) => {
+         ctx.lineTo(x * scaleX, HEIGHT_DPI - data[key]['1b. open (USD)'] / 100 * scaleY - PADDING_Y);
+      });
 
-   // resultsData = Object.keys(data).reverse().forEach((key, x) => {
+      ctx.stroke();
+      ctx.closePath();
 
-   //    ctx.lineTo(x * scaleX, HEIGHT_DPI - data[key]['1b. open (USD)'] / 100 * scaleY - PADDING_X);
 
-   // });
 
-   // ctx.stroke();
-   // ctx.closePath();
+      ctx.beginPath();
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = '#f00808';
+
+      ctx.arc(proxy.mouse.x, proxy.mouse.y, 10, 0, Math.PI * 2);
+
+      ctx.stroke();
+      ctx.closePath();
+   }
+
+
+
 
    return {
       destroy() {
-         canvas.removeEventListener('mousemove', mousemove)
+         cancelAnimationFrame(raf);
+         canvas.removeEventListener('mousemove', mousemove);
       }
    }
 }
 
-function canvasScaling() {
 
-}
+
+
 
 
 
 
 function grid_lines(ctx, data) {
    // отрисовка горизонтальных линий сетки
-
    ctx.beginPath();
    ctx.lineWidth = 1;
    ctx.strokeStyle = '#B1AFB3';
    ctx.font = '30px Arial';
-
    for (let i = 0; i < HEIGHT_DPI; i = i + 100) {
-      ctx.moveTo(0, HEIGHT_DPI - Math.abs(HEIGHT_DPI - i) * scaleY - PADDING_X);
-      ctx.lineTo(WIDTH_DPI, HEIGHT_DPI - Math.abs(HEIGHT_DPI - i) * scaleY - PADDING_X);
-      ctx.fillText(HEIGHT_DPI - i, WIDTH_DPI - 100, HEIGHT_DPI - Math.abs(HEIGHT_DPI - i) * scaleY - PADDING_X);
+      ctx.moveTo(0, HEIGHT_DPI - Math.abs(HEIGHT_DPI - i) * scaleY - PADDING_Y);
+      ctx.lineTo(WIDTH_DPI, HEIGHT_DPI - Math.abs(HEIGHT_DPI - i) * scaleY - PADDING_Y);
+      ctx.fillText((HEIGHT_DPI - i) * 100, WIDTH_DPI - 110, HEIGHT_DPI - Math.abs(HEIGHT_DPI - i) * scaleY - PADDING_Y);
    }
    ctx.font = '20px Arial';
 
@@ -153,17 +188,13 @@ function grid_lines(ctx, data) {
          str_3 = key.slice(0, 4).slice(2, 4);
          str = `${str_1}.${str_2}.${str_3}`;
          ctx.moveTo(Math.round(x * scaleX), 0);
-         ctx.lineTo(Math.round(x * scaleX), HEIGHT_DPI - PADDING_X);
+         ctx.lineTo(Math.round(x * scaleX), HEIGHT_DPI - PADDING_Y);
          ctx.fillText(str, Math.round(x * scaleX) - 50, HEIGHT_DPI - 10);
-
       }
-
    });
-
 
    ctx.stroke();
    ctx.closePath();
-
 }
 
 
@@ -231,18 +262,20 @@ function formulas() {
 
 // ============   черновик   ======================
 
-function mousemove({ clientX, clientY }, ctx) {
-   console.log(clientX);
-   console.log(clientY);
 
-   ctx.beginPath();
-
-   ctx.lineWidth = 1;
-   ctx.strokeStyle = '#f00808';
-
-   arc(clientX, clientY, 10, 0, Math.PI * 2);
-
-   ctx.stroke();
-   ctx.closePath();
+function canvasScaling() {
 
 }
+
+
+
+
+   // ctx.beginPath();
+
+   // ctx.lineWidth = 1;
+   // ctx.strokeStyle = '#f00808';
+
+   // arc(clientX, clientY, 10, 0, Math.PI * 2);
+
+   // ctx.stroke();
+   // ctx.closePath();

@@ -20,7 +20,7 @@
          </div>
       </form>
       <div id="block-results" class="block-results">
-         <canvas id="canv-1" width="1200" height="600"></canvas>
+         <canvas id="canv-1" width="1800" height="600"></canvas>
       </div>
       <!-- автоматом удаляет закрывающюу кавычку тега php ???? -->
       <!-- @@include('./parts/footer.php') -->
