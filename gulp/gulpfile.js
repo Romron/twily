@@ -12,6 +12,7 @@ const webpHTML = require('gulp-webp-html');
 const ttf2woff = require('gulp-ttf2woff');
 const ttf2woff2 = require('gulp-ttf2woff2');
 const fonter = require('gulp-fonter');
+const babel = require("gulp-babel");
 
 
 const phpFiles = [
@@ -25,8 +26,8 @@ const cssFiles = [      // для того чтобы файлы подключ�
    './src/styles/style.css',
 ]
 
-const jsFile = [     // для того чтобы файлы подключались в строго установленой последовательности
-   './src/scripts/script.js',
+const jsFile = [     // массив на тот случай если файлов несколько и они должны подключаться в строго установленой последовательности
+   './src/scripts/*.js',
 ]
 
 const imgFiles = [     // для того чтобы файлы подключались в строго установленой последовательности
@@ -60,6 +61,9 @@ function script() {
    return gulp.src(jsFile)
       .pipe(fileinclude())    // подключает так же как и HTML @@include('filename.js')
       // .pipe(uglify({ toplevel: true }))   // закрыл на время тестов
+      .pipe(babel({
+         presets: ["env"]
+      }))
       .pipe(gulp.dest('./build/js'))
       .pipe(browserSync.stream());
 }

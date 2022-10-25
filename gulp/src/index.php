@@ -27,7 +27,9 @@
 
 
    </div>
-   <script src="../build/js/script.js"></script>
+   <script src="../build/js/app.js"></script>
+   <!-- <script type="module" src="../build/js/app.js"></script> -->
+   <!-- <script src="../build/js/script.js"></script> -->
 </body>
 
 </html>
