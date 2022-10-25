@@ -93,8 +93,8 @@ function fonts() {
 function watch() {
    browserSync.init({
       // baseDir: "./",
-      proxy: "http://twily/gulp/build/",     // домашний комп
-      // proxy: "http://web/twily/gulp/build/",    // рабочий комп
+      // proxy: "http://twily/gulp/build/",     // домашний комп
+      proxy: "http://web/twily/gulp/build/",    // рабочий комп
       open: false,
    });
 

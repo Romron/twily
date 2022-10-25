@@ -105,6 +105,7 @@ function canvas(data) {
    function clear() {
       ctx.clearRect(0, 0, WIDTH_DPI, HEIGHT_DPI);
    }
+
    canvas.addEventListener('mousemove', mousemove);
    function mousemove({ clientX, clientY }, ctx) {
       // console.log('X = ', clientX);
@@ -145,7 +146,6 @@ function canvas(data) {
       ctx.stroke();
       ctx.closePath();
    }
-
 
 
 
