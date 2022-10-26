@@ -12,7 +12,7 @@ const ttf2woff = require('gulp-ttf2woff');
 const ttf2woff2 = require('gulp-ttf2woff2');
 const fonter = require('gulp-fonter');
 const sourcemaps = require('gulp-sourcemaps');
-const babel = require('gulp-babel');
+// const babel = require('gulp-babel');
 
 // import gulp from 'gulp';
 // import concat from 'gulp-concat';
