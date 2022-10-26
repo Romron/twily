@@ -1,63 +1,106 @@
+
 export function chart() {
-   console.log('ssssssssss')
+   /**
+    * график и всё что на нём
+    * */
+
+
+   console.log('chart  chart  chart  chart  chart')
 }
 
 
+export function page() {
+   /**
+    * формирует страницу приложения в т.ч. блок который будет содержать канвас
+    */
+   console.log('page  page  page  page  page  page  page  page  ')
+}
 
-// const
-//    WIDTH = 1800,
-//    HEIGHT = 600,
-//    WIDTH_DPI = WIDTH * 2,
-//    HEIGHT_DPI = HEIGHT * 2,
-//    ROWS_AMOUNT = 5,
-//    PADDING_Y = 30,
-//    VIEW_HEIGT = HEIGHT_DPI - PADDING_Y * 2,
-//    scaleX = 3.5,
-//    scaleY = 1;
 
+export class dataProcessing {
+   /**
+    * всё что касается получения и оброботки данных
+    */
+
+   constructor(url) {
+      this.url = url;
+   }
+
+   PreparationData(data) {
+      /**
+       * преобразует данные в удобный формат
+       * разварачивает масив по датам
+       *
+       */
+      let arrResultsData = [];
+      let arrData = [];
+      let str = JSON.parse(data);
+
+      let candles = str['Time Series (Digital Currency Daily)'];
+
+      console.log("candles = ", candles);
+
+      // console.log("Object.keys(candles) = ", Object.keys(candles));
+
+      resultsData = Object.keys(candles).forEach((key) => {
+         arrResultsData.push(candles[key]['1b. open (USD)']);
+      });
+
+
+
+
+      arrResultsData = arrResultsData.reverse();
+      strResult = arrResultsData.join('<br>')
+      arrData = [
+         arrResultsData,   // для тестов
+         strResult,   // для вывода на экран
+         candles,    // для чистовика
+      ]
+      return arrData;
+   }
+
+   ajaxGet(url, callbackfunction) {
+      let func = callbackfunction || function (data) { }
+      let request = new XMLHttpRequest();
+      request.onreadystatechange = function () {
+         if (request.readyState == 4 && request.status == 200) {
+            func(request.responseText);
+         }
+      }
+      request.open('GET', url);
+      request.send();
+   }
+
+   get GetData() {
+      return new Promise(function (resolve, reject) {
+         ajaxGet(this.url, function (data) { resolve(data); });
+      });
+   }
+}
 
 
 // window.onload = function () {
-//    let url = './module_php/parser.php';
 
-//    let jaxPromise = new Promise(function (resolve, reject) {
-//       ajaxGet(url, function (data) { resolve(data); });
-//    });
+// jaxPromise.then((result) => {
+//    let data = result;
+//    // для визуализации на экране
+//    let usrStr = '<pre>' + data + '<pre>';    // что бы можно было нормально читать
+//    const initBlock_1 = new Init('#initBlock_1', usrStr);
+//    let prepData = PreparationData(data);
+//    const initBlock_2 = new Init('#initBlock_2', prepData[1]);
+//    initBlock_1.CreateBlock('#initial-data', '400px');
+//    initBlock_2.CreateBlock('#initial-data', "auto");
+//    formulas();
 
-//    jaxPromise.then((result) => {
-//       let data = result;
-//       // для визуализации на экране
-//       let usrStr = '<pre>' + data + '<pre>';    // что бы можно было нормально читать
-//       const initBlock_1 = new Init('#initBlock_1', usrStr);
-//       let prepData = PreparationData(data);
-//       const initBlock_2 = new Init('#initBlock_2', prepData[1]);
-//       initBlock_1.CreateBlock('#initial-data', '400px');
-//       initBlock_2.CreateBlock('#initial-data', "auto");
-//       formulas();
+//    // работа canvas
+//    canvas(prepData[2]);
 
-//       // работа canvas
-//       canvas(prepData[2]);
-
-//    },
-//    );
+// });
 
 // }
 
 
-// function ajaxGet(url, callbackfunction) {
-//    let func = callbackfunction || function (data) { }
 
-//    let request = new XMLHttpRequest();
-//    request.onreadystatechange = function () {
-//       if (request.readyState == 4 && request.status == 200) {
-//          func(request.responseText);
-//       }
-//    }
-
-//    request.open('GET', url);
-//    request.send();
-
-// }
 
 // class Init {
 //    constructor(idNewBlock, data) {
@@ -204,38 +247,7 @@ export function chart() {
 // }
 
 
-// function PreparationData(data) {
-//    /**
-//     * Преобразует данные в удобный формат
-//     * разварачивает масив по датам
-//     *
-//     */
-//    let arrResultsData = [];
-//    let arrData = [];
-//    let str = JSON.parse(data);
 
-//    let candles = str['Time Series (Digital Currency Daily)'];
-
-//    // console.log("candles = ", candles);
-
-//    // console.log("Object.keys(candles) = ", Object.keys(candles));
-
-//    resultsData = Object.keys(candles).forEach((key) => {
-//       arrResultsData.push(candles[key]['1b. open (USD)']);
-//    });
-
-
-
-
-//    arrResultsData = arrResultsData.reverse();
-//    strResult = arrResultsData.join('<br>')
-//    arrData = [
-//       arrResultsData,   // для тестов
-//       strResult,   // для вывода на экран
-//       candles,    // для чистовика
-//    ]
-//    return arrData;
-// }
 
 // function formulas() {
 

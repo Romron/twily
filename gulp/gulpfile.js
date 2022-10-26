@@ -75,11 +75,11 @@ function styles() {
 function script() {
    return gulp.src(jsFile)
       .pipe(sourcemaps.init())
-      .pipe(uglify({ toplevel: true }))
+      // .pipe(uglify({ toplevel: true }))
       // .pipe(babel({              // не работает
       //    presets: ["env"]
       // }))
-      // .pipe(concat('all.js'))         // не работает
+      // .pipe(concat('all.js'))         
       .pipe(sourcemaps.write())
       .pipe(gulp.dest('./build/js'))
       .pipe(browserSync.stream());
@@ -114,8 +114,8 @@ function fonts() {
 function watch() {
    browserSync.init({
       // baseDir: "./",
-      // proxy: "http://twily/gulp/build/",     // домашний комп
-      proxy: "http://web/twily/gulp/build/",    // рабочий комп
+      proxy: "http://twily/gulp/build/",     // домашний комп
+      // proxy: "http://web/twily/gulp/build/",    // рабочий комп
       open: false,
    });
 
