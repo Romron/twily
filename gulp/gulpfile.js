@@ -12,7 +12,7 @@ const webpHTML = require('gulp-webp-html');
 const ttf2woff = require('gulp-ttf2woff');
 const ttf2woff2 = require('gulp-ttf2woff2');
 const fonter = require('gulp-fonter');
-const babel = require("gulp-babel");
+// const babel = require("gulp-babel");
 
 
 const phpFiles = [
@@ -61,9 +61,9 @@ function script() {
    return gulp.src(jsFile)
       .pipe(fileinclude())    // подключает так же как и HTML @@include('filename.js')
       // .pipe(uglify({ toplevel: true }))   // закрыл на время тестов
-      .pipe(babel({
-         presets: ["env"]
-      }))
+      // .pipe(babel({
+      //    presets: ["env"]
+      // }))
       .pipe(gulp.dest('./build/js'))
       .pipe(browserSync.stream());
 }
@@ -97,8 +97,8 @@ function fonts() {
 function watch() {
    browserSync.init({
       // baseDir: "./",
-      proxy: "http://twily/gulp/build/",     // домашний комп
-      // proxy: "http://web/twily/gulp/build/",    // рабочий комп
+      // proxy: "http://twily/gulp/build/",     // домашний комп
+      proxy: "http://web/twily/gulp/build/",    // рабочий комп
       open: false,
    });
 
