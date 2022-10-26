@@ -28,7 +28,8 @@
 
    </div>
    <!-- <script src="../build/js/app.js"></script> -->
-   <script type="module" src="../build/js/app.js"></script> работает: без babel, в новом синтаксисе
+   <script type="module" src="../build/js/app.js"></script>
+   <!--  работает: без babel, в новом синтаксисе  -->
    <!-- <script src="../build/js/script.js"></script> -->
    <!-- <script type="text/javascript" src="../build/js/all.js"></script> -->
    <!-- <script type="module" src="../build/js/all.js"></script> -->
