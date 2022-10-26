@@ -5,42 +5,57 @@ const cleanCSS = require('gulp-clean-css');
 const uglify = require('gulp-uglify');
 const del = require('del');
 const browserSync = require('browser-sync').create();
-const fileinclude = require('gulp-file-include');
 const imagemin = require('gulp-imagemin');
 const webp = require('gulp-webp');
 const webpHTML = require('gulp-webp-html');
 const ttf2woff = require('gulp-ttf2woff');
 const ttf2woff2 = require('gulp-ttf2woff2');
 const fonter = require('gulp-fonter');
-// const babel = require("gulp-babel");
+const sourcemaps = require('gulp-sourcemaps');
+const babel = require('gulp-babel');
 
+// import gulp from 'gulp';
+// import concat from 'gulp-concat';
+// import autoprefixer from 'gulp-autoprefixer';
+// import cleanCSS from 'gulp-clean-css';
+// import uglify from 'gulp-uglify';
+// import del from 'del';
+// import _browserSync from 'browser-sync';
+// let browserSync = _browserSync.create();
+// import imagemin from 'gulp-imagemin';
+// import webp from 'gulp-webp';
+// import webpHTML from 'gulp-webp-html';
+// import ttf2woff from 'gulp-ttf2woff';
+// import ttf2woff2 from 'gulp-ttf2woff2';
+// import fonter from 'gulp-fonter';
+// import sourcemaps from 'gulp-sourcemaps';
+// import babel from 'gulp-babel';
 
-const phpFiles = [
+let phpFiles = [
    './src/**/*.php',
    './src/**/*.json',      // временно! 
    '!./src/parts/*.*',     // т.к. fileinclude ...
 ]
 
-const cssFiles = [      // для того чтобы файлы подключались в строго установленой последовательности
+let cssFiles = [      // для того чтобы файлы подключались в строго установленой последовательности
    './src/styles/normalize.css',
    './src/styles/style.css',
 ]
 
-const jsFile = [     // массив на тот случай если файлов несколько и они должны подключаться в строго установленой последовательности
+let jsFile = [     // массив на тот случай если файлов несколько и они должны подключаться в строго установленой последовательности
    './src/scripts/*.js',
 ]
 
-const imgFiles = [     // для того чтобы файлы подключались в строго установленой последовательности
+let imgFiles = [     // для того чтобы файлы подключались в строго установленой последовательности
    './src/img/**/*.*',
 ]
 
-const fontFiles = [     // для того чтобы файлы подключались в строго установленой последовательности
+let fontFiles = [     // для того чтобы файлы подключались в строго установленой последовательности
    './src/fonts/**/*.*',
 ]
 
 function php() {
    return gulp.src(phpFiles)
-      .pipe(fileinclude())
       .pipe(webpHTML())    // атоматически добавляет тег <picture> на месте обычного <img> 
       .pipe(gulp.dest('./build'))
       .pipe(browserSync.stream());
@@ -59,11 +74,13 @@ function styles() {
 
 function script() {
    return gulp.src(jsFile)
-      .pipe(fileinclude())    // подключает так же как и HTML @@include('filename.js')
-      // .pipe(uglify({ toplevel: true }))   // закрыл на время тестов
-      // .pipe(babel({
+      .pipe(sourcemaps.init())
+      .pipe(uglify({ toplevel: true }))
+      // .pipe(babel({              // не работает
       //    presets: ["env"]
       // }))
+      // .pipe(concat('all.js'))         // не работает
+      .pipe(sourcemaps.write())
       .pipe(gulp.dest('./build/js'))
       .pipe(browserSync.stream());
 }

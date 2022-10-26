@@ -1,5 +1,4 @@
-// import { chart } from "./script.js";
-import { chart } from "./script";
+import { chart } from "./script.js";
 
 
 window.onload = function () {
