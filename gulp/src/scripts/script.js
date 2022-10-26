@@ -30,6 +30,7 @@ window.onload = function () {
       formulas();
 
       // работа canvas
+
       canvas(prepData[2]);
 
    },
@@ -150,6 +151,9 @@ function canvas(data) {
 
 
    return {
+      init() {
+         paint();
+      },
       destroy() {
          cancelAnimationFrame(raf);
          canvas.removeEventListener('mousemove', mousemove);
