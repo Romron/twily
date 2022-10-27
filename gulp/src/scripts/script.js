@@ -9,12 +9,17 @@ export function chart() {
 }
 
 
-export function page() {
+export const page = {
    /**
     * формирует страницу приложения в т.ч. блок который будет содержать канвас
     */
-   console.log('page  page  page  page  page  page  page  page  ')
+   method_1: function () {
+
+      console.log('page  page  page  page  page  page  page  page  ');
+   }
 }
+
+
 
 
 export class dataProcessing {
@@ -71,9 +76,9 @@ export class dataProcessing {
       request.send();
    }
 
-   get GetData() {
+   GetData() {
       return new Promise(function (resolve, reject) {
-         ajaxGet(this.url, function (data) { resolve(data); });
+         () => ajaxGet(this.url, function (data) { resolve(data); });
       });
    }
 }

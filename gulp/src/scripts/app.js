@@ -1,4 +1,6 @@
-import { chart, dataProcessing, page } from "./script.js";
+import { chart, page, dataProcessing } from "./script.js";
+// import { page } from "./script.js";
+// import { dataProcessing } from "./script.js";
 
 
 const
@@ -14,16 +16,27 @@ const
 
 let url = './module_php/parser.php';
 let jaxPromise;
-// const dataProcessing = new dataProcessing(url);
+// const dataProc = new dataProcessing(url);
 
 
 window.onload = function () {
 
-   page();     // формирует страницу приложения
-   jaxPromise = dataProcessing.GetData;    // всё что касается получения и оброботки данных
-   console.log("jaxPromise = ", jaxPromise);
-   jaxPromise.then((data) => {
-      dataProcessing.PreparationData(data);
+   // console.log("page : ", page);
+   // console.log("page.method_1 : ", page.method_1);
+   // chart();    // канвас и всё что на нём
+
+
+   // console.log("dataProcessing = ", dataProcessing);
+
+   const dP = new dataProcessing(url);
+   console.log("dP = ", dP);
+
+   console.log(dP.GetData);
+
+   // jaxPromise = dP.GetData;    // всё что касается получения и оброботки данных
+   // console.log("jaxPromise = ", jaxPromise);
+   dP.GetData().then(() => {
+      // dataProc.PreparationData(data);
       chart();    // канвас и всё что на нём
-   },);
+   });
 }
