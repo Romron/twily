@@ -1,11 +1,74 @@
 
-export function chart() {
+export class Chart {
    /**
     * график и всё что на нём
+    * 
+    * получает в формате json
+    *    idTargetBlock -- html блок в котором нужно разместить canvas 
+      *  idCanvas --  id  canvas 
+    *    canvasHight -- высота canvas 
+    *    canvasWidht -- ширина canvas 
+    * создаёт canvas -- singlTone
+    * рисует график -- singlTone
+    * 
     * */
 
+   data = {};
 
-   console.log('chart  chart  chart  chart  chart')
+   constructor(params) {
+      this.params = params;
+
+      if (!document.getElementById(params.idCanvas)) {
+         const canvas = document.createElement("canvas");
+         canvas.id = params.idCanvas;
+         document.getElementById(params.idTargetBlock).append(canvas);
+         canvas.style.width = params.canvasHight;
+         canvas.style.height = params.canvasWidht;
+         canvas.width = params.canvasWidht * 2;
+         canvas.height = params.canvasHight * 2;
+         const ctx = canvas.getContext('2d');
+      }
+
+   }
+
+   paint() {
+      // console.log("proxy.mouse.x = ", proxy.mouse.x);
+      // console.log("proxy.mouse.y = ", proxy.mouse.y);
+      // clear();
+
+      // grid_lines(ctx, data);
+      // отрисовка графика
+
+      console.log("data = ", this.data);
+
+      ctx.beginPath();
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = '#f00808';
+      resultsData = Object.keys(data).reverse().forEach((key, x) => {
+         ctx.lineTo(x * scaleX, HEIGHT_DPI - data[key]['1b. open (USD)'] / 100 * scaleY - PADDING_Y);
+      });
+
+      ctx.stroke();
+      ctx.closePath();
+
+
+
+      ctx.beginPath();
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = '#f00808';
+
+      ctx.arc(proxy.mouse.x, proxy.mouse.y, 10, 0, Math.PI * 2);
+
+      ctx.stroke();
+      ctx.closePath();
+   }
+
+
+
+
+
+
+
 }
 
 
