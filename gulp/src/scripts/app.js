@@ -1,6 +1,5 @@
 import { chart, page, dataProcessing } from "./script.js";
-// import { page } from "./script.js";
-// import { dataProcessing } from "./script.js";
+
 
 
 const
@@ -15,28 +14,14 @@ const
    scaleY = 1;
 
 let url = './module_php/parser.php';
-let jaxPromise;
-// const dataProc = new dataProcessing(url);
+const dP = new dataProcessing(url);   // всё что касается получения и оброботки данных
+let PrepData = '';
 
 
 window.onload = function () {
 
-   // console.log("page : ", page);
-   // console.log("page.method_1 : ", page.method_1);
-   // chart();    // канвас и всё что на нём
-
-
-   // console.log("dataProcessing = ", dataProcessing);
-
-   const dP = new dataProcessing(url);
-   console.log("dP = ", dP);
-
-   console.log(dP.GetData);
-
-   // jaxPromise = dP.GetData;    // всё что касается получения и оброботки данных
-   // console.log("jaxPromise = ", jaxPromise);
-   dP.GetData().then(() => {
-      // dataProc.PreparationData(data);
+   dP.GetData().then((data) => {
+      PrepData = dP.PreparationData(data);
       chart();    // канвас и всё что на нём
    });
 }

@@ -31,6 +31,19 @@ export class dataProcessing {
       this.url = url;
    }
 
+   GetData() {
+      return new Promise((resolve, reject) => {
+         const request = new XMLHttpRequest();
+         request.onreadystatechange = function () {
+            if (request.readyState == 4 && request.status == 200) {
+               resolve(request.responseText);
+            }
+         }
+         request.open('GET', this.url);
+         request.send();
+      })
+   }
+
    PreparationData(data) {
       /**
        * преобразует данные в удобный формат
@@ -43,44 +56,22 @@ export class dataProcessing {
 
       let candles = str['Time Series (Digital Currency Daily)'];
 
-      console.log("candles = ", candles);
-
-      // console.log("Object.keys(candles) = ", Object.keys(candles));
-
-      resultsData = Object.keys(candles).forEach((key) => {
+      Object.keys(candles).forEach((key) => {
          arrResultsData.push(candles[key]['1b. open (USD)']);
       });
 
-
-
-
       arrResultsData = arrResultsData.reverse();
-      strResult = arrResultsData.join('<br>')
+      let strResult = arrResultsData.join('<br>')
       arrData = [
          arrResultsData,   // для тестов
          strResult,   // для вывода на экран
          candles,    // для чистовика
       ]
+
       return arrData;
    }
 
-   ajaxGet(url, callbackfunction) {
-      let func = callbackfunction || function (data) { }
-      let request = new XMLHttpRequest();
-      request.onreadystatechange = function () {
-         if (request.readyState == 4 && request.status == 200) {
-            func(request.responseText);
-         }
-      }
-      request.open('GET', url);
-      request.send();
-   }
 
-   GetData() {
-      return new Promise(function (resolve, reject) {
-         () => ajaxGet(this.url, function (data) { resolve(data); });
-      });
-   }
 }
 
 
