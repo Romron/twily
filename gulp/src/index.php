@@ -14,7 +14,7 @@
       <h1>Twily</h1>
       <div class="block-controls">
          <div id='initial-data' class="initial-data">Исходные данные</div>
-         <div class="button" id="parser-start-button" type="submit">Старт парсера</div>
+         <!-- <div class="button" id="parser-start-button" type="submit">Старт парсера</div> -->
       </div>
       <div id="block-results" class="block-results">
          <!-- <canvas id="canv-1" width="1800" height="600"></canvas> -->
