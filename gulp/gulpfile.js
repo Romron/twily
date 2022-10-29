@@ -14,22 +14,13 @@ const fonter = require('gulp-fonter');
 const sourcemaps = require('gulp-sourcemaps');
 // const babel = require('gulp-babel');
 
-// import gulp from 'gulp';
-// import concat from 'gulp-concat';
-// import autoprefixer from 'gulp-autoprefixer';
-// import cleanCSS from 'gulp-clean-css';
-// import uglify from 'gulp-uglify';
-// import del from 'del';
-// import _browserSync from 'browser-sync';
-// let browserSync = _browserSync.create();
-// import imagemin from 'gulp-imagemin';
-// import webp from 'gulp-webp';
-// import webpHTML from 'gulp-webp-html';
-// import ttf2woff from 'gulp-ttf2woff';
-// import ttf2woff2 from 'gulp-ttf2woff2';
-// import fonter from 'gulp-fonter';
-// import sourcemaps from 'gulp-sourcemaps';
-// import babel from 'gulp-babel';
+let proxyPath = '';
+if (__dirname.includes('OSPanel')) {
+   proxyPath = "http://twily/gulp/build/";         // домашний комп
+} else {
+   proxyPath = "http://web/twily/gulp/build/";    // рабочий комп
+}
+
 
 let phpFiles = [
    './src/**/*.php',
@@ -79,7 +70,7 @@ function script() {
       // .pipe(babel({              // не работает
       //    presets: ["env"]
       // }))
-      // .pipe(concat('all.js'))         
+      // .pipe(concat('all.js'))  
       .pipe(sourcemaps.write())
       .pipe(gulp.dest('./build/js'))
       .pipe(browserSync.stream());
@@ -113,9 +104,7 @@ function fonts() {
 
 function watch() {
    browserSync.init({
-      // baseDir: "./",
-      // proxy: "http://twily/gulp/build/",     // домашний комп
-      proxy: "http://web/twily/gulp/build/",    // рабочий комп
+      proxy: proxyPath,
       open: false,
    });
 
