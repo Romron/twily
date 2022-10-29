@@ -24,8 +24,8 @@ export class Chart {
          const canvas = document.createElement("canvas");
          canvas.id = params.idCanvas;
          document.getElementById(params.idTargetBlock).append(canvas);
-         canvas.style.width = params.canvasHight;
-         canvas.style.height = params.canvasWidht;
+         canvas.style.width = params.canvasWidht + 'px';
+         canvas.style.height = params.canvasHight + 'px';
          canvas.width = this.WIDTH_DPI;
          canvas.height = this.HEIGHT_DPI;
          this.ctx = canvas.getContext('2d');
