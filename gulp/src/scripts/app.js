@@ -1,8 +1,8 @@
-import { Chart, page, dataProcessing } from "./script.js";
+import { Chart, page, DataProcessing } from "./script.js";
 
 
 let url = './module_php/parser.php';
-const dP = new dataProcessing(url);   // всё что касается получения и оброботки данных
+const dP = new DataProcessing(url);   // всё что касается получения и оброботки данных
 
 let params = {
    idTargetBlock: "block-results",

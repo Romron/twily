@@ -31,6 +31,7 @@ export class Chart {
          this.ctx = canvas.getContext('2d');
       }
 
+
    }
 
    paint() {
@@ -66,6 +67,34 @@ export class Chart {
       // this.ctx.closePath();
    }
 
+   init() {
+      const proxy = new Proxy({}, {
+         set(...args) {
+            const result = Reflect.set(...args);
+            raf = requestAnimationFrame(paint)
+
+            return result;
+         }
+      });
+
+      canvas.addEventListener('mousemove', mousemove);
+
+      function mousemove({ clientX, clientY }, ctx) {
+         // console.log('X = ', clientX);
+         // console.log('Y = ', clientY);
+         proxy.mouse = {
+            x: clientX,
+            y: clientY,
+         }
+
+      }
+
+      function clear() {
+         ctx.clearRect(0, 0, WIDTH_DPI, HEIGHT_DPI);
+      }
+
+   }
+
 
 
 
@@ -88,7 +117,7 @@ export const page = {
 
 
 
-export class dataProcessing {
+export class DataProcessing {
    /**
     * всё что касается получения и оброботки данных
     */
