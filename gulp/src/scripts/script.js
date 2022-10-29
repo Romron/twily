@@ -17,6 +17,8 @@ export class Chart {
 
    constructor(params) {
       this.params = params;
+      this.HEIGHT_DPI = params.canvasHight * 2;
+      this.WIDTH_DPI = params.canvasWidht * 2;
 
       if (!document.getElementById(params.idCanvas)) {
          const canvas = document.createElement("canvas");
@@ -24,9 +26,9 @@ export class Chart {
          document.getElementById(params.idTargetBlock).append(canvas);
          canvas.style.width = params.canvasHight;
          canvas.style.height = params.canvasWidht;
-         canvas.width = params.canvasWidht * 2;
-         canvas.height = params.canvasHight * 2;
-         const ctx = canvas.getContext('2d');
+         canvas.width = this.WIDTH_DPI;
+         canvas.height = this.HEIGHT_DPI;
+         this.ctx = canvas.getContext('2d');
       }
 
    }
@@ -39,28 +41,29 @@ export class Chart {
       // grid_lines(ctx, data);
       // отрисовка графика
 
-      console.log("data = ", this.data);
 
-      ctx.beginPath();
-      ctx.lineWidth = 3;
-      ctx.strokeStyle = '#f00808';
-      resultsData = Object.keys(data).reverse().forEach((key, x) => {
-         ctx.lineTo(x * scaleX, HEIGHT_DPI - data[key]['1b. open (USD)'] / 100 * scaleY - PADDING_Y);
+      this.ctx.beginPath();
+      this.ctx.lineWidth = 3;
+      this.ctx.strokeStyle = '#f00808';
+      Object.keys(this.data).reverse().forEach((key, x) => {
+         this.ctx.lineTo(
+            x * this.params.scaleX,
+            this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY - this.params.PADDING_Y);
       });
 
-      ctx.stroke();
-      ctx.closePath();
+      this.ctx.stroke();
+      this.ctx.closePath();
 
 
 
-      ctx.beginPath();
-      ctx.lineWidth = 1;
-      ctx.strokeStyle = '#f00808';
+      // this.ctx.beginPath();
+      // this.ctx.lineWidth = 1;
+      // this.ctx.strokeStyle = '#f00808';
 
-      ctx.arc(proxy.mouse.x, proxy.mouse.y, 10, 0, Math.PI * 2);
+      // this.ctx.arc(proxy.mouse.x, proxy.mouse.y, 10, 0, Math.PI * 2);
 
-      ctx.stroke();
-      ctx.closePath();
+      // this.ctx.stroke();
+      // this.ctx.closePath();
    }
 
 
@@ -123,15 +126,16 @@ export class dataProcessing {
          arrResultsData.push(candles[key]['1b. open (USD)']);
       });
 
-      arrResultsData = arrResultsData.reverse();
-      let strResult = arrResultsData.join('<br>')
-      arrData = [
-         arrResultsData,   // для тестов
-         strResult,   // для вывода на экран
-         candles,    // для чистовика
-      ]
+      // arrResultsData = arrResultsData.reverse();
+      // let strResult = arrResultsData.join('<br>')
+      // arrData = [
+      //    arrResultsData,   // для тестов
+      //    strResult,   // для вывода на экран
+      //    candles,    // для чистовика
+      // ]
 
-      return arrData;
+
+      return candles;
    }
 
 
