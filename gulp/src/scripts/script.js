@@ -21,18 +21,82 @@ export class Chart {
       this.WIDTH_DPI = params.canvasWidht * 2;
 
       if (!document.getElementById(params.idCanvas)) {
-         const canvas = document.createElement("canvas");
-         canvas.id = params.idCanvas;
-         document.getElementById(params.idTargetBlock).append(canvas);
-         canvas.style.width = params.canvasWidht + 'px';
-         canvas.style.height = params.canvasHight + 'px';
-         canvas.width = this.WIDTH_DPI;
-         canvas.height = this.HEIGHT_DPI;
-         this.ctx = canvas.getContext('2d');
+         this.canvas = document.createElement("canvas");
+         this.canvas.id = params.idCanvas;
+         document.getElementById(params.idTargetBlock).append(this.canvas);
+         this.canvas.style.width = params.canvasWidht + 'px';
+         this.canvas.style.height = params.canvasHight + 'px';
+         this.canvas.width = this.WIDTH_DPI;
+         this.canvas.height = this.HEIGHT_DPI;
+         this.ctx = this.canvas.getContext('2d');
+      }
+
+      this.init();
+   }
+
+
+   init() {
+
+      this.wX = 0;
+      // this.circul();
+
+      const proxy = new Proxy({}, {
+         set(...args) {
+            const result = Reflect.set(...args);
+            // raf = requestAnimationFrame(paint);
+            raf = requestAnimationFrame(this.circul);
+
+            return result;
+         }
+      });
+
+      this.canvas.addEventListener('mousemove', mousemove);
+
+      function mousemove({ clientX, clientY }, ctx) {
+         // console.log('X = ', clientX);
+         // console.log('Y = ', clientY);
+         proxy.mouse = {
+            x: clientX,
+            y: clientY,
+         }
+
+      }
+
+      function clear() {
+         ctx.clearRect(0, 0, WIDTH_DPI, HEIGHT_DPI);
       }
 
 
+
+
+
    }
+
+
+   circul() {
+
+      // let raf = requestAnimationFrame(() => this.circul());
+      console.log("circul()  ", this.wX);
+      this.wX++;
+
+
+      this.ctx.beginPath();
+      this.ctx.lineWidth = 3;
+      this.ctx.strokeStyle = 'blue';
+
+      // this.ctx.arc(proxy.mouse.x, proxy.mouse.y, 10, 0, Math.PI * 2);
+      this.ctx.arc(this.wX, 100, 10, 0, Math.PI * 2);
+
+      this.ctx.stroke();
+      this.ctx.closePath();
+
+
+
+
+   }
+
+
+
 
    paint() {
       // console.log("proxy.mouse.x = ", proxy.mouse.x);
@@ -66,38 +130,6 @@ export class Chart {
       // this.ctx.stroke();
       // this.ctx.closePath();
    }
-
-   init() {
-      const proxy = new Proxy({}, {
-         set(...args) {
-            const result = Reflect.set(...args);
-            raf = requestAnimationFrame(paint)
-
-            return result;
-         }
-      });
-
-      canvas.addEventListener('mousemove', mousemove);
-
-      function mousemove({ clientX, clientY }, ctx) {
-         // console.log('X = ', clientX);
-         // console.log('Y = ', clientY);
-         proxy.mouse = {
-            x: clientX,
-            y: clientY,
-         }
-
-      }
-
-      function clear() {
-         ctx.clearRect(0, 0, WIDTH_DPI, HEIGHT_DPI);
-      }
-
-   }
-
-
-
-
 
 
 

@@ -14,6 +14,7 @@ const fonter = require('gulp-fonter');
 const sourcemaps = require('gulp-sourcemaps');
 // const babel = require('gulp-babel');
 
+
 let proxyPath = '';
 if (__dirname.includes('OSPanel')) {
    proxyPath = "http://twily/gulp/build/";         // домашний комп
