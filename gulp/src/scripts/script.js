@@ -38,24 +38,31 @@ export class Chart {
    init() {
 
       this.wX = 0;
-      // this.circul();
+      console.log("init() {  this = ", this);
+      requestAnimationFrame(() => this.circul());
 
-      const proxy = new Proxy({}, {
-         set(...args) {
-            const result = Reflect.set(...args);
-            // raf = requestAnimationFrame(paint);
-            raf = requestAnimationFrame(this.circul);
-            // this.circul;
+      // const proxy = new Proxy({}, {
+      //    set(...args) {
+      //       const result = Reflect.set(...args);
+      //       // raf = requestAnimationFrame(this.paint);
+      //       // requestAnimationFrame(circul.bind(this));
+      //       // window.requestAnimationFrame(fun.bind(window, "tree"));
+      //       // window.requestAnimationFrame.bind(this.circul());
+      //       console.log("set(...args) {  this = ", this);
+      //       requestAnimationFrame(() => {
+      //          console.log(" requestAnimationFrame(() => {   this = ", this);
+      //          this.circul();
+      //       });
 
-            return result;
-         }
-      });
+      //       return result;
+      //    }
+      // });
 
-      this.canvas.addEventListener('mousemove', mousemove);
+      // this.canvas.addEventListener('mousemove', mousemove);
 
       function mousemove({ clientX, clientY }, ctx) {
-         // console.log('X = ', clientX);
-         // console.log('Y = ', clientY);
+         console.log('X = ', clientX);
+         console.log('Y = ', clientY);
          proxy.mouse = {
             x: clientX,
             y: clientY,
@@ -67,16 +74,12 @@ export class Chart {
          ctx.clearRect(0, 0, WIDTH_DPI, HEIGHT_DPI);
       }
 
-
-
-
-
    }
 
 
    circul() {
 
-      let raf = requestAnimationFrame(() => this.circul());
+      requestAnimationFrame(() => this.circul());
       console.log("circul()  ", this.wX);
       this.wX++;
 
@@ -91,13 +94,7 @@ export class Chart {
       this.ctx.stroke();
       this.ctx.closePath();
 
-
-
-
    }
-
-
-
 
    paint() {
       // console.log("proxy.mouse.x = ", proxy.mouse.x);
