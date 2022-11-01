@@ -47,10 +47,8 @@ export class Chart {
          set(...args) {
             const result = Reflect.set(...args);
             // boundCircul();
+            requestAnimationFrame(() => { boundCircul(proxy.mouse) });
 
-            requestAnimationFrame(boundCircul);
-
-            // console.log(" proxy.mouse = ", proxy.mouse);
             return result;
          }
       });
@@ -74,9 +72,9 @@ export class Chart {
    }
 
 
-   circul() {
+   circul(mouse) {
 
-
+      console.log("mouse = ", mouse);
 
       if (this.wX < 10) {
 
