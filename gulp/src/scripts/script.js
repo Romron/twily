@@ -45,6 +45,7 @@ export class Chart {
             const result = Reflect.set(...args);
             // raf = requestAnimationFrame(paint);
             raf = requestAnimationFrame(this.circul);
+            // this.circul;
 
             return result;
          }
@@ -75,7 +76,7 @@ export class Chart {
 
    circul() {
 
-      // let raf = requestAnimationFrame(() => this.circul());
+      let raf = requestAnimationFrame(() => this.circul());
       console.log("circul()  ", this.wX);
       this.wX++;
 
