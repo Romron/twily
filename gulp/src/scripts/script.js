@@ -34,91 +34,84 @@ export class Chart {
       }
 
       this.init();
-      console.log("this.canvas.getBoundingClientRect() = ", this.canvas.getBoundingClientRect());
 
    }
 
 
    init() {
 
-      this.wX = 0;
-      console.log("***********************************init() {  this = ", this);
       const boundCircul = this.circul.bind(this);
-      const boundpaint = this.paint.bind(this);
+      const boundPaint = this.paint.bind(this);
+      const boundClear = this.clear.bind(this);
+      const boundHorizontalPointer = this.horizontalPointer.bind(this);
 
       const proxy = new Proxy({}, {
          set(...args) {
             const result = Reflect.set(...args);
             // boundCircul();
             requestAnimationFrame(() => {
+               boundClear(proxy.mouse);
                boundCircul(proxy.mouse);
-               boundpaint();
+               boundHorizontalPointer(proxy.mouse);
+               boundPaint();
             });
 
             return result;
          }
       });
 
-      // this.canvas.addEventListener('mousemove', mousemove);
       this.canvas.addEventListener('mousemove', ({ clientX, clientY }) => {
          const { left, top } = this.canvas.getBoundingClientRect()      // т.к. координаты канваса не савпадают с координатами экрана  
          proxy.mouse = {
-
-            x: (clientX - left) * 2,
-            y: (clientY - top) * 2,
+            x: (clientX - left) * 2,      // преобразование в WIDTH_DPI
+            y: (clientY - top) * 2,       // преобразование в HEIGHT_DPI
          }
       });
 
-      // function mousemove({ clientX, clientY }) {
-      //    // console.log('X = ', clientX);
-      //    // console.log('Y = ', clientY);
-      //    proxy.mouse = {
 
-      //       x: clientX,
-      //       y: clientY,
-      //    }
 
-      // }
+   }
+
+   horizontalPointer(mouse) {
+
+      console.log("mouse.x = ", mouse.x);
+      console.log("this.HEIGHT_DPI = ", this.HEIGHT_DPI);
+
+      this.ctx.beginPath();
+      this.ctx.lineWidth = 1;
+      this.ctx.moveTo(mouse.x, mouse.y);
+      this.ctx.lineTo(mouse.x, this.WIDTH_DPI);
+      this.ctx.strokeStyle = '#3A3A3C';
+      this.ctx.stroke();
+      // this.ctx.closePath();
+
+      this.ctx.beginPath();
+      this.ctx.moveTo(mouse.x, mouse.y);
+      this.ctx.lineTo(this.WIDTH_DPI, mouse.y);
+      this.ctx.stroke();
+      // this.ctx.closePath();
 
 
 
    }
 
-   clear() {
-      this.ctx.clearRect(0, 0, this.WIDTH_DPI, this.HEIGHT_DPI);
-   }
    circul(mouse) {
-
-      console.log("mouse = ", mouse);
-
-      if (this.wX < 10) {
-
-         // console.log("circul() {   this = ", this);
-         // console.log("circul() {   () => this = ", () => this);
-      }
 
 
       // requestAnimationFrame(() => this.circul());
-      this.wX++;
 
-      this.clear();
+
 
       this.ctx.beginPath();
-      this.ctx.lineWidth = 3;
-      this.ctx.strokeStyle = 'blue';
-
-      this.ctx.arc(mouse.x, mouse.y, 10, 0, Math.PI * 2);
-      // this.ctx.arc(this.wX, 100, 10, 0, Math.PI * 2);
-
+      this.ctx.lineWidth = 2;
+      this.ctx.strokeStyle = '#3A3A3C';
+      this.ctx.arc(mouse.x, mouse.y, 7, 0, Math.PI * 2);
       this.ctx.stroke();
       this.ctx.closePath();
 
    }
 
    paint() {
-      // console.log("proxy.mouse.x = ", proxy.mouse.x);
-      // console.log("proxy.mouse.y = ", proxy.mouse.y);
-      // clear();
 
       // grid_lines(ctx, data);
       // отрисовка графика
@@ -148,7 +141,9 @@ export class Chart {
       // this.ctx.closePath();
    }
 
-
+   clear() {
+      this.ctx.clearRect(0, 0, this.WIDTH_DPI, this.HEIGHT_DPI);
+   }
 
 }
 

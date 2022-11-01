@@ -99,7 +99,8 @@ h1 {
    height: 600px;
    border-radius: 5px;
    align-self: center;
-
+   /* cursor: crosshair; */
+   cursor: none;
    border: 1px solid #9ea8a0;
 
 }
