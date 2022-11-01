@@ -44,16 +44,17 @@ export class Chart {
       const boundPaint = this.paint.bind(this);
       const boundClear = this.clear.bind(this);
       const boundHorizontalPointer = this.horizontalPointer.bind(this);
-
+      const boundHorizontalPointerText = this.horizontalPointerText.bind(this);
       const proxy = new Proxy({}, {
          set(...args) {
             const result = Reflect.set(...args);
             // boundCircul();
             requestAnimationFrame(() => {
                boundClear(proxy.mouse);
+               boundPaint();
                boundCircul(proxy.mouse);
                boundHorizontalPointer(proxy.mouse);
-               boundPaint();
+               boundHorizontalPointerText(proxy.mouse)
             });
 
             return result;
@@ -72,10 +73,14 @@ export class Chart {
 
    }
 
-   horizontalPointer(mouse) {
+   horizontalPointerText(mouse) {
+      this.ctx.font = '30px Arial';
+      this.ctx.fillText(mouse.x, this.WIDTH_DPI - 80, mouse.y);
+      this.ctx.fillText(mouse.y, mouse.x, this.HEIGHT_DPI - 20);
+   }
 
-      console.log("mouse.x = ", mouse.x);
-      console.log("this.HEIGHT_DPI = ", this.HEIGHT_DPI);
+
+   horizontalPointer(mouse) {
 
       this.ctx.beginPath();
       this.ctx.lineWidth = 1;
@@ -83,13 +88,11 @@ export class Chart {
       this.ctx.lineTo(mouse.x, this.WIDTH_DPI);
       this.ctx.strokeStyle = '#3A3A3C';
       this.ctx.stroke();
-      // this.ctx.closePath();
 
       this.ctx.beginPath();
       this.ctx.moveTo(mouse.x, mouse.y);
       this.ctx.lineTo(this.WIDTH_DPI, mouse.y);
       this.ctx.stroke();
-      // this.ctx.closePath();
 
 
 
@@ -129,16 +132,6 @@ export class Chart {
       this.ctx.stroke();
       this.ctx.closePath();
 
-
-
-      // this.ctx.beginPath();
-      // this.ctx.lineWidth = 1;
-      // this.ctx.strokeStyle = '#f00808';
-
-      // this.ctx.arc(proxy.mouse.x, proxy.mouse.y, 10, 0, Math.PI * 2);
-
-      // this.ctx.stroke();
-      // this.ctx.closePath();
    }
 
    clear() {
