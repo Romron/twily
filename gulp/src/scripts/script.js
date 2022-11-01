@@ -47,11 +47,13 @@ export class Chart {
             const result = Reflect.set(...args);
             // boundCircul();
 
-            requestAnimationFrame(boundCircul);
+            requestAnimationFrame(boundCircul(proxy.mouse));
 
+            // console.log(" proxy.mouse = ", proxy.mouse);
             return result;
          }
       });
+
 
       this.canvas.addEventListener('mousemove', mousemove);
 
@@ -72,8 +74,11 @@ export class Chart {
    }
 
 
-   circul() {
+   circul(_mouse) {
 
+
+
+      console.log(" proxy.mouse = ", _mouse);
       if (this.wX < 10) {
 
          // console.log("circul() {   this = ", this);
