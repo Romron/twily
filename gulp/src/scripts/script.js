@@ -19,6 +19,8 @@ export class Chart {
       this.params = params;
       this.HEIGHT_DPI = params.canvasHight * 2;
       this.WIDTH_DPI = params.canvasWidht * 2;
+      this.scaleX = params.scaleX;
+      this.scaleY = params.scaleY;
 
       if (!document.getElementById(params.idCanvas)) {
          this.canvas = document.createElement("canvas");
@@ -32,7 +34,7 @@ export class Chart {
       }
 
       this.init();
-
+      console.log("this.canvas.getBoundingClientRect() = ", this.canvas.getBoundingClientRect());
 
    }
 
@@ -42,36 +44,49 @@ export class Chart {
       this.wX = 0;
       console.log("***********************************init() {  this = ", this);
       const boundCircul = this.circul.bind(this);
+      const boundpaint = this.paint.bind(this);
 
       const proxy = new Proxy({}, {
          set(...args) {
             const result = Reflect.set(...args);
             // boundCircul();
-            requestAnimationFrame(() => { boundCircul(proxy.mouse) });
+            requestAnimationFrame(() => {
+               boundCircul(proxy.mouse);
+               boundpaint();
+            });
 
             return result;
          }
       });
 
-      this.canvas.addEventListener('mousemove', mousemove);
-
-      function mousemove({ clientX, clientY }) {
-         // console.log('X = ', clientX);
-         // console.log('Y = ', clientY);
+      // this.canvas.addEventListener('mousemove', mousemove);
+      this.canvas.addEventListener('mousemove', ({ clientX, clientY }) => {
+         const { left, top } = this.canvas.getBoundingClientRect()      // т.к. координаты канваса не савпадают с координатами экрана  
          proxy.mouse = {
-            x: clientX,
-            y: clientY,
+
+            x: (clientX - left) * 2,
+            y: (clientY - top) * 2,
          }
+      });
 
-      }
+      // function mousemove({ clientX, clientY }) {
+      //    // console.log('X = ', clientX);
+      //    // console.log('Y = ', clientY);
+      //    proxy.mouse = {
 
-      function clear() {
-         ctx.clearRect(0, 0, WIDTH_DPI, HEIGHT_DPI);
-      }
+      //       x: clientX,
+      //       y: clientY,
+      //    }
+
+      // }
+
+
 
    }
 
-
+   clear() {
+      this.ctx.clearRect(0, 0, this.WIDTH_DPI, this.HEIGHT_DPI);
+   }
    circul(mouse) {
 
       console.log("mouse = ", mouse);
@@ -86,13 +101,14 @@ export class Chart {
       // requestAnimationFrame(() => this.circul());
       this.wX++;
 
+      this.clear();
 
       this.ctx.beginPath();
       this.ctx.lineWidth = 3;
       this.ctx.strokeStyle = 'blue';
 
-      // this.ctx.arc(proxy.mouse.x, proxy.mouse.y, 10, 0, Math.PI * 2);
-      this.ctx.arc(this.wX, 100, 10, 0, Math.PI * 2);
+      this.ctx.arc(mouse.x, mouse.y, 10, 0, Math.PI * 2);
+      // this.ctx.arc(this.wX, 100, 10, 0, Math.PI * 2);
 
       this.ctx.stroke();
       this.ctx.closePath();
