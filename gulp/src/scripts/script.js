@@ -38,27 +38,27 @@ export class Chart {
    init() {
 
       this.wX = 0;
-      console.log("init() {  this = ", this);
-      requestAnimationFrame(() => this.circul());
+      console.log("***********************************init() {  this = ", this);
+      // requestAnimationFrame(() => this.circul());
 
-      // const proxy = new Proxy({}, {
-      //    set(...args) {
-      //       const result = Reflect.set(...args);
-      //       // raf = requestAnimationFrame(this.paint);
-      //       // requestAnimationFrame(circul.bind(this));
-      //       // window.requestAnimationFrame(fun.bind(window, "tree"));
-      //       // window.requestAnimationFrame.bind(this.circul());
-      //       console.log("set(...args) {  this = ", this);
-      //       requestAnimationFrame(() => {
-      //          console.log(" requestAnimationFrame(() => {   this = ", this);
-      //          this.circul();
-      //       });
+      const proxy = new Proxy({}, {
+         set(...args) {
+            const result = Reflect.set(...args);
+            // raf = requestAnimationFrame(this.paint);
+            // requestAnimationFrame(circul.bind(this));
+            // window.requestAnimationFrame(fun.bind(window, "tree"));
+            // window.requestAnimationFrame.bind(this.circul());
+            console.log("set(...args) {  () =>  this = ",);
+            // requestAnimationFrame(() => {
+            //    console.log(" requestAnimationFrame(() => {   this = ", () => this.circul);
+            //    // this.circul();
+            // });
 
-      //       return result;
-      //    }
-      // });
+            return result;
+         }
+      });
 
-      // this.canvas.addEventListener('mousemove', mousemove);
+      this.canvas.addEventListener('mousemove', mousemove);
 
       function mousemove({ clientX, clientY }, ctx) {
          console.log('X = ', clientX);
@@ -78,9 +78,10 @@ export class Chart {
 
 
    circul() {
-
+      console.log("circul() {   this = ", this);
+      console.log("circul() {   () => this = ", () => this);
       requestAnimationFrame(() => this.circul());
-      console.log("circul()  ", this.wX);
+      // console.log("circul()  ", this.wX);
       this.wX++;
 
 
