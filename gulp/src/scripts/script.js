@@ -32,6 +32,7 @@ export class Chart {
       }
 
       this.init();
+
    }
 
 
@@ -39,20 +40,14 @@ export class Chart {
 
       this.wX = 0;
       console.log("***********************************init() {  this = ", this);
-      // requestAnimationFrame(() => this.circul());
+      const boundCircul = this.circul.bind(this);
 
       const proxy = new Proxy({}, {
          set(...args) {
             const result = Reflect.set(...args);
-            // raf = requestAnimationFrame(this.paint);
-            // requestAnimationFrame(circul.bind(this));
-            // window.requestAnimationFrame(fun.bind(window, "tree"));
-            // window.requestAnimationFrame.bind(this.circul());
-            console.log("set(...args) {  () =>  this = ",);
-            // requestAnimationFrame(() => {
-            //    console.log(" requestAnimationFrame(() => {   this = ", () => this.circul);
-            //    // this.circul();
-            // });
+            // boundCircul();
+
+            requestAnimationFrame(boundCircul);
 
             return result;
          }
@@ -60,9 +55,9 @@ export class Chart {
 
       this.canvas.addEventListener('mousemove', mousemove);
 
-      function mousemove({ clientX, clientY }, ctx) {
-         console.log('X = ', clientX);
-         console.log('Y = ', clientY);
+      function mousemove({ clientX, clientY }) {
+         // console.log('X = ', clientX);
+         // console.log('Y = ', clientY);
          proxy.mouse = {
             x: clientX,
             y: clientY,
@@ -78,10 +73,15 @@ export class Chart {
 
 
    circul() {
-      console.log("circul() {   this = ", this);
-      console.log("circul() {   () => this = ", () => this);
-      requestAnimationFrame(() => this.circul());
-      // console.log("circul()  ", this.wX);
+
+      if (this.wX < 10) {
+
+         // console.log("circul() {   this = ", this);
+         // console.log("circul() {   () => this = ", () => this);
+      }
+
+
+      // requestAnimationFrame(() => this.circul());
       this.wX++;
 
 
