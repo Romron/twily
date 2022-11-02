@@ -25,6 +25,12 @@ export class Chart {
       this.scaleX = params.scaleX;
       this.scaleY = params.scaleY;
       this.PADDING_Y = params.PADDING_Y;
+      this.PADDING_X = params.PADDING_X;
+
+      this.paddingTop = params.paddingTop;
+      this.paddingBottom = params.paddingBottom;
+      this.paddingLeft = params.addingLeft;
+      this.paddingRight = params.paddingRight;
 
       if (!document.getElementById(params.idCanvas)) {
          this.canvas = document.createElement("canvas");
@@ -69,7 +75,8 @@ export class Chart {
 
 
       coordinats.mouse = this.mouse;
-      console.log("coordinats.mouse = ", coordinats.mouse);
+      console.log("coordinats.mouse.x = ", coordinats.mouse.x);
+      console.log("coordinats.mouse.y = ", coordinats.mouse.y);
       console.log("coordinats.date = ", coordinats.date);
       return coordinats;
    }
@@ -82,9 +89,6 @@ export class Chart {
       const boundClear = this.clear.bind(this);
       const boundHorizontalPointer = this.horizontalPointer.bind(this);
       const boundHorizontalPointerText = this.horizontalPointerText.bind(this);
-
-      // let coord = this.coordinateCalculation();
-      // console.log("coord = ", coord);
 
       const proxy = new Proxy({}, {
          set(...args) {
@@ -112,8 +116,7 @@ export class Chart {
          }
          this.mouse = proxy.mouse;
 
-
-         this.coordinateCalculation();
+         this.coordinateCalculation();       // перерасчёт координат при движении мыши
 
 
       });
@@ -126,6 +129,18 @@ export class Chart {
       this.ctx.font = '30px Arial';
       this.ctx.fillText(Math.ceil((this.HEIGHT_DPI - mouse.y - this.PADDING_Y) * 100), this.WIDTH_DPI - 80, mouse.y);
       this.ctx.fillText(Math.ceil(mouse.x), mouse.x, this.HEIGHT_DPI - 10);
+   }
+
+   paintPaddings() {
+      this.ctx.beginPath();
+      this.ctx.lineWidth = 3;
+      this.ctx.strokeStyle = 'blue';
+      this.ctx.moveTo(this.paddingLeft, this.paddingTop);
+      this.ctx.lineTo(this.WIDTH_DPI - this.PADDING_X, this.PADDING_Y);
+      this.ctx.lineTo(this.WIDTH_DPI - this.PADDING_X, this.HEIGHT_DPI - this.PADDING_Y);
+      this.ctx.lineTo(this.PADDING_X, this.HEIGHT_DPI - this.PADDING_Y);
+      this.ctx.closePath();
+      this.ctx.stroke();
    }
 
    grid_lines() {
@@ -161,8 +176,8 @@ export class Chart {
    }
 
    paint() {
-
-      this.grid_lines(this.ctx, this.data);
+      this.paintPaddings()
+      this.grid_lines();
       // отрисовка графика
 
       this.ctx.beginPath();
