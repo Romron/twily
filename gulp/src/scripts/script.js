@@ -29,7 +29,7 @@ export class Chart {
 
       this.paddingTop = params.paddingTop;
       this.paddingBottom = params.paddingBottom;
-      this.paddingLeft = params.addingLeft;
+      this.paddingLeft = params.paddingLeft;
       this.paddingRight = params.paddingRight;
 
       if (!document.getElementById(params.idCanvas)) {
@@ -100,13 +100,9 @@ export class Chart {
                boundHorizontalPointer(proxy.mouse);
                boundHorizontalPointerText(proxy.mouse)
             });
-
-
-
             return result;
          }
       });
-      console.log("proxy = ", proxy);
 
       this.canvas.addEventListener('mousemove', ({ clientX, clientY }) => {
          const { left, top } = this.canvas.getBoundingClientRect()      // т.к. координаты канваса не савпадают с координатами экрана  
@@ -136,12 +132,37 @@ export class Chart {
       this.ctx.lineWidth = 3;
       this.ctx.strokeStyle = 'blue';
       this.ctx.moveTo(this.paddingLeft, this.paddingTop);
-      this.ctx.lineTo(this.WIDTH_DPI - this.PADDING_X, this.PADDING_Y);
-      this.ctx.lineTo(this.WIDTH_DPI - this.PADDING_X, this.HEIGHT_DPI - this.PADDING_Y);
-      this.ctx.lineTo(this.PADDING_X, this.HEIGHT_DPI - this.PADDING_Y);
+      this.ctx.lineTo(this.WIDTH_DPI - this.paddingRight, this.paddingTop);
+      this.ctx.lineTo(this.WIDTH_DPI - this.paddingRight, this.HEIGHT_DPI - this.paddingBottom);
+      this.ctx.lineTo(this.paddingLeft, this.HEIGHT_DPI - this.paddingBottom);
       this.ctx.closePath();
       this.ctx.stroke();
    }
+
+
+   paint() {
+      this.paintPaddings()
+      this.grid_lines();
+      // отрисовка графика
+
+      this.ctx.beginPath();
+      this.ctx.lineWidth = 3;
+      this.ctx.strokeStyle = '#f00808';
+      Object.keys(this.data).reverse().forEach((key, x) => {
+         if (x == 0) {
+            this.ctx.moveTo(
+               x * this.params.scaleX + this.paddingLeft,
+               this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY - this.paddingRight);
+         }
+         this.ctx.lineTo(
+            x * this.params.scaleX + this.paddingLeft,
+            this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY - this.paddingRight);
+      });
+
+      this.ctx.stroke();
+      this.ctx.closePath();
+   }
+
 
    grid_lines() {
       // отрисовка горизонтальных линий сетки
@@ -169,24 +190,6 @@ export class Chart {
             this.ctx.lineTo(Math.round(x * this.scaleX), this.HEIGHT_DPI - this.PADDING_Y);
             this.ctx.strokeText(str, Math.round(x * this.scaleX) - 50, this.HEIGHT_DPI - 10);
          }
-      });
-
-      this.ctx.stroke();
-      this.ctx.closePath();
-   }
-
-   paint() {
-      this.paintPaddings()
-      this.grid_lines();
-      // отрисовка графика
-
-      this.ctx.beginPath();
-      this.ctx.lineWidth = 3;
-      this.ctx.strokeStyle = '#f00808';
-      Object.keys(this.data).reverse().forEach((key, x) => {
-         this.ctx.lineTo(
-            x * this.params.scaleX,
-            this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY - this.params.PADDING_Y);
       });
 
       this.ctx.stroke();
