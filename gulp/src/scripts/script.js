@@ -21,6 +21,7 @@ export class Chart {
       this.WIDTH_DPI = params.canvasWidht * 2;
       this.scaleX = params.scaleX;
       this.scaleY = params.scaleY;
+      this.PADDING_Y = params.PADDING_Y;
 
       if (!document.getElementById(params.idCanvas)) {
          this.canvas = document.createElement("canvas");
@@ -45,10 +46,10 @@ export class Chart {
       const boundClear = this.clear.bind(this);
       const boundHorizontalPointer = this.horizontalPointer.bind(this);
       const boundHorizontalPointerText = this.horizontalPointerText.bind(this);
+
       const proxy = new Proxy({}, {
          set(...args) {
             const result = Reflect.set(...args);
-            // boundCircul();
             requestAnimationFrame(() => {
                boundClear(proxy.mouse);
                boundPaint();
@@ -75,10 +76,59 @@ export class Chart {
 
    horizontalPointerText(mouse) {
       this.ctx.font = '30px Arial';
-      this.ctx.fillText(Math.ceil(this.HEIGHT_DPI - mouse.y), this.WIDTH_DPI - 80, mouse.y);
+      this.ctx.fillText(Math.ceil((this.HEIGHT_DPI - mouse.y - this.PADDING_Y) * 100), this.WIDTH_DPI - 80, mouse.y);
       this.ctx.fillText(Math.ceil(mouse.x), mouse.x, this.HEIGHT_DPI - 10);
    }
 
+   grid_lines() {
+      // отрисовка горизонтальных линий сетки
+      this.ctx.beginPath();
+      this.ctx.lineWidth = 1;
+      this.ctx.strokeStyle = '#ADB5D9';
+      this.ctx.font = '20px Arial';
+      for (let i = 0; i < this.HEIGHT_DPI; i = i + 100) {
+         this.ctx.moveTo(0, this.HEIGHT_DPI - Math.abs(this.HEIGHT_DPI - i) * this.scaleY - this.PADDING_Y);
+         this.ctx.lineTo(this.WIDTH_DPI, this.HEIGHT_DPI - Math.abs(this.HEIGHT_DPI - i) * this.scaleY - this.PADDING_Y);
+         this.ctx.strokeText((this.HEIGHT_DPI - i) * 100, this.WIDTH_DPI - 70, this.HEIGHT_DPI - Math.abs(this.HEIGHT_DPI - i) * this.scaleY - this.PADDING_Y);
+      }
+
+      let str = '';
+      let str_1 = '';
+      let str_2 = '';
+      let str_3 = '';
+      Object.keys(this.data).reverse().forEach((key, x) => {
+         if (key.endsWith('01')) {
+            str_1 = key.slice(8, 10);
+            str_2 = key.slice(5, 7);
+            str_3 = key.slice(0, 4).slice(2, 4);
+            str = `${str_1}.${str_2}.${str_3}`;
+            this.ctx.moveTo(Math.round(x * this.scaleX), 0);
+            this.ctx.lineTo(Math.round(x * this.scaleX), this.HEIGHT_DPI - this.PADDING_Y);
+            this.ctx.strokeText(str, Math.round(x * this.scaleX) - 50, this.HEIGHT_DPI - 10);
+         }
+      });
+
+      this.ctx.stroke();
+      this.ctx.closePath();
+   }
+
+   paint() {
+
+      this.grid_lines(this.ctx, this.data);
+      // отрисовка графика
+
+      this.ctx.beginPath();
+      this.ctx.lineWidth = 3;
+      this.ctx.strokeStyle = '#f00808';
+      Object.keys(this.data).reverse().forEach((key, x) => {
+         this.ctx.lineTo(
+            x * this.params.scaleX,
+            this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY - this.params.PADDING_Y);
+      });
+
+      this.ctx.stroke();
+      this.ctx.closePath();
+   }
 
    horizontalPointer(mouse) {
 
@@ -98,37 +148,13 @@ export class Chart {
 
    }
 
+
    circul(mouse) {
-
-
-      // requestAnimationFrame(() => this.circul());
-
-
 
       this.ctx.beginPath();
       this.ctx.lineWidth = 2;
       this.ctx.strokeStyle = '#3A3A3C';
       this.ctx.arc(mouse.x, mouse.y, 7, 0, Math.PI * 2);
-      this.ctx.stroke();
-      this.ctx.closePath();
-
-   }
-
-   paint() {
-
-      // grid_lines(ctx, data);
-      // отрисовка графика
-
-
-      this.ctx.beginPath();
-      this.ctx.lineWidth = 3;
-      this.ctx.strokeStyle = '#f00808';
-      Object.keys(this.data).reverse().forEach((key, x) => {
-         this.ctx.lineTo(
-            x * this.params.scaleX,
-            this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY - this.params.PADDING_Y);
-      });
-
       this.ctx.stroke();
       this.ctx.closePath();
 
