@@ -69,7 +69,8 @@ export class Chart {
 
 
       coordinats.mouse = this.mouse;
-      console.log("coordinats = ", coordinats);
+      console.log("coordinats.mouse = ", coordinats.mouse);
+      console.log("coordinats.date = ", coordinats.date);
       return coordinats;
    }
 
