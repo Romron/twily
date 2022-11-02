@@ -75,8 +75,8 @@ export class Chart {
 
    horizontalPointerText(mouse) {
       this.ctx.font = '30px Arial';
-      this.ctx.fillText(mouse.x, this.WIDTH_DPI - 80, mouse.y);
-      this.ctx.fillText(mouse.y, mouse.x, this.HEIGHT_DPI - 20);
+      this.ctx.fillText(Math.ceil(this.HEIGHT_DPI - mouse.y), this.WIDTH_DPI - 80, mouse.y);
+      this.ctx.fillText(Math.ceil(mouse.x), mouse.x, this.HEIGHT_DPI - 10);
    }
 
 
