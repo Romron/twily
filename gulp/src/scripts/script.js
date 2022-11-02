@@ -14,6 +14,9 @@ export class Chart {
     * */
 
    data = {};
+   mouse = {
+      x: 100
+   };
 
    constructor(params) {
       this.params = params;
@@ -34,8 +37,40 @@ export class Chart {
          this.ctx = this.canvas.getContext('2d');
       }
 
+
       this.init();
 
+   }
+
+
+   coordinateCalculation() {
+      /**
+       * единое место для манипуляции с координатами
+       * 
+       * увязать 
+       *    координаты мыши
+       *    координаты холста
+       *    данные из date
+       * 
+       * возвращает объект с универсальными координатами пригоднми для 
+       *    непосредственного, без какой либо доработки, использования во всех методах
+       *       для 
+       *          отрисовки фигур 
+       *          позиционирования надписей 
+       *    
+       *       
+       */
+
+      let coordinats = {
+         mouse: {},
+         date: {}
+      };
+
+
+
+      coordinats.mouse = this.mouse;
+      console.log("coordinats = ", coordinats);
+      return coordinats;
    }
 
 
@@ -46,6 +81,9 @@ export class Chart {
       const boundClear = this.clear.bind(this);
       const boundHorizontalPointer = this.horizontalPointer.bind(this);
       const boundHorizontalPointerText = this.horizontalPointerText.bind(this);
+
+      // let coord = this.coordinateCalculation();
+      // console.log("coord = ", coord);
 
       const proxy = new Proxy({}, {
          set(...args) {
@@ -58,9 +96,12 @@ export class Chart {
                boundHorizontalPointerText(proxy.mouse)
             });
 
+
+
             return result;
          }
       });
+      console.log("proxy = ", proxy);
 
       this.canvas.addEventListener('mousemove', ({ clientX, clientY }) => {
          const { left, top } = this.canvas.getBoundingClientRect()      // т.к. координаты канваса не савпадают с координатами экрана  
@@ -68,6 +109,12 @@ export class Chart {
             x: (clientX - left) * 2,      // преобразование в WIDTH_DPI
             y: (clientY - top) * 2,       // преобразование в HEIGHT_DPI
          }
+         this.mouse = proxy.mouse;
+
+
+         this.coordinateCalculation();
+
+
       });
 
 
