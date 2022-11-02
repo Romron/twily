@@ -5,41 +5,49 @@ const cleanCSS = require('gulp-clean-css');
 const uglify = require('gulp-uglify');
 const del = require('del');
 const browserSync = require('browser-sync').create();
-const fileinclude = require('gulp-file-include');
 const imagemin = require('gulp-imagemin');
 const webp = require('gulp-webp');
 const webpHTML = require('gulp-webp-html');
 const ttf2woff = require('gulp-ttf2woff');
 const ttf2woff2 = require('gulp-ttf2woff2');
 const fonter = require('gulp-fonter');
+const sourcemaps = require('gulp-sourcemaps');
+// const babel = require('gulp-babel');
 
 
-const phpFiles = [
+let proxyPath = '';
+if (__dirname.includes('OSPanel')) {
+   proxyPath = "http://twily/gulp/build/";         // домашний комп
+} else {
+   proxyPath = "http://web/twily/gulp/build/";    // рабочий комп
+}
+
+
+let phpFiles = [
    './src/**/*.php',
    './src/**/*.json',      // временно! 
    '!./src/parts/*.*',     // т.к. fileinclude ...
 ]
 
-const cssFiles = [      // для того чтобы файлы подключались в строго установленой последовательности
+let cssFiles = [      // для того чтобы файлы подключались в строго установленой последовательности
    './src/styles/normalize.css',
    './src/styles/style.css',
 ]
 
-const jsFile = [     // для того чтобы файлы подключались в строго установленой последовательности
-   './src/scripts/script.js',
+let jsFile = [     // массив на тот случай если файлов несколько и они должны подключаться в строго установленой последовательности
+   './src/scripts/*.js',
 ]
 
-const imgFiles = [     // для того чтобы файлы подключались в строго установленой последовательности
+let imgFiles = [     // для того чтобы файлы подключались в строго установленой последовательности
    './src/img/**/*.*',
 ]
 
-const fontFiles = [     // для того чтобы файлы подключались в строго установленой последовательности
+let fontFiles = [     // для того чтобы файлы подключались в строго установленой последовательности
    './src/fonts/**/*.*',
 ]
 
 function php() {
    return gulp.src(phpFiles)
-      .pipe(fileinclude())
       .pipe(webpHTML())    // атоматически добавляет тег <picture> на месте обычного <img> 
       .pipe(gulp.dest('./build'))
       .pipe(browserSync.stream());
@@ -58,8 +66,13 @@ function styles() {
 
 function script() {
    return gulp.src(jsFile)
-      .pipe(fileinclude())    // подключает так же как и HTML @@include('filename.js')
-      // .pipe(uglify({ toplevel: true }))   // закрыл на время тестов
+      .pipe(sourcemaps.init())
+      // .pipe(uglify({ toplevel: true }))
+      // .pipe(babel({              // не работает
+      //    presets: ["env"]
+      // }))
+      // .pipe(concat('all.js'))  
+      .pipe(sourcemaps.write())
       .pipe(gulp.dest('./build/js'))
       .pipe(browserSync.stream());
 }
@@ -92,9 +105,7 @@ function fonts() {
 
 function watch() {
    browserSync.init({
-      // baseDir: "./",
-      proxy: "http://twily/gulp/build/",     // домашний комп
-      // proxy: "http://web/twily/gulp/build/",    // рабочий комп
+      proxy: proxyPath,
       open: false,
    });
 
