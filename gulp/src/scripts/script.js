@@ -154,12 +154,13 @@ export class Chart {
 
          if (n == 0) {
             this.ctx.moveTo(
-               // this.coordinats.coordinats.X(n),
-               n * this.params.scaleX + this.paddingLeft,
+               this.coordinats.coordinats.X(n),
+               // n * this.params.scaleX + this.paddingLeft,
                this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY - this.paddingRight
             );
          }
          this.ctx.lineTo(
+            // this.coordinats.coordinats.X(n),
             n * this.params.scaleX + this.paddingLeft,
             this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY - this.paddingRight
          );
