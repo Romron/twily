@@ -17,6 +17,7 @@ export class Chart {
    mouse = {
       x: 100
    };
+   coordinats = {};
 
    constructor(params) {
       this.params = params;
@@ -24,8 +25,6 @@ export class Chart {
       this.WIDTH_DPI = params.canvasWidht * 2;
       this.scaleX = params.scaleX;
       this.scaleY = params.scaleY;
-      this.PADDING_Y = params.PADDING_Y;
-      this.PADDING_X = params.PADDING_X;
 
       this.paddingTop = params.paddingTop;
       this.paddingBottom = params.paddingBottom;
@@ -63,22 +62,41 @@ export class Chart {
        *       для 
        *          отрисовки фигур 
        *          позиционирования надписей 
-       *    
-       *       
        */
 
-      let coordinats = {
+      this.coordinats = {
+         coordinats: {
+            X(n) { return n * this.scaleX + this.paddingLeft },      // 
+            Y(key) { return this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY - this.paddingRight }
+         },
          mouse: {},
          date: {}
       };
 
+      // console.log(" coordinats = ", coordinats.coordinats.Y());
+
+      // Object.keys(this.data).reverse().forEach((key, n) => {
+
+      //    console.log("key, n = ", key, n);
+
+      //    if (n == 0) {
+      //       this.ctx.moveTo(
+      //          n * this.params.scaleX + this.paddingLeft,
+      //          this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY - this.paddingRight);
+      //    }
+      //    this.ctx.lineTo(
+      //       n * this.params.scaleX + this.paddingLeft,
+      //       this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY - this.paddingRight);
+      // });
 
 
-      coordinats.mouse = this.mouse;
-      console.log("coordinats.mouse.x = ", coordinats.mouse.x);
-      console.log("coordinats.mouse.y = ", coordinats.mouse.y);
-      console.log("coordinats.date = ", coordinats.date);
-      return coordinats;
+
+
+      this.coordinats.mouse = this.mouse;
+      // console.log("coordinats.mouse.x = ", coordinats.mouse.x);
+      // console.log("coordinats.mouse.y = ", coordinats.mouse.y);
+      // console.log("coordinats.date = ", coordinats.date);
+      // return coordinats;
    }
 
 
@@ -114,7 +132,6 @@ export class Chart {
 
          this.coordinateCalculation();       // перерасчёт координат при движении мыши
 
-
       });
 
 
@@ -123,14 +140,14 @@ export class Chart {
 
    horizontalPointerText(mouse) {
       this.ctx.font = '30px Arial';
-      this.ctx.fillText(Math.ceil((this.HEIGHT_DPI - mouse.y - this.PADDING_Y) * 100), this.WIDTH_DPI - 80, mouse.y);
+      this.ctx.fillText(Math.ceil((this.HEIGHT_DPI - mouse.y - this.paddingRight) * 100), this.WIDTH_DPI - 80, mouse.y);
       this.ctx.fillText(Math.ceil(mouse.x), mouse.x, this.HEIGHT_DPI - 10);
    }
 
    paintPaddings() {
       this.ctx.beginPath();
-      this.ctx.lineWidth = 3;
-      this.ctx.strokeStyle = 'blue';
+      this.ctx.lineWidth = 2;
+      this.ctx.strokeStyle = '#ADB5D9';
       this.ctx.moveTo(this.paddingLeft, this.paddingTop);
       this.ctx.lineTo(this.WIDTH_DPI - this.paddingRight, this.paddingTop);
       this.ctx.lineTo(this.WIDTH_DPI - this.paddingRight, this.HEIGHT_DPI - this.paddingBottom);
@@ -139,8 +156,8 @@ export class Chart {
       this.ctx.stroke();
    }
 
-
    paint() {
+
       this.paintPaddings()
       this.grid_lines();
       // отрисовка графика
@@ -148,15 +165,22 @@ export class Chart {
       this.ctx.beginPath();
       this.ctx.lineWidth = 3;
       this.ctx.strokeStyle = '#f00808';
-      Object.keys(this.data).reverse().forEach((key, x) => {
-         if (x == 0) {
+      Object.keys(this.data).reverse().forEach((key, n) => {
+
+         // console.log("key, n = ", key, n);
+         // console.log("this.coordinats.coordinats.X(n) = ", this.coordinats.coordinats.X(n));
+
+         if (n == 0) {
             this.ctx.moveTo(
-               x * this.params.scaleX + this.paddingLeft,
-               this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY - this.paddingRight);
+               // this.coordinats.coordinats.X(n),
+               n * this.params.scaleX + this.paddingLeft,
+               this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY - this.paddingRight
+            );
          }
          this.ctx.lineTo(
-            x * this.params.scaleX + this.paddingLeft,
-            this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY - this.paddingRight);
+            n * this.params.scaleX + this.paddingLeft,
+            this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY - this.paddingRight
+         );
       });
 
       this.ctx.stroke();
@@ -171,9 +195,9 @@ export class Chart {
       this.ctx.strokeStyle = '#ADB5D9';
       this.ctx.font = '20px Arial';
       for (let i = 0; i < this.HEIGHT_DPI; i = i + 100) {
-         this.ctx.moveTo(0, this.HEIGHT_DPI - Math.abs(this.HEIGHT_DPI - i) * this.scaleY - this.PADDING_Y);
-         this.ctx.lineTo(this.WIDTH_DPI, this.HEIGHT_DPI - Math.abs(this.HEIGHT_DPI - i) * this.scaleY - this.PADDING_Y);
-         this.ctx.strokeText((this.HEIGHT_DPI - i) * 100, this.WIDTH_DPI - 70, this.HEIGHT_DPI - Math.abs(this.HEIGHT_DPI - i) * this.scaleY - this.PADDING_Y);
+         this.ctx.moveTo(0, this.HEIGHT_DPI - Math.abs(this.HEIGHT_DPI - i) * this.scaleY - this.paddingLeft);
+         this.ctx.lineTo(this.WIDTH_DPI - this.paddingRight, this.HEIGHT_DPI - Math.abs(this.HEIGHT_DPI - i) * this.scaleY);
+         this.ctx.strokeText((this.HEIGHT_DPI - i) * 100, this.WIDTH_DPI - 70, this.HEIGHT_DPI - Math.abs(this.HEIGHT_DPI - i) * this.scaleY - this.paddingRight);
       }
 
       let str = '';
@@ -186,9 +210,9 @@ export class Chart {
             str_2 = key.slice(5, 7);
             str_3 = key.slice(0, 4).slice(2, 4);
             str = `${str_1}.${str_2}.${str_3}`;
-            this.ctx.moveTo(Math.round(x * this.scaleX), 0);
-            this.ctx.lineTo(Math.round(x * this.scaleX), this.HEIGHT_DPI - this.PADDING_Y);
-            this.ctx.strokeText(str, Math.round(x * this.scaleX) - 50, this.HEIGHT_DPI - 10);
+            this.ctx.moveTo(Math.round(x * this.scaleX) + this.paddingLeft, this.paddingTop);
+            this.ctx.lineTo(Math.round(x * this.scaleX) + this.paddingLeft, this.HEIGHT_DPI - this.paddingBottom);
+            this.ctx.strokeText(str, Math.round(x * this.scaleX) - 50 + this.paddingLeft, this.HEIGHT_DPI - 10);
          }
       });
 
