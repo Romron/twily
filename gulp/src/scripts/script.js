@@ -138,24 +138,6 @@ export class Chart {
 
    }
 
-   horizontalPointerText(mouse) {
-      this.ctx.font = '25px Arial';
-      this.ctx.fillText(Math.ceil((this.HEIGHT_DPI - mouse.y - this.paddingRight) * 100), this.WIDTH_DPI - 80, mouse.y);
-      this.ctx.fillText(Math.ceil(mouse.x), mouse.x, this.HEIGHT_DPI - 10);
-   }
-
-   paintPaddings() {
-      this.ctx.beginPath();
-      this.ctx.lineWidth = 2;
-      this.ctx.strokeStyle = '#ADB5D9';
-      this.ctx.moveTo(this.paddingLeft, this.paddingTop);
-      this.ctx.lineTo(this.WIDTH_DPI - this.paddingRight, this.paddingTop);
-      this.ctx.lineTo(this.WIDTH_DPI - this.paddingRight, this.HEIGHT_DPI - this.paddingBottom);
-      this.ctx.lineTo(this.paddingLeft, this.HEIGHT_DPI - this.paddingBottom);
-      this.ctx.closePath();
-      this.ctx.stroke();
-   }
-
    paint() {
 
       this.paintPaddings()
@@ -187,7 +169,17 @@ export class Chart {
       this.ctx.closePath();
    }
 
-
+   paintPaddings() {
+      this.ctx.beginPath();
+      this.ctx.lineWidth = 2;
+      this.ctx.strokeStyle = '#ADB5D9';
+      this.ctx.moveTo(this.paddingLeft, this.paddingTop);
+      this.ctx.lineTo(this.WIDTH_DPI - this.paddingRight, this.paddingTop);
+      this.ctx.lineTo(this.WIDTH_DPI - this.paddingRight, this.HEIGHT_DPI - this.paddingBottom);
+      this.ctx.lineTo(this.paddingLeft, this.HEIGHT_DPI - this.paddingBottom);
+      this.ctx.closePath();
+      this.ctx.stroke();
+   }
    grid_lines() {
       // отрисовка горизонтальных линий сетки
       this.ctx.beginPath();
@@ -220,6 +212,12 @@ export class Chart {
       this.ctx.closePath();
    }
 
+   horizontalPointerText(mouse) {
+      this.ctx.font = '25px Arial';
+      this.ctx.fillText(Math.ceil((this.HEIGHT_DPI - mouse.y - this.paddingRight) * 100), this.WIDTH_DPI - 80, mouse.y);
+      this.ctx.fillText(Math.ceil(mouse.x), mouse.x, this.HEIGHT_DPI - 10);
+   }
+
    horizontalPointer(mouse) {
 
       this.ctx.beginPath();
@@ -237,7 +235,6 @@ export class Chart {
 
 
    }
-
 
    circul(mouse) {
 
