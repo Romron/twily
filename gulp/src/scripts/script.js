@@ -42,11 +42,8 @@ export class Chart {
          this.ctx = this.canvas.getContext('2d');
       }
 
-
       this.init();
-
    }
-
 
    coordinateCalculation() {
       /**
@@ -66,36 +63,18 @@ export class Chart {
 
       this.coordinats = {
          coor: {
-            X(n) { return n * this.scaleX + this.paddingLeft },      // 
-            Y(key) { return this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY - this.paddingRight }
+            X: (n) => { return n * this.scaleX + this.paddingLeft },
+            Y: (key) => { return this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY }
          },
          mouse: {},
          date: {}
       };
 
-      // console.log(" coordinats = ", coordinats.coordinats.Y());
-
-      // Object.keys(this.data).reverse().forEach((key, n) => {
-
-      //    console.log("key, n = ", key, n);
-
-      //    if (n == 0) {
-      //       this.ctx.moveTo(
-      //          n * this.params.scaleX + this.paddingLeft,
-      //          this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY - this.paddingRight);
-      //    }
-      //    this.ctx.lineTo(
-      //       n * this.params.scaleX + this.paddingLeft,
-      //       this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY - this.paddingRight);
-      // });
 
 
 
 
       this.coordinats.mouse = this.mouse;
-      // console.log("coordinats.mouse.x = ", coordinats.mouse.x);
-      // console.log("coordinats.mouse.y = ", coordinats.mouse.y);
-      // console.log("coordinats.date = ", coordinats.date);
       // return coordinats;
    }
 
@@ -134,11 +113,15 @@ export class Chart {
 
       });
 
+      this.coordinateCalculation();       // перерасчёт координат при движении мыши
+
+
 
 
    }
 
    paint() {
+
 
       this.paintPaddings()
       this.grid_lines();
@@ -151,15 +134,17 @@ export class Chart {
 
          if (n == 0) {
             this.ctx.moveTo(
-               // this.coordinats.coordinats.X(n),
-               n * this.params.scaleX + this.paddingLeft,
-               this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY
+               this.coordinats.coor.X(n),
+               // n * this.params.scaleX + this.paddingLeft,
+               // this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY
+               this.coordinats.coor.Y(key)
             );
          }
          this.ctx.lineTo(
-            // this.coordinats.coordinats.X(n),
-            n * this.params.scaleX + this.paddingLeft,
-            this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY
+            this.coordinats.coor.X(n),
+            // n * this.params.scaleX + this.paddingLeft,
+            // this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY
+            this.coordinats.coor.Y(key)
          );
       });
 
@@ -192,6 +177,7 @@ export class Chart {
          this.ctx.strokeText((this.HEIGHT_DPI - i) * 100, this.WIDTH_DPI - 70, this.HEIGHT_DPI - Math.abs(this.HEIGHT_DPI - i) * this.scaleY);
       }
 
+      // отрисовка вертикальных линий сетки
       let str = '';
       let str_1 = '';
       let str_2 = '';
@@ -214,7 +200,7 @@ export class Chart {
 
    horizontalPointerText(mouse) {
       this.ctx.font = '25px Arial';
-      this.ctx.fillText(Math.ceil((this.HEIGHT_DPI - mouse.y) * 100), this.WIDTH_DPI - 170, mouse.y);
+      this.ctx.fillText(Math.ceil((this.HEIGHT_DPI - mouse.y) / this.scaleY * 100), this.WIDTH_DPI - 170, mouse.y);
       this.ctx.fillText(Math.ceil(mouse.x), mouse.x, this.HEIGHT_DPI - 40);
    }
 
