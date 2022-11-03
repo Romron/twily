@@ -9,7 +9,7 @@ let params = {
    idCanvas: "canv-1",
    canvasHight: 600,
    canvasWidht: 1400,
-   scaleX: 2.7,
+   scaleX: 2.6,
    scaleY: 1,
    ROWS_AMOUNT: 5,
    paddingTop: 30,

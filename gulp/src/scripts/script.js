@@ -65,7 +65,7 @@ export class Chart {
        */
 
       this.coordinats = {
-         coordinats: {
+         coor: {
             X(n) { return n * this.scaleX + this.paddingLeft },      // 
             Y(key) { return this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY - this.paddingRight }
          },
@@ -149,20 +149,17 @@ export class Chart {
       this.ctx.strokeStyle = '#f00808';
       Object.keys(this.data).reverse().forEach((key, n) => {
 
-         // console.log("key, n = ", key, n);
-         // console.log("this.coordinats.coordinats.X(n) = ", this.coordinats.coordinats.X(n));
-
          if (n == 0) {
             this.ctx.moveTo(
-               this.coordinats.coordinats.X(n),
-               // n * this.params.scaleX + this.paddingLeft,
-               this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY - this.paddingRight
+               // this.coordinats.coordinats.X(n),
+               n * this.params.scaleX + this.paddingLeft,
+               this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY
             );
          }
          this.ctx.lineTo(
             // this.coordinats.coordinats.X(n),
             n * this.params.scaleX + this.paddingLeft,
-            this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY - this.paddingRight
+            this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY
          );
       });
 
@@ -188,9 +185,11 @@ export class Chart {
       this.ctx.strokeStyle = '#ADB5D9';
       this.ctx.font = '20px Arial';
       for (let i = 0; i < this.HEIGHT_DPI; i = i + 100) {
-         this.ctx.moveTo(0, this.HEIGHT_DPI - Math.abs(this.HEIGHT_DPI - i) * this.scaleY - this.paddingLeft);
+
+         this.ctx.moveTo(0 + this.paddingLeft, this.HEIGHT_DPI - Math.abs(this.HEIGHT_DPI - i) * this.scaleY);
          this.ctx.lineTo(this.WIDTH_DPI - this.paddingRight, this.HEIGHT_DPI - Math.abs(this.HEIGHT_DPI - i) * this.scaleY);
-         this.ctx.strokeText((this.HEIGHT_DPI - i) * 100, this.WIDTH_DPI - 70, this.HEIGHT_DPI - Math.abs(this.HEIGHT_DPI - i) * this.scaleY - this.paddingRight);
+
+         this.ctx.strokeText((this.HEIGHT_DPI - i) * 100, this.WIDTH_DPI - 70, this.HEIGHT_DPI - Math.abs(this.HEIGHT_DPI - i) * this.scaleY);
       }
 
       let str = '';
@@ -215,8 +214,8 @@ export class Chart {
 
    horizontalPointerText(mouse) {
       this.ctx.font = '25px Arial';
-      this.ctx.fillText(Math.ceil((this.HEIGHT_DPI - mouse.y - this.paddingRight) * 100), this.WIDTH_DPI - 80, mouse.y);
-      this.ctx.fillText(Math.ceil(mouse.x), mouse.x, this.HEIGHT_DPI - 10);
+      this.ctx.fillText(Math.ceil((this.HEIGHT_DPI - mouse.y) * 100), this.WIDTH_DPI - 170, mouse.y);
+      this.ctx.fillText(Math.ceil(mouse.x), mouse.x, this.HEIGHT_DPI - 40);
    }
 
    horizontalPointer(mouse) {
@@ -232,8 +231,6 @@ export class Chart {
       this.ctx.moveTo(mouse.x, mouse.y);
       this.ctx.lineTo(this.WIDTH_DPI, mouse.y);
       this.ctx.stroke();
-
-
 
    }
 
