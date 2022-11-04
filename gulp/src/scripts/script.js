@@ -56,7 +56,7 @@ export class Chart {
 
                // console.log("const mc = requestAnimationFrame(() => { ", proxy.mc);
 
-               console.log("proxy.mc.wheel = ", proxy.mc.wheel);
+               // console.log("proxy.mc.wheel = ", proxy.mc.wheel);
 
                proxy.this.clear();
                proxy.this.paint();
@@ -86,15 +86,23 @@ export class Chart {
          this.coordinateCalculation();       // перерасчёт координат при движении мыши
       });
 
-      this.canvas.addEventListener('mousedown', ({ clientX, clientY }) => {
-         // console.log("mousedown = ", onmousedown);
+      this.canvas.addEventListener('wheel', (e) => {
+
+         this.scaleY = this.scaleY + proxy.mc.wheel;
+         console.log("this.scaleY.toFixed(3) = ", this.scaleY.toFixed(3));
+         this.scaleY = +this.scaleY.toFixed(3);
+         if (this.scaleY < 0.1) {
+            this.scaleY = 0.1;
+            proxy.mc.wheel = 0.1;
+         }
+
+         proxy.this.clear();
+         proxy.this.paint();
       });
 
+
+
       this.funcForTest();
-
-
-
-
    }
 
    funcForTest() {
@@ -279,7 +287,6 @@ class MouseControls {
       this.pos.x = e.clientX;
       this.pos.y = e.clientY;
 
-
       if (e.type === 'mousedown') {
          this.isPressed = true;
          this.isDown = true;
@@ -289,23 +296,16 @@ class MouseControls {
          this.isDown = false;
          this.isUp = true;
       } else if (e.type === 'wheel') {
+         e.preventDefault();
          if (e.wheelDelta > 0) {
-            this.wheel += 1;
+            this.wheel += 0.1;
          } else {
-            this.wheel -= 1;
+            this.wheel -= 0.1;
 
          }
-         // console.log(" this.wheel = ", this.wheel);
 
-         // console.log("e.wheelDelta = ", e.wheelDelta);
-         // console.log("e.wheelDeltaX = ", e.wheelDeltaX);
-         // console.log("e.wheelDeltaY = ", e.wheelDeltaY);
-         // console.log("e.deltaMode = ", e.deltaMode);
-         // console.log("e.srcElement.ownerDocument = ", e.srcElement.ownerDocument);
-         // console.log("e= ", e);
-         // console.log("--------------------------------------------");
-
-
+      } else if (e.type === 'contextmenu') {
+         e.preventDefault();
       }
 
    }
