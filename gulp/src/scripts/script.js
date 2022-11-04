@@ -47,15 +47,20 @@ export class Chart {
 
    init() {
 
+      const mc = new MouseControls(this.canvas);
       this.coordinateCalculation();       // перерасчёт координат при движении мыши
       const proxy = new Proxy({}, {
          set(...args) {
             const result = Reflect.set(...args);
             requestAnimationFrame(() => {
+
+               // console.log("const mc = requestAnimationFrame(() => { ", proxy.mc);
+
+               console.log("proxy.mc.wheel = ", proxy.mc.wheel);
+
                proxy.this.clear();
                proxy.this.paint();
-               if (
-                  proxy.mouse &&
+               if (proxy.mouse &&
                   proxy.mouse.x < proxy.this.WIDTH_DPI - proxy.this.paddingRight
                   && proxy.mouse.x > proxy.this.paddingLeft
                   && proxy.mouse.y > proxy.this.paddingTop
@@ -70,7 +75,7 @@ export class Chart {
          }
       });
       proxy.this = this;
-
+      proxy.mc = mc;
       this.canvas.addEventListener('mousemove', ({ clientX, clientY }) => {      // получание текущих координат курсора
          const { left, top } = this.canvas.getBoundingClientRect()      // т.к. координаты канваса не савпадают с координатами экрана  
          proxy.mouse = {
@@ -93,10 +98,13 @@ export class Chart {
    }
 
    funcForTest() {
+
+
+
       // this.canvas.addEventListener('click', e => console.log(e.type));
       // this.canvas.addEventListener('dblclick', e => console.log(e.type));
-      this.canvas.addEventListener('mousedown', e => console.log(e.type));
-      this.canvas.addEventListener('mouseup', e => console.log(e.type));
+      // this.canvas.addEventListener('mousedown', e => console.log(e.type));
+      // this.canvas.addEventListener('mouseup', e => console.log(e.type));
       // this.canvas.addEventListener('wheel', e => console.log(e.type));
       // this.canvas.addEventListener('mouseenter', e => console.log(e.type));
       // this.canvas.addEventListener('mouseleave', e => console.log(e.type));
@@ -244,6 +252,67 @@ export class Chart {
    }
 
 }
+
+class MouseControls {
+   constructor(conteiner = canvas) {
+      this.conteiner = conteiner;
+
+      this.isPressed = false;
+      this.isDown = false;
+      this.isUp = false;
+      this.pos = { x: 0, y: 0 };
+      this.wheel = 0;
+
+
+      // conteiner.addEventListener('click', e => this.cangeState(e));
+      // conteiner.addEventListener('dblclick', e => this.cangeState(e));
+      // conteiner.addEventListener('mouseenter', e => this.cangeState(e));
+      conteiner.addEventListener('mousedown', e => this.cangeState(e));
+      conteiner.addEventListener('mouseup', e => this.cangeState(e));
+      conteiner.addEventListener('wheel', e => this.cangeState(e));
+      conteiner.addEventListener('mouseleave', e => this.cangeState(e));
+      conteiner.addEventListener('contextmenu', e => this.cangeState(e));
+   }
+
+   cangeState(e) {
+
+      this.pos.x = e.clientX;
+      this.pos.y = e.clientY;
+
+
+      if (e.type === 'mousedown') {
+         this.isPressed = true;
+         this.isDown = true;
+         this.isUp = false;
+      } else if (e.type === 'mouseup') {
+         this.isPressed = false;
+         this.isDown = false;
+         this.isUp = true;
+      } else if (e.type === 'wheel') {
+         if (e.wheelDelta > 0) {
+            this.wheel += 1;
+         } else {
+            this.wheel -= 1;
+
+         }
+         // console.log(" this.wheel = ", this.wheel);
+
+         // console.log("e.wheelDelta = ", e.wheelDelta);
+         // console.log("e.wheelDeltaX = ", e.wheelDeltaX);
+         // console.log("e.wheelDeltaY = ", e.wheelDeltaY);
+         // console.log("e.deltaMode = ", e.deltaMode);
+         // console.log("e.srcElement.ownerDocument = ", e.srcElement.ownerDocument);
+         // console.log("e= ", e);
+         // console.log("--------------------------------------------");
+
+
+      }
+
+   }
+
+
+}
+
 
 
 export const page = {
