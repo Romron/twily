@@ -70,10 +70,6 @@ export class Chart {
          date: {}
       };
 
-
-
-
-
       this.coordinats.mouse = this.mouse;
       // return coordinats;
    }
