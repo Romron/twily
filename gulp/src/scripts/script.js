@@ -45,36 +45,6 @@ export class Chart {
       this.init();
    }
 
-   coordinateCalculation() {
-      /**
-       * единое место для манипуляции с координатами
-       * 
-       * увязать 
-       *    координаты мыши
-       *    координаты холста
-       *    данные из date
-       * 
-       * возвращает объект с универсальными координатами пригоднми для 
-       *    непосредственного, без какой либо доработки, использования во всех методах
-       *       для 
-       *          отрисовки фигур 
-       *          позиционирования надписей 
-       */
-
-      this.coordinats = {
-         coor: {
-            X: (n) => { return n * this.scaleX + this.paddingLeft },
-            Y: (key) => { return this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY }
-         },
-         mouse: {},
-         date: {}
-      };
-
-      this.coordinats.mouse = this.mouse;
-      // return coordinats;
-   }
-
-
    init() {
 
       const boundCircul = this.circul.bind(this);
@@ -83,9 +53,16 @@ export class Chart {
       const boundHorizontalPointer = this.horizontalPointer.bind(this);
       const boundHorizontalPointerText = this.horizontalPointerText.bind(this);
 
+      this.coordinateCalculation();       // перерасчёт координат при движении мыши
       const proxy = new Proxy({}, {
          set(...args) {
+
+            console.log("args = ", args);
+
+
             const result = Reflect.set(...args);
+
+
             requestAnimationFrame(() => {
                boundClear(proxy.mouse);
                boundPaint();
@@ -97,21 +74,20 @@ export class Chart {
          }
       });
 
-      this.canvas.addEventListener('mousemove', ({ clientX, clientY }) => {
+      this.canvas.addEventListener('mousemove', ({ clientX, clientY }) => {      // получание текущих координат курсора
          const { left, top } = this.canvas.getBoundingClientRect()      // т.к. координаты канваса не савпадают с координатами экрана  
          proxy.mouse = {
             x: (clientX - left) * 2,      // преобразование в WIDTH_DPI
             y: (clientY - top) * 2,       // преобразование в HEIGHT_DPI
          }
          this.mouse = proxy.mouse;
-
          this.coordinateCalculation();       // перерасчёт координат при движении мыши
-
       });
 
-      this.coordinateCalculation();       // перерасчёт координат при движении мыши
-
-
+      proxy.cont = this;
+      this.canvas.addEventListener('mousedown', ({ clientX, clientY }) => {
+         console.log("mousedown = ", onmousedown);
+      });
 
 
    }
@@ -146,6 +122,35 @@ export class Chart {
 
       this.ctx.stroke();
       this.ctx.closePath();
+   }
+
+   coordinateCalculation() {
+      /**
+       * единое место для манипуляции с координатами
+       * 
+       * увязать 
+       *    координаты мыши
+       *    координаты холста
+       *    данные из date
+       * 
+       * возвращает объект с универсальными координатами пригоднми для 
+       *    непосредственного, без какой либо доработки, использования во всех методах
+       *       для 
+       *          отрисовки фигур 
+       *          позиционирования надписей 
+       */
+
+      this.coordinats = {
+         coor: {
+            X: (n) => { return n * this.scaleX + this.paddingLeft },
+            Y: (key) => { return this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY }
+         },
+         mouse: {},
+         date: {}
+      };
+
+      this.coordinats.mouse = this.mouse;
+      // return coordinats;
    }
 
    paintPaddings() {
@@ -202,17 +207,27 @@ export class Chart {
 
    horizontalPointer(mouse) {
 
-      this.ctx.beginPath();
-      this.ctx.lineWidth = 1;
-      this.ctx.moveTo(mouse.x, mouse.y);
-      this.ctx.lineTo(mouse.x, this.WIDTH_DPI);
-      this.ctx.strokeStyle = '#3A3A3C';
-      this.ctx.stroke();
+      if (
+         mouse.x < this.WIDTH_DPI - this.paddingRight
+         && mouse.x > this.paddingLeft
+         && mouse.y > this.paddingTop
+         && mouse.y < this.HEIGHT_DPI - this.paddingBottom
+      ) {
 
-      this.ctx.beginPath();
-      this.ctx.moveTo(mouse.x, mouse.y);
-      this.ctx.lineTo(this.WIDTH_DPI, mouse.y);
-      this.ctx.stroke();
+
+
+         this.ctx.beginPath();
+         this.ctx.lineWidth = 1;
+         this.ctx.moveTo(mouse.x, mouse.y);
+         this.ctx.lineTo(mouse.x, this.WIDTH_DPI);
+         this.ctx.strokeStyle = '#3A3A3C';
+         this.ctx.stroke();
+
+         this.ctx.beginPath();
+         this.ctx.moveTo(mouse.x, mouse.y);
+         this.ctx.lineTo(this.WIDTH_DPI, mouse.y);
+         this.ctx.stroke();
+      }
 
    }
 
