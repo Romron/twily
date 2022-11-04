@@ -47,32 +47,29 @@ export class Chart {
 
    init() {
 
-      const boundCircul = this.circul.bind(this);
-      const boundPaint = this.paint.bind(this);
-      const boundClear = this.clear.bind(this);
-      const boundHorizontalPointer = this.horizontalPointer.bind(this);
-      const boundHorizontalPointerText = this.horizontalPointerText.bind(this);
-
       this.coordinateCalculation();       // перерасчёт координат при движении мыши
       const proxy = new Proxy({}, {
          set(...args) {
-
-            console.log("args = ", args);
-
-
             const result = Reflect.set(...args);
-
-
             requestAnimationFrame(() => {
-               boundClear(proxy.mouse);
-               boundPaint();
-               boundCircul(proxy.mouse);
-               boundHorizontalPointer(proxy.mouse);
-               boundHorizontalPointerText(proxy.mouse)
+               proxy.this.clear();
+               proxy.this.paint();
+               if (
+                  proxy.mouse &&
+                  proxy.mouse.x < proxy.this.WIDTH_DPI - proxy.this.paddingRight
+                  && proxy.mouse.x > proxy.this.paddingLeft
+                  && proxy.mouse.y > proxy.this.paddingTop
+                  && proxy.mouse.y < proxy.this.HEIGHT_DPI - proxy.this.paddingBottom
+               ) {
+                  proxy.this.circul(proxy.mouse);
+                  proxy.this.horizontalPointer(proxy.mouse);
+                  proxy.this.horizontalPointerText(proxy.mouse);
+               }
             });
             return result;
          }
       });
+      proxy.this = this;
 
       this.canvas.addEventListener('mousemove', ({ clientX, clientY }) => {      // получание текущих координат курсора
          const { left, top } = this.canvas.getBoundingClientRect()      // т.к. координаты канваса не савпадают с координатами экрана  
@@ -84,13 +81,28 @@ export class Chart {
          this.coordinateCalculation();       // перерасчёт координат при движении мыши
       });
 
-      proxy.cont = this;
       this.canvas.addEventListener('mousedown', ({ clientX, clientY }) => {
-         console.log("mousedown = ", onmousedown);
+         // console.log("mousedown = ", onmousedown);
       });
+
+      this.funcForTest();
+
+
 
 
    }
+
+   funcForTest() {
+      // this.canvas.addEventListener('click', e => console.log(e.type));
+      // this.canvas.addEventListener('dblclick', e => console.log(e.type));
+      this.canvas.addEventListener('mousedown', e => console.log(e.type));
+      this.canvas.addEventListener('mouseup', e => console.log(e.type));
+      // this.canvas.addEventListener('wheel', e => console.log(e.type));
+      // this.canvas.addEventListener('mouseenter', e => console.log(e.type));
+      // this.canvas.addEventListener('mouseleave', e => console.log(e.type));
+      // this.canvas.addEventListener('contextmenu', e => console.log(e.type));
+   }
+
 
    paint() {
 
@@ -206,40 +218,25 @@ export class Chart {
    }
 
    horizontalPointer(mouse) {
-
-      if (
-         mouse.x < this.WIDTH_DPI - this.paddingRight
-         && mouse.x > this.paddingLeft
-         && mouse.y > this.paddingTop
-         && mouse.y < this.HEIGHT_DPI - this.paddingBottom
-      ) {
-
-
-
-         this.ctx.beginPath();
-         this.ctx.lineWidth = 1;
-         this.ctx.moveTo(mouse.x, mouse.y);
-         this.ctx.lineTo(mouse.x, this.WIDTH_DPI);
-         this.ctx.strokeStyle = '#3A3A3C';
-         this.ctx.stroke();
-
-         this.ctx.beginPath();
-         this.ctx.moveTo(mouse.x, mouse.y);
-         this.ctx.lineTo(this.WIDTH_DPI, mouse.y);
-         this.ctx.stroke();
-      }
-
+      this.ctx.beginPath();
+      this.ctx.lineWidth = 1;
+      this.ctx.moveTo(mouse.x, mouse.y);
+      this.ctx.lineTo(mouse.x, this.WIDTH_DPI);
+      this.ctx.strokeStyle = '#3A3A3C';
+      this.ctx.stroke();
+      this.ctx.beginPath();
+      this.ctx.moveTo(mouse.x, mouse.y);
+      this.ctx.lineTo(this.WIDTH_DPI, mouse.y);
+      this.ctx.stroke();
    }
 
    circul(mouse) {
-
       this.ctx.beginPath();
       this.ctx.lineWidth = 2;
       this.ctx.strokeStyle = '#3A3A3C';
       this.ctx.arc(mouse.x, mouse.y, 7, 0, Math.PI * 2);
       this.ctx.stroke();
       this.ctx.closePath();
-
    }
 
    clear() {
