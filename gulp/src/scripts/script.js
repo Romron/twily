@@ -55,7 +55,6 @@ export class Chart {
             requestAnimationFrame(() => {
 
                // console.log("const mc = requestAnimationFrame(() => { ", proxy.mc);
-
                // console.log("proxy.mc.wheel = ", proxy.mc.wheel);
 
                proxy.this.clear();
@@ -87,10 +86,13 @@ export class Chart {
       });
 
       this.canvas.addEventListener('wheel', (e) => {
+         const DefouitScaleX = this.scaleX;
 
          this.scaleX = this.scaleX + proxy.mc.wheel;
-         console.log("this.scaleX.toFixed(3) = ", this.scaleX.toFixed(3));
          this.scaleX = +this.scaleX.toFixed(3);
+         console.log("this.scaleX = ", this.scaleX);
+
+
          if (this.scaleX < 0.1) {
             this.scaleX = 0.1;
             proxy.mc.wheel = 0.1;
@@ -297,12 +299,26 @@ class MouseControls {
          this.isUp = true;
       } else if (e.type === 'wheel') {
          e.preventDefault();
-         if (e.wheelDelta > 0) {
-            this.wheel += 0.1;
-         } else {
-            this.wheel -= 0.1;
+         // console.log("e.deltaY = ", e.deltaY);
 
+         let q = e.deltaY + e.deltaX;
+         console.log("q = ", q);
+
+         if (q > 0) {
+            this.wheel = 0.1;
+         } else if (q < 0) {
+            this.wheel = -0.1;
+         } else {
+            this.wheel = 0;
          }
+         console.log("this.wheel = ", this.wheel);
+
+         // if (e.deltaY > 0) {
+         //    this.wheel += 0.1;
+         // } else {
+         //    this.wheel -= 0.1;
+
+         // }
 
       } else if (e.type === 'contextmenu') {
          e.preventDefault();
