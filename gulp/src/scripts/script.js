@@ -88,11 +88,11 @@ export class Chart {
 
       this.canvas.addEventListener('wheel', (e) => {
 
-         this.scaleY = this.scaleY + proxy.mc.wheel;
-         console.log("this.scaleY.toFixed(3) = ", this.scaleY.toFixed(3));
-         this.scaleY = +this.scaleY.toFixed(3);
-         if (this.scaleY < 0.1) {
-            this.scaleY = 0.1;
+         this.scaleX = this.scaleX + proxy.mc.wheel;
+         console.log("this.scaleX.toFixed(3) = ", this.scaleX.toFixed(3));
+         this.scaleX = +this.scaleX.toFixed(3);
+         if (this.scaleX < 0.1) {
+            this.scaleX = 0.1;
             proxy.mc.wheel = 0.1;
          }
 
