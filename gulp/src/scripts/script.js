@@ -57,6 +57,11 @@ export class Chart {
                // console.log("const mc = requestAnimationFrame(() => { ", proxy.mc);
                // console.log("proxy.mc.wheel = ", proxy.mc.wheel);
 
+
+               proxy.this.clear();
+               proxy.this.paint();
+
+
                proxy.this.clear();
                proxy.this.paint();
                if (proxy.mouse &&
@@ -90,8 +95,6 @@ export class Chart {
 
          this.scaleX = this.scaleX + proxy.mc.wheel;
          this.scaleX = +this.scaleX.toFixed(3);
-         console.log("this.scaleX = ", this.scaleX);
-
 
          if (this.scaleX < 0.1) {
             this.scaleX = 0.1;
@@ -125,33 +128,47 @@ export class Chart {
    paint() {
 
 
+
+
+
+
       this.paintPaddings()
       this.grid_lines();
+
       // отрисовка графика
+
+      //вариант один график отрисовывается с лева на право
+      //вариант два график отрисовывается с права на лево
 
       this.ctx.beginPath();
       this.ctx.lineWidth = 3;
       this.ctx.strokeStyle = '#f00808';
-      Object.keys(this.data).reverse().forEach((key, n) => {
 
-         if (n == 0) {
-            this.ctx.moveTo(
-               this.coordinats.coor.X(n),
-               // n * this.params.scaleX + this.paddingLeft,
-               // this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY
-               this.coordinats.coor.Y(key)
+      console.log("this.data = ", this.data);
+
+
+      Object.keys(this.data).reverse().forEach((key, n) => {
+         setTimeout(() => {
+            if (n == 0) {
+               this.ctx.moveTo(
+                  // this.coordinats.coor.X(n),
+                  n * this.params.scaleX + this.paddingLeft,
+                  this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY
+                  // this.coordinats.coor.Y(key)
+               );
+            }
+            this.ctx.lineTo(
+               // this.coordinats.coor.X(n),
+               n * this.params.scaleX + this.paddingLeft,
+               this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY
+               // this.coordinats.coor.Y(key)
             );
-         }
-         this.ctx.lineTo(
-            this.coordinats.coor.X(n),
-            // n * this.params.scaleX + this.paddingLeft,
-            // this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY
-            this.coordinats.coor.Y(key)
-         );
+
+            this.ctx.stroke();
+         }, 100)
       });
 
-      this.ctx.stroke();
-      this.ctx.closePath();
+      // this.ctx.closePath();
    }
 
    coordinateCalculation() {
@@ -302,7 +319,6 @@ class MouseControls {
          // console.log("e.deltaY = ", e.deltaY);
 
          let q = e.deltaY + e.deltaX;
-         console.log("q = ", q);
 
          if (q > 0) {
             this.wheel = 0.1;
@@ -311,7 +327,6 @@ class MouseControls {
          } else {
             this.wheel = 0;
          }
-         console.log("this.wheel = ", this.wheel);
 
          // if (e.deltaY > 0) {
          //    this.wheel += 0.1;
