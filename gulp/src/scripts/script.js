@@ -127,11 +127,6 @@ export class Chart {
 
    paint() {
 
-
-
-
-
-
       this.paintPaddings()
       this.grid_lines();
 
@@ -144,31 +139,34 @@ export class Chart {
       this.ctx.lineWidth = 3;
       this.ctx.strokeStyle = '#f00808';
 
-      console.log("this.data = ", this.data);
+      console.log("this.scaleX = ", this.scaleX);
 
-
-      Object.keys(this.data).reverse().forEach((key, n) => {
-         setTimeout(() => {
-            if (n == 0) {
-               this.ctx.moveTo(
-                  // this.coordinats.coor.X(n),
-                  n * this.params.scaleX + this.paddingLeft,
-                  this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY
-                  // this.coordinats.coor.Y(key)
-               );
-            }
-            this.ctx.lineTo(
+      // Object.keys(this.data).reverse().forEach((key, n) => {
+      Object.keys(this.data).forEach((key, n) => {
+         // setTimeout(() => {
+         if (n == 0) {
+            this.ctx.moveTo(
                // this.coordinats.coor.X(n),
-               n * this.params.scaleX + this.paddingLeft,
-               this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY
                // this.coordinats.coor.Y(key)
+               this.WIDTH_DPI - n * this.scaleX - this.paddingRight,
+               this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY
             );
+         }
 
-            this.ctx.stroke();
-         }, 100)
+         // console.log("this.WIDTH_DPI - n ", this.WIDTH_DPI - n * this.scaleX - this.paddingRight);
+
+         this.ctx.lineTo(
+            // this.coordinats.coor.X(n),
+            // this.coordinats.coor.Y(key)
+            this.WIDTH_DPI - n * this.scaleX - this.paddingRight,
+            this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY
+         );
+
+         this.ctx.stroke();
+         // }, 1000)
       });
+      this.ctx.closePath();
 
-      // this.ctx.closePath();
    }
 
    coordinateCalculation() {
@@ -243,7 +241,7 @@ export class Chart {
       });
 
       this.ctx.stroke();
-      this.ctx.closePath();
+      // this.ctx.closePath();
    }
 
    horizontalPointerText(mouse) {
