@@ -120,16 +120,9 @@ export class Chart {
       this.paintPaddings()
       this.grid_lines();
 
-      // отрисовка графика
-
-      //вариант один график отрисовывается с лева на право
-      //вариант два график отрисовывается с права на лево
-
       this.ctx.beginPath();
       this.ctx.lineWidth = 3;
       this.ctx.strokeStyle = '#f00808';
-
-      console.log("this.scaleX = ", this.scaleX);
 
       // Object.keys(this.data).reverse().forEach((key, n) => {
       Object.keys(this.data).forEach((key, n) => {
@@ -137,20 +130,12 @@ export class Chart {
             this.ctx.moveTo(
                this.coordinats.coor.X(n),
                this.coordinats.coor.Y(key)
-               // this.WIDTH_DPI - n * this.scaleX - this.paddingRight,
-               // this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY
             );
          }
-
-         // console.log("this.WIDTH_DPI - n ", this.WIDTH_DPI - n * this.scaleX - this.paddingRight);
-
          this.ctx.lineTo(
             this.coordinats.coor.X(n),
             this.coordinats.coor.Y(key)
-            // this.WIDTH_DPI - n * this.scaleX - this.paddingRight,
-            // this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY
          );
-
       });
       this.ctx.stroke();
       this.ctx.closePath();
@@ -194,8 +179,8 @@ export class Chart {
       this.ctx.lineTo(this.WIDTH_DPI - this.paddingRight, this.paddingTop);
       this.ctx.lineTo(this.WIDTH_DPI - this.paddingRight, this.HEIGHT_DPI - this.paddingBottom);
       this.ctx.lineTo(this.paddingLeft, this.HEIGHT_DPI - this.paddingBottom);
-      this.ctx.closePath();
       this.ctx.stroke();
+      this.ctx.closePath();
    }
    grid_lines() {
       // отрисовка горизонтальных линий сетки
@@ -229,7 +214,7 @@ export class Chart {
       });
 
       this.ctx.stroke();
-      // this.ctx.closePath();
+      this.ctx.closePath();
    }
 
    horizontalPointerText(mouse) {
@@ -241,6 +226,7 @@ export class Chart {
    horizontalPointer(mouse) {
       this.ctx.beginPath();
       this.ctx.lineWidth = 1;
+      this.ctx.setLineDash([4, 16]);      // устанавливается для всего холста
       this.ctx.moveTo(mouse.x, mouse.y);
       this.ctx.lineTo(mouse.x, this.WIDTH_DPI);
       this.ctx.strokeStyle = '#3A3A3C';
@@ -248,7 +234,9 @@ export class Chart {
       this.ctx.beginPath();
       this.ctx.moveTo(mouse.x, mouse.y);
       this.ctx.lineTo(this.WIDTH_DPI, mouse.y);
+      this.ctx.closePath();
       this.ctx.stroke();
+      this.ctx.setLineDash([]);     // сброс штриховки и возврат к сплошным линиям
    }
 
    circul(mouse) {
