@@ -24,9 +24,9 @@ window.onload = function () {
 
    dP.GetData().then((data) => {
       chr.data = dP.PreparationData(data);
-      setTimeout(() => {
-         chr.paint()
-      }, 1000)
+      //  
+      chr.paint()
+
       // chart();    // канвас и всё что на нём
    });
 }

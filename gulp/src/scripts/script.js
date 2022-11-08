@@ -151,8 +151,8 @@ export class Chart {
             // this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY
          );
 
-         this.ctx.stroke();
       });
+      this.ctx.stroke();
       this.ctx.closePath();
 
    }
