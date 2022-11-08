@@ -171,17 +171,6 @@ export class Chart {
       // return coordinats;
    }
 
-   paintPaddings() {
-      this.ctx.beginPath();
-      this.ctx.lineWidth = 2;
-      this.ctx.strokeStyle = '#ADB5D9';
-      this.ctx.moveTo(this.paddingLeft, this.paddingTop);
-      this.ctx.lineTo(this.WIDTH_DPI - this.paddingRight, this.paddingTop);
-      this.ctx.lineTo(this.WIDTH_DPI - this.paddingRight, this.HEIGHT_DPI - this.paddingBottom);
-      this.ctx.lineTo(this.paddingLeft, this.HEIGHT_DPI - this.paddingBottom);
-      this.ctx.stroke();
-      this.ctx.closePath();
-   }
    grid_lines() {
       // отрисовка горизонтальных линий сетки
       this.ctx.beginPath();
@@ -216,6 +205,19 @@ export class Chart {
       this.ctx.stroke();
       this.ctx.closePath();
    }
+
+   paintPaddings() {
+      this.ctx.beginPath();
+      this.ctx.lineWidth = 2;
+      this.ctx.strokeStyle = '#ADB5D9';
+      this.ctx.moveTo(this.paddingLeft, this.paddingTop);
+      this.ctx.lineTo(this.WIDTH_DPI - this.paddingRight, this.paddingTop);
+      this.ctx.lineTo(this.WIDTH_DPI - this.paddingRight, this.HEIGHT_DPI - this.paddingBottom);
+      this.ctx.lineTo(this.paddingLeft, this.HEIGHT_DPI - this.paddingBottom);
+      this.ctx.stroke();
+      this.ctx.closePath();
+   }
+
 
    horizontalPointerText(mouse) {
       this.ctx.font = '25px Arial';
