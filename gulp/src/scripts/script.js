@@ -46,22 +46,12 @@ export class Chart {
    }
 
    init() {
-
       const mc = new MouseControls(this.canvas);
       this.coordinateCalculation();       // перерасчёт координат при движении мыши
       const proxy = new Proxy({}, {
          set(...args) {
             const result = Reflect.set(...args);
             requestAnimationFrame(() => {
-
-               // console.log("const mc = requestAnimationFrame(() => { ", proxy.mc);
-               // console.log("proxy.mc.wheel = ", proxy.mc.wheel);
-
-
-               proxy.this.clear();
-               proxy.this.paint();
-
-
                proxy.this.clear();
                proxy.this.paint();
                if (proxy.mouse &&
@@ -143,27 +133,25 @@ export class Chart {
 
       // Object.keys(this.data).reverse().forEach((key, n) => {
       Object.keys(this.data).forEach((key, n) => {
-         // setTimeout(() => {
          if (n == 0) {
             this.ctx.moveTo(
-               // this.coordinats.coor.X(n),
-               // this.coordinats.coor.Y(key)
-               this.WIDTH_DPI - n * this.scaleX - this.paddingRight,
-               this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY
+               this.coordinats.coor.X(n),
+               this.coordinats.coor.Y(key)
+               // this.WIDTH_DPI - n * this.scaleX - this.paddingRight,
+               // this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY
             );
          }
 
          // console.log("this.WIDTH_DPI - n ", this.WIDTH_DPI - n * this.scaleX - this.paddingRight);
 
          this.ctx.lineTo(
-            // this.coordinats.coor.X(n),
-            // this.coordinats.coor.Y(key)
-            this.WIDTH_DPI - n * this.scaleX - this.paddingRight,
-            this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY
+            this.coordinats.coor.X(n),
+            this.coordinats.coor.Y(key)
+            // this.WIDTH_DPI - n * this.scaleX - this.paddingRight,
+            // this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY
          );
 
          this.ctx.stroke();
-         // }, 1000)
       });
       this.ctx.closePath();
 
@@ -187,11 +175,11 @@ export class Chart {
 
       this.coordinats = {
          coor: {
-            X: (n) => { return n * this.scaleX + this.paddingLeft },
+            X: (n) => { return this.WIDTH_DPI - n * this.scaleX - this.paddingRight },
             Y: (key) => { return this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY }
          },
-         mouse: {},
-         date: {}
+         // mouse: {},
+         // date: {}
       };
 
       this.coordinats.mouse = this.mouse;
