@@ -47,16 +47,16 @@ export class Chart {
     *          текущий масштаб
             выполняет
             возвращает
-
-    * 
+    *  при масштабировании холста 
+    *    определить участок массива данных для отображения 
     */
 
    data = {};
 
    constructor(params) {
-      this.params = params;
       this.HEIGHT_DPI = params.canvasHight * 2;
       this.WIDTH_DPI = params.canvasWidht * 2;
+
       this.scaleX = params.scaleX;
       this.scaleY = params.scaleY;
 
@@ -64,6 +64,10 @@ export class Chart {
       this.paddingBottom = params.paddingBottom;
       this.paddingLeft = params.paddingLeft;
       this.paddingRight = params.paddingRight;
+
+      this.HEIGHT_GRAPH_FILD = this.HEIGHT_DPI - (this.paddingTop + this.paddingBottom);
+      this.WIDTH_GRAPH_FILD = this.WIDTH_DPI - (this.paddingLeft + this.paddingRight);
+
 
       if (!document.getElementById(params.idCanvas)) {
          this.canvas = document.createElement("canvas");
@@ -111,33 +115,57 @@ export class Chart {
    }
 
    CoordinateGrid(key, n) {
-      let str = '';
-      let str_1 = '';
-      let str_2 = '';
-      let str_3 = '';
+      /**
+       * рисует координатную сетку которая 
+       *    изменяеться при изменении масштаба
+       *       ось X  градуируется 
+       *          от месяцев до дней
+       *       ось Y  градуируется 
+       *          от единиц до тысяч
+       * К сетке привязать данные!!!
+       *    
+       */
 
-      this.ctx.beginPath();
-      this.ctx.lineWidth = 1;
-      this.ctx.strokeStyle = '#ADB5D9';
-      this.ctx.font = '20px Arial';
-
-      if (key.endsWith('01')) {
-         str_1 = key.slice(8, 10);
-         str_2 = key.slice(5, 7);
-         str_3 = key.slice(0, 4).slice(2, 4);
-         str = `${str_1}.${str_2}.${str_3}`;
-
-         this.ctx.moveTo(this.WIDTH_DPI - Math.round(n * this.scaleX) + this.paddingLeft, this.paddingTop);
-         this.ctx.lineTo(this.WIDTH_DPI - Math.round(n * this.scaleX) + this.paddingLeft, this.HEIGHT_DPI - this.paddingBottom);
-         this.ctx.strokeText(str, this.WIDTH_DPI - Math.round(n * this.scaleX) - 50 + this.paddingLeft, this.HEIGHT_DPI - 10);
-         this.ctx.stroke();
-      }
+      this.X_axis(key, n);
 
 
    }
 
    X_axis(key, n) {
-      console.log("X_axis(){}");
+
+      /**
+       * КОЛ = n-Линии * k-X_axis 
+       *    КОЛ - координата очередной линии
+       * k-X_axis = КВЛ / КТО 
+       *   КТО - общее количество точек по оси 
+       *   КВЛ - количество вертикальных линий сетки которые нужно отобразить 
+       * 
+       * 
+       */
+
+
+      // this.HEIGHT_DPI = params.canvasHight * 2;
+      // this.WIDTH_DPI = params.canvasWidht * 2;
+      // this.scaleX = params.scaleX;
+      // this.scaleY = params.scaleY;
+
+      // this.paddingTop = params.paddingTop;
+      // this.paddingBottom = params.paddingBottom;
+      // this.paddingLeft = params.paddingLeft;
+      // this.paddingRight = params.paddingRight;
+
+      // this.HEIGHT_GRAPH_FILD = this.HEIGHT_DPI - (this.paddingTop + this.paddingBottom);
+      // this.WIDTH_GRAPH_FILD = this.WIDTH_DPI - (this.paddingLeft + this.paddingRight);
+
+      console.log("this.HEIGHT_GRAPH_FILD = ", this.HEIGHT_GRAPH_FILD);
+      console.log("this.WIDTH_GRAPH_FILD = ", this.WIDTH_GRAPH_FILD);
+
+
+
+
+
+
+
    }
 
    Y_axis(key, n) {
