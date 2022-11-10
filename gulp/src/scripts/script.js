@@ -197,6 +197,28 @@ class Y_axis {
       this.n = n;
       this.canv = canv;
 
+
+
+
+
+      this.canv.ctx.beginPath();
+      this.canv.ctx.lineWidth = 1;
+      this.canv.ctx.strokeStyle = '#ADB5D9';
+      this.canv.ctx.font = '20px Arial';
+      for (let i = 0; i < this.canv.HEIGHT_DPI; i = i + 100) {
+
+         this.canv.ctx.moveTo(this.canv.paddingLeft, this.canv.HEIGHT_DPI - Math.abs(this.canv.HEIGHT_DPI - i) * this.canv.scaleY);
+         this.canv.ctx.lineTo(this.canv.WIDTH_DPI - this.canv.paddingRight - this.canv.widthYaxis + 20, this.canv.HEIGHT_DPI - Math.abs(this.canv.HEIGHT_DPI - i) * this.canv.scaleY);
+         this.canv.ctx.strokeText((this.canv.HEIGHT_DPI - i) * 100, this.canv.WIDTH_DPI - 70, this.canv.HEIGHT_DPI - Math.abs(this.canv.HEIGHT_DPI - i) * this.canv.scaleY);
+         this.canv.ctx.stroke();
+      }
+
+
+
+
+
+
+
       // this._field();
    }
 
