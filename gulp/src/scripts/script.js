@@ -153,7 +153,10 @@ export class Chart {
 }
 
 class X_axis {
-
+   /**
+    * при маштобировании сетки растояния между вертикальными линиями меняются!!
+    * градуировка шкалы не меняется
+    */
 
    constructor(key, n, canv) {
 
@@ -190,7 +193,10 @@ class X_axis {
 }
 
 class Y_axis {
-
+   /**
+    * при маштобировании сетки растояния между горизонтальными линиями не меняются!!
+    * градуировка шкалы меняется 
+    */
 
    constructor(key, n, canv) {
       this.key = key;
@@ -212,12 +218,6 @@ class Y_axis {
          this.canv.ctx.strokeText((this.canv.HEIGHT_DPI - i) * 100, this.canv.WIDTH_DPI - 80, this.canv.HEIGHT_DPI - Math.abs(this.canv.HEIGHT_DPI - i) * this.canv.scaleY);
          this.canv.ctx.stroke();
       }
-
-
-
-
-
-
 
       // this._field();
    }
