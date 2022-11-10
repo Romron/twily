@@ -12,12 +12,12 @@ let params = {
    scaleX: 2.6,
    scaleY: 1,
    ROWS_AMOUNT: 5,
-   paddingTop: 30,
+   paddingTop: 20,
    paddingBottom: 10,
-   paddingLeft: 30,
-   paddingRight: 10,
+   paddingLeft: 20,
+   paddingRight: 20,
    widthYaxis: 100,
-   hightXaxis: 50
+   hightXaxis: 30
 };
 
 

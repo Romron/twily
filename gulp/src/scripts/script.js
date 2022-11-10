@@ -209,7 +209,7 @@ class Y_axis {
 
          this.canv.ctx.moveTo(this.canv.paddingLeft, this.canv.HEIGHT_DPI - Math.abs(this.canv.HEIGHT_DPI - i) * this.canv.scaleY);
          this.canv.ctx.lineTo(this.canv.WIDTH_DPI - this.canv.paddingRight - this.canv.widthYaxis + 20, this.canv.HEIGHT_DPI - Math.abs(this.canv.HEIGHT_DPI - i) * this.canv.scaleY);
-         this.canv.ctx.strokeText((this.canv.HEIGHT_DPI - i) * 100, this.canv.WIDTH_DPI - 70, this.canv.HEIGHT_DPI - Math.abs(this.canv.HEIGHT_DPI - i) * this.canv.scaleY);
+         this.canv.ctx.strokeText((this.canv.HEIGHT_DPI - i) * 100, this.canv.WIDTH_DPI - 80, this.canv.HEIGHT_DPI - Math.abs(this.canv.HEIGHT_DPI - i) * this.canv.scaleY);
          this.canv.ctx.stroke();
       }
 
