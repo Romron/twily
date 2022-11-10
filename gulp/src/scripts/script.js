@@ -171,7 +171,7 @@ class X_axis {
       this.canv.ctx.lineTo(xLine, this.canv.HEIGHT_DPI - this.canv.paddingBottom - this.canv.hightXaxis);
       this.canv.ctx.stroke();
 
-      this._field();
+      // this._field();
    }
 
    _field() {
@@ -180,8 +180,8 @@ class X_axis {
       // this.canv.ctx.strokeStyle = '#ADB5D9';
       this.canv.ctx.strokeStyle = 'blue';
       this.canv.ctx.moveTo(this.canv.paddingLeft, this.canv.HEIGHT_DPI - this.canv.paddingBottom);
-      this.canv.ctx.lineTo(this.canv.WIDTH_DPI - this.canv.paddingRight, this.canv.HEIGHT_DPI - this.canv.paddingBottom);
-      this.canv.ctx.lineTo(this.canv.WIDTH_DPI - this.canv.paddingRight, this.canv.HEIGHT_DPI - this.canv.paddingBottom - this.canv.hightXaxis);
+      this.canv.ctx.lineTo(this.canv.WIDTH_DPI - this.canv.paddingRight - this.canv.widthYaxis, this.canv.HEIGHT_DPI - this.canv.paddingBottom);
+      this.canv.ctx.lineTo(this.canv.WIDTH_DPI - this.canv.paddingRight - this.canv.widthYaxis, this.canv.HEIGHT_DPI - this.canv.paddingBottom - this.canv.hightXaxis);
       this.canv.ctx.lineTo(this.canv.paddingLeft, this.canv.HEIGHT_DPI - this.canv.paddingBottom - this.canv.hightXaxis);
       this.canv.ctx.closePath();
       this.canv.ctx.stroke();
@@ -197,7 +197,7 @@ class Y_axis {
       this.n = n;
       this.canv = canv;
 
-      this._field();
+      // this._field();
    }
 
 
@@ -207,8 +207,8 @@ class Y_axis {
       // this.canv.ctx.strokeStyle = '#ADB5D9';
       this.canv.ctx.strokeStyle = 'blue';
       this.canv.ctx.moveTo(this.canv.WIDTH_DPI - this.canv.paddingRight, this.canv.paddingTop);
-      this.canv.ctx.lineTo(this.canv.WIDTH_DPI - this.canv.paddingRight, this.canv.HEIGHT_DPI - this.canv.paddingBottom);
-      this.canv.ctx.lineTo(this.canv.WIDTH_DPI - this.canv.paddingRight - this.canv.widthYaxis, this.canv.HEIGHT_DPI - this.canv.paddingBottom);
+      this.canv.ctx.lineTo(this.canv.WIDTH_DPI - this.canv.paddingRight, this.canv.HEIGHT_DPI - this.canv.paddingBottom - this.canv.hightXaxis);
+      this.canv.ctx.lineTo(this.canv.WIDTH_DPI - this.canv.paddingRight - this.canv.widthYaxis, this.canv.HEIGHT_DPI - this.canv.paddingBottom - this.canv.hightXaxis);
       this.canv.ctx.lineTo(this.canv.WIDTH_DPI - this.canv.paddingRight - this.canv.widthYaxis, this.canv.paddingTop);
       this.canv.ctx.closePath();
       this.canv.ctx.stroke();
