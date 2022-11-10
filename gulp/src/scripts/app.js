@@ -13,9 +13,11 @@ let params = {
    scaleY: 1,
    ROWS_AMOUNT: 5,
    paddingTop: 30,
-   paddingBottom: 40,
+   paddingBottom: 10,
    paddingLeft: 30,
-   paddingRight: 100,
+   paddingRight: 10,
+   widthYaxis: 100,
+   hightXaxis: 50
 };
 
 

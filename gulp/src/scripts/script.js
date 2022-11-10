@@ -47,8 +47,15 @@ export class Chart {
     *          текущий масштаб
             выполняет
             возвращает
-    *  при масштабировании холста 
-    *    определить участок массива данных для отображения 
+    *    масштабировании холста
+            цели
+               отобразить участок графика более/менее детально
+            способ
+               получить границы выбранного участка холста
+               получить границы участока графика
+               получить срез данных которые соответствуют выбраному участку графика
+               отобразить соответствующий  участока графика пропорционально изменив его ленейные размеры
+               отобразить элементы холста из выбранного участка пропорционально изменив их ленейные размеры
     */
 
    data = {};
@@ -64,9 +71,11 @@ export class Chart {
       this.paddingBottom = params.paddingBottom;
       this.paddingLeft = params.paddingLeft;
       this.paddingRight = params.paddingRight;
+      this.widthYaxis = params.widthYaxis;
+      this.hightXaxis = params.hightXaxis;
 
-      this.HEIGHT_GRAPH_FILD = this.HEIGHT_DPI - (this.paddingTop + this.paddingBottom);
-      this.WIDTH_GRAPH_FILD = this.WIDTH_DPI - (this.paddingLeft + this.paddingRight);
+      this.HEIGHT_GRAPH_FILD = this.HEIGHT_DPI - (this.paddingTop + this.paddingBottom + this.hightXaxis);
+      this.WIDTH_GRAPH_FILD = this.WIDTH_DPI - (this.paddingLeft + this.paddingRight + this.widthYaxis);
 
 
       if (!document.getElementById(params.idCanvas)) {
@@ -126,55 +135,89 @@ export class Chart {
        *    
        */
 
-      this.X_axis(key, n);
+
+      let Xaxis = new X_axis(key, n, this);
+      let Yaxis = new Y_axis(key, n, this);
 
 
    }
 
-   X_axis(key, n) {
-
-      /**
-       * КОЛ = n-Линии * k-X_axis 
-       *    КОЛ - координата очередной линии
-       * k-X_axis = КВЛ / КТО 
-       *   КТО - общее количество точек по оси 
-       *   КВЛ - количество вертикальных линий сетки которые нужно отобразить 
-       * 
-       * 
-       */
 
 
-      // this.HEIGHT_DPI = params.canvasHight * 2;
-      // this.WIDTH_DPI = params.canvasWidht * 2;
-      // this.scaleX = params.scaleX;
-      // this.scaleY = params.scaleY;
-
-      // this.paddingTop = params.paddingTop;
-      // this.paddingBottom = params.paddingBottom;
-      // this.paddingLeft = params.paddingLeft;
-      // this.paddingRight = params.paddingRight;
-
-      // this.HEIGHT_GRAPH_FILD = this.HEIGHT_DPI - (this.paddingTop + this.paddingBottom);
-      // this.WIDTH_GRAPH_FILD = this.WIDTH_DPI - (this.paddingLeft + this.paddingRight);
-
-      console.log("this.HEIGHT_GRAPH_FILD = ", this.HEIGHT_GRAPH_FILD);
-      console.log("this.WIDTH_GRAPH_FILD = ", this.WIDTH_GRAPH_FILD);
-
-
-
-
-
-
-
-   }
-
-   Y_axis(key, n) {
-      console.log("Y_axis(){}");
-   }
+   // Y_axis(key, n) {
+   //    console.log("Y_axis(){}");
+   // }
 
 
 
 }
+
+class X_axis {
+
+
+   constructor(key, n, canv) {
+
+      this.key = key;
+      this.n = n;
+      this.canv = canv;
+
+      let amountLine = Math.round(this.canv.WIDTH_GRAPH_FILD / 100);
+      let k_X_axis = this.canv.WIDTH_GRAPH_FILD / amountLine;
+      let xLine = Math.round(this.canv.WIDTH_DPI - (n * k_X_axis + this.canv.paddingRight + this.canv.widthYaxis));
+
+      this.canv.ctx.beginPath();
+      this.canv.ctx.strokeStyle = '#ADB5D9';
+      this.canv.ctx.moveTo(xLine, this.canv.paddingTop);
+      this.canv.ctx.lineTo(xLine, this.canv.HEIGHT_DPI - this.canv.paddingBottom - this.canv.hightXaxis);
+      this.canv.ctx.stroke();
+
+      this._field();
+   }
+
+   _field() {
+      this.canv.ctx.beginPath();
+      this.canv.ctx.lineWidth = 2;
+      // this.canv.ctx.strokeStyle = '#ADB5D9';
+      this.canv.ctx.strokeStyle = 'blue';
+      this.canv.ctx.moveTo(this.canv.paddingLeft, this.canv.HEIGHT_DPI - this.canv.paddingBottom);
+      this.canv.ctx.lineTo(this.canv.WIDTH_DPI - this.canv.paddingRight, this.canv.HEIGHT_DPI - this.canv.paddingBottom);
+      this.canv.ctx.lineTo(this.canv.WIDTH_DPI - this.canv.paddingRight, this.canv.HEIGHT_DPI - this.canv.paddingBottom - this.canv.hightXaxis);
+      this.canv.ctx.lineTo(this.canv.paddingLeft, this.canv.HEIGHT_DPI - this.canv.paddingBottom - this.canv.hightXaxis);
+      this.canv.ctx.closePath();
+      this.canv.ctx.stroke();
+   }
+
+}
+
+class Y_axis {
+
+
+   constructor(key, n, canv) {
+      this.key = key;
+      this.n = n;
+      this.canv = canv;
+
+      this._field();
+   }
+
+
+   _field() {
+      this.canv.ctx.beginPath();
+      this.canv.ctx.lineWidth = 2;
+      // this.canv.ctx.strokeStyle = '#ADB5D9';
+      this.canv.ctx.strokeStyle = 'blue';
+      this.canv.ctx.moveTo(this.canv.WIDTH_DPI - this.canv.paddingRight, this.canv.paddingTop);
+      this.canv.ctx.lineTo(this.canv.WIDTH_DPI - this.canv.paddingRight, this.canv.HEIGHT_DPI - this.canv.paddingBottom);
+      this.canv.ctx.lineTo(this.canv.WIDTH_DPI - this.canv.paddingRight - this.canv.widthYaxis, this.canv.HEIGHT_DPI - this.canv.paddingBottom);
+      this.canv.ctx.lineTo(this.canv.WIDTH_DPI - this.canv.paddingRight - this.canv.widthYaxis, this.canv.paddingTop);
+      this.canv.ctx.closePath();
+      this.canv.ctx.stroke();
+   }
+
+
+}
+
+
 
 
 export class DataProcessing {
