@@ -8,6 +8,8 @@ export class Chart {
     * необходимые сущьности
     *    холст canv()
     *       получает
+    *          массив params
+    *          массив с данными data
     *       путём единого(!!) для всего приложения цыкле перебора данных
     *       связывает данные с координатами холста   
     *       в этом цыкле отрисовывается:
@@ -16,9 +18,9 @@ export class Chart {
     *          график
     *    _график graph(){}
     *       отрисовка графика
-    *    _ось X  X_axis(){}
+    *    ось X  X_axis(){} -- отдельные объекты
     *       создать шкалу
-    *    _ось Y Y_axis(){}
+    *    ось Y Y_axis(){} -- отдельные объекты
     *       создать шкалу
     *    _координатная сетка  CoordinateGrid()
     *       создать сетку
@@ -90,24 +92,52 @@ export class Chart {
       }
 
 
+      this.init();
 
    }
+
+   init() {
+
+
+      const proxy = new Proxy({}, {
+         set(...args) {
+            const result = Reflect.set(...args);
+            requestAnimationFrame(() => {
+
+
+            });
+            return result;
+         }
+      });
+
+      this.canvas.addEventListener('mousemove', ({ clientX, clientY }) => {      // получание текущих координат курсора
+         const { left, top } = this.canvas.getBoundingClientRect()      // т.к. координаты канваса не савпадают с координатами экрана  
+         proxy.mouse = {
+            // x: (clientX - left) * 2,      // преобразование в WIDTH_DPI
+            // y: (clientY - top) * 2,       // преобразование в HEIGHT_DPI
+         }
+         this.mouse = proxy.mouse;
+      });
+
+   }
+
 
    canv() {
 
       Object.keys(this.data).forEach((key, n) => {
-         // console.log("key, n = ", key, n);
-         setTimeout(() => {
-            // this.graph(key, n);
+         setTimeout(() => {         // для тестов
             this.CoordinateGrid(key, n);
-            // this.X_axis(key, n);
-            // this.Y_axis(key, n);
-         }, 100);
+            this.graph(key, n);
+         }, 100);                   // для тестов
       });
    }
 
    graph(key, n) {
 
+
+      // this.ctx.beginPath();
+      // this.ctx.lineWidth = 3;
+      // this.ctx.strokeStyle = '#f00808';
       if (n == 0) {
          this.ctx.moveTo(
             this.WIDTH_DPI - n * this.scaleX - this.paddingRight,
@@ -142,13 +172,40 @@ export class Chart {
 
    }
 
+   horizontalPointerText(mouse) {
+      this.ctx.font = '25px Arial';
+      this.ctx.fillText(Math.ceil((this.HEIGHT_DPI - mouse.y) / this.scaleY * 100), this.WIDTH_DPI - 170, mouse.y);
+      this.ctx.fillText(Math.ceil(mouse.x), mouse.x, this.HEIGHT_DPI - 40);
+   }
 
+   horizontalPointer(mouse) {
+      this.ctx.beginPath();
+      this.ctx.lineWidth = 1;
+      this.ctx.setLineDash([4, 16]);      // устанавливается для всего холста
+      this.ctx.moveTo(mouse.x, mouse.y);
+      this.ctx.lineTo(mouse.x, this.WIDTH_DPI);
+      this.ctx.strokeStyle = '#3A3A3C';
+      this.ctx.stroke();
+      this.ctx.beginPath();
+      this.ctx.moveTo(mouse.x, mouse.y);
+      this.ctx.lineTo(this.WIDTH_DPI, mouse.y);
+      this.ctx.closePath();
+      this.ctx.stroke();
+      this.ctx.setLineDash([]);     // сброс штриховки и возврат к сплошным линиям
+   }
 
-   // Y_axis(key, n) {
-   //    console.log("Y_axis(){}");
-   // }
+   circul(mouse) {
+      this.ctx.beginPath();
+      this.ctx.lineWidth = 2;
+      this.ctx.strokeStyle = '#3A3A3C';
+      this.ctx.arc(mouse.x, mouse.y, 7, 0, Math.PI * 2);
+      this.ctx.stroke();
+      this.ctx.closePath();
+   }
 
-
+   clear() {
+      this.ctx.clearRect(0, 0, this.WIDTH_DPI, this.HEIGHT_DPI);
+   }
 
 }
 
@@ -174,7 +231,6 @@ class X_axis {
       this.canv.ctx.lineTo(xLine, this.canv.HEIGHT_DPI - this.canv.paddingBottom - this.canv.hightXaxis);
       this.canv.ctx.stroke();
 
-      // this._field();
    }
 
    _field() {
@@ -203,10 +259,6 @@ class Y_axis {
       this.n = n;
       this.canv = canv;
 
-
-
-
-
       this.canv.ctx.beginPath();
       this.canv.ctx.lineWidth = 1;
       this.canv.ctx.strokeStyle = '#ADB5D9';
@@ -216,8 +268,8 @@ class Y_axis {
          this.canv.ctx.moveTo(this.canv.paddingLeft, this.canv.HEIGHT_DPI - Math.abs(this.canv.HEIGHT_DPI - i) * this.canv.scaleY);
          this.canv.ctx.lineTo(this.canv.WIDTH_DPI - this.canv.paddingRight - this.canv.widthYaxis + 20, this.canv.HEIGHT_DPI - Math.abs(this.canv.HEIGHT_DPI - i) * this.canv.scaleY);
          this.canv.ctx.strokeText((this.canv.HEIGHT_DPI - i) * 100, this.canv.WIDTH_DPI - 80, this.canv.HEIGHT_DPI - Math.abs(this.canv.HEIGHT_DPI - i) * this.canv.scaleY);
-         this.canv.ctx.stroke();
       }
+      this.canv.ctx.stroke();
 
       // this._field();
    }
