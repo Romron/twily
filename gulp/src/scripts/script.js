@@ -138,6 +138,7 @@ export class Chart {
       // this.ctx.beginPath();
       // this.ctx.lineWidth = 3;
       // this.ctx.strokeStyle = '#f00808';
+
       if (n == 0) {
          this.ctx.moveTo(
             this.WIDTH_DPI - n * this.scaleX - this.paddingRight,
