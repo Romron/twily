@@ -128,12 +128,32 @@ export class Chart {
    }
 
 
-   canv() {
+   qqq() {
 
       Object.keys(this.data).forEach((key, n) => {
          // this.ctx.beginPath();
          // setTimeout(() => {         // для тестов
-         this.graph(key, n);
+
+
+         this.ctx.lineWidth = 2;
+         this.ctx.strokeStyle = 'blue';
+
+         if (n == 0) {
+            this.ctx.moveTo(
+               this.WIDTH_DPI - n * this.scaleX - this.paddingRight,
+               this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY
+            );
+         }
+         this.ctx.lineTo(
+            this.WIDTH_DPI - n * this.scaleX - this.paddingRight,
+            this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY
+         );
+         this.ctx.stroke();
+
+
+
+
+         // this.graph(key, n);
          // }, 100);                   // для тестов
 
       });
@@ -147,20 +167,20 @@ export class Chart {
 
       // this.ctx.save();
       // this.ctx.beginPath();
-      this.ctx.lineWidth = 2;
-      this.ctx.strokeStyle = 'blue';
+      // this.ctx.lineWidth = 2;
+      // this.ctx.strokeStyle = 'blue';
 
-      if (n == 0) {
-         this.ctx.moveTo(
-            this.WIDTH_DPI - n * this.scaleX - this.paddingRight,
-            this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY
-         );
-      }
-      this.ctx.lineTo(
-         this.WIDTH_DPI - n * this.scaleX - this.paddingRight,
-         this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY
-      );
-      this.ctx.stroke();
+      // if (n == 0) {
+      //    this.ctx.moveTo(
+      //       this.WIDTH_DPI - n * this.scaleX - this.paddingRight,
+      //       this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY
+      //    );
+      // }
+      // this.ctx.lineTo(
+      //    this.WIDTH_DPI - n * this.scaleX - this.paddingRight,
+      //    this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY
+      // );
+      // this.ctx.stroke();
       // this.ctx.restore();
 
 
@@ -229,11 +249,11 @@ class X_axis {
     * градуировка шкалы не меняется
     */
 
-   constructor(canv) {
+   constructor(canv_this) {
 
       // this.key = key;
       // this.n = n;
-      this.canv = canv;
+      this.canv = canv_this;
 
    }
 
@@ -281,10 +301,10 @@ class Y_axis {
     * градуировка шкалы меняется 
     */
 
-   constructor(canv) {
+   constructor(canv_this) {
       // this.key = key;
       // this.n = n;
-      this.canv = canv;
+      this.canv = canv_this;
 
       // this._field();
    }
