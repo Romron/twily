@@ -89,6 +89,10 @@ export class Chart {
          this.canvas.width = this.WIDTH_DPI;
          this.canvas.height = this.HEIGHT_DPI;
          this.ctx = this.canvas.getContext('2d');
+
+         this.Xaxis = new X_axis(this);
+         this.Yaxis = new Y_axis(this);
+
       }
 
 
@@ -97,6 +101,8 @@ export class Chart {
    }
 
    init() {
+
+      this.CoordinateGrid();
 
 
       const proxy = new Proxy({}, {
@@ -125,19 +131,24 @@ export class Chart {
    canv() {
 
       Object.keys(this.data).forEach((key, n) => {
-         setTimeout(() => {         // для тестов
-            this.CoordinateGrid(key, n);
-            this.graph(key, n);
-         }, 100);                   // для тестов
+         // this.ctx.beginPath();
+         // setTimeout(() => {         // для тестов
+         this.graph(key, n);
+         // }, 100);                   // для тестов
+
       });
+
+
    }
 
    graph(key, n) {
 
+      // console.log("this.ctx = ", this.ctx);
 
+      // this.ctx.save();
       // this.ctx.beginPath();
-      // this.ctx.lineWidth = 3;
-      // this.ctx.strokeStyle = '#f00808';
+      this.ctx.lineWidth = 2;
+      this.ctx.strokeStyle = 'blue';
 
       if (n == 0) {
          this.ctx.moveTo(
@@ -150,6 +161,7 @@ export class Chart {
          this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY
       );
       this.ctx.stroke();
+      // this.ctx.restore();
 
 
    }
@@ -167,8 +179,9 @@ export class Chart {
        */
 
 
-      let Xaxis = new X_axis(key, n, this);
-      let Yaxis = new Y_axis(key, n, this);
+
+      this.Yaxis.painAxis();
+      this.Xaxis.painAxis();
 
 
    }
@@ -216,22 +229,35 @@ class X_axis {
     * градуировка шкалы не меняется
     */
 
-   constructor(key, n, canv) {
+   constructor(canv) {
 
-      this.key = key;
-      this.n = n;
+      // this.key = key;
+      // this.n = n;
       this.canv = canv;
 
-      let amountLine = Math.round(this.canv.WIDTH_GRAPH_FILD / 100);
-      let k_X_axis = this.canv.WIDTH_GRAPH_FILD / amountLine;
-      let xLine = Math.round(this.canv.WIDTH_DPI - (n * k_X_axis + this.canv.paddingRight + this.canv.widthYaxis));
+   }
 
+   painAxis() {
+
+      // this.key = key;
+      // this.n = n;
       this.canv.ctx.beginPath();
-      this.canv.ctx.strokeStyle = '#ADB5D9';
-      this.canv.ctx.moveTo(xLine, this.canv.paddingTop);
-      this.canv.ctx.lineTo(xLine, this.canv.HEIGHT_DPI - this.canv.paddingBottom - this.canv.hightXaxis);
-      this.canv.ctx.stroke();
 
+      for (let n = 0; n < 1000; n++) {
+
+
+         let amountLine = Math.round(this.canv.WIDTH_GRAPH_FILD / 100);
+         let k_X_axis = this.canv.WIDTH_GRAPH_FILD / amountLine;
+         let xLine = Math.round(this.canv.WIDTH_DPI - (n * k_X_axis + this.canv.paddingRight + this.canv.widthYaxis));
+
+         // this.canv.ctx.save();
+         this.canv.ctx.strokeStyle = '#ADB5D9';
+         this.canv.ctx.moveTo(xLine, this.canv.paddingTop);
+         this.canv.ctx.lineTo(xLine, this.canv.HEIGHT_DPI - this.canv.paddingBottom - this.canv.hightXaxis);
+         // this.canv.ctx.restore();
+      }
+
+      this.canv.ctx.stroke();
    }
 
    _field() {
@@ -255,11 +281,20 @@ class Y_axis {
     * градуировка шкалы меняется 
     */
 
-   constructor(key, n, canv) {
-      this.key = key;
-      this.n = n;
+   constructor(canv) {
+      // this.key = key;
+      // this.n = n;
       this.canv = canv;
 
+      // this._field();
+   }
+
+   painAxis() {
+
+      // this.key = key;
+      // this.n = n;
+
+      // this.canv.ctx.save();
       this.canv.ctx.beginPath();
       this.canv.ctx.lineWidth = 1;
       this.canv.ctx.strokeStyle = '#ADB5D9';
@@ -271,10 +306,8 @@ class Y_axis {
          this.canv.ctx.strokeText((this.canv.HEIGHT_DPI - i) * 100, this.canv.WIDTH_DPI - 80, this.canv.HEIGHT_DPI - Math.abs(this.canv.HEIGHT_DPI - i) * this.canv.scaleY);
       }
       this.canv.ctx.stroke();
-
-      // this._field();
+      // this.canv.ctx.restore();
    }
-
 
    _field() {
       this.canv.ctx.beginPath();
