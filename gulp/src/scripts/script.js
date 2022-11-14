@@ -166,7 +166,7 @@ export class Chart {
 
    }
 
-   CoordinateGrid(key, n) {
+   CoordinateGrid() {
       /**
        * рисует координатную сетку которая 
        *    изменяеться при изменении масштаба
