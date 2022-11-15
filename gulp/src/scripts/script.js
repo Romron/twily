@@ -96,31 +96,40 @@ export class Chart {
       }
 
 
-      this.init();
+      this._init();
 
    }
 
-   init() {
+   _init() {
 
       this.CoordinateGrid();
-
+      this.mouse = {};
 
       const proxy = new Proxy({}, {
          set(...args) {
             const result = Reflect.set(...args);
             requestAnimationFrame(() => {
+               proxy.this.clear();
+               proxy.this.CoordinateGrid();
+               proxy.this.graph();
 
+               proxy.this.horizontalPointer();
+               proxy.this.horizontalPointerText();
+               proxy.this.circul();
 
             });
             return result;
          }
       });
 
+      proxy.this = this;
+      // proxy.mc = mc;
+
       this.canvas.addEventListener('mousemove', ({ clientX, clientY }) => {      // получание текущих координат курсора
          const { left, top } = this.canvas.getBoundingClientRect()      // т.к. координаты канваса не савпадают с координатами экрана  
          proxy.mouse = {
-            // x: (clientX - left) * 2,      // преобразование в WIDTH_DPI
-            // y: (clientY - top) * 2,       // преобразование в HEIGHT_DPI
+            x: (clientX - left) * 2,      // преобразование в WIDTH_DPI
+            y: (clientY - top) * 2,       // преобразование в HEIGHT_DPI
          }
          this.mouse = proxy.mouse;
       });
@@ -128,24 +137,23 @@ export class Chart {
    }
 
 
-   qqq() {
+   graph() {
 
       this.ctx.beginPath();
       Object.keys(this.data).forEach((key, n) => {
 
-
          this.ctx.lineWidth = 2;
-         this.ctx.strokeStyle = 'blue';
+         this.ctx.strokeStyle = '#252229';
 
          if (n == 0) {
             this.ctx.moveTo(
                this.WIDTH_DPI - n * this.scaleX - this.paddingRight - this.widthYaxis,
-               this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY/* + this.hightXaxis*/ - this.paddingBottom - this.hightXaxis
+               this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY - this.paddingBottom - this.hightXaxis
             );
          }
          this.ctx.lineTo(
             this.WIDTH_DPI - n * this.scaleX - this.paddingRight - this.widthYaxis,
-            this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY/* + this.hightXaxis*/ - this.paddingBottom - this.hightXaxis
+            this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY - this.paddingBottom - this.hightXaxis
          );
 
       });
@@ -154,30 +162,6 @@ export class Chart {
 
    }
 
-   graph(key, n) {
-
-      // console.log("this.ctx = ", this.ctx);
-
-      // this.ctx.save();
-      // this.ctx.beginPath();
-      // this.ctx.lineWidth = 2;
-      // this.ctx.strokeStyle = 'blue';
-
-      // if (n == 0) {
-      //    this.ctx.moveTo(
-      //       this.WIDTH_DPI - n * this.scaleX - this.paddingRight - this.widthYaxis,
-      //       this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY
-      //    );
-      // }
-      // this.ctx.lineTo(
-      //    this.WIDTH_DPI - n * this.scaleX - this.paddingRight - this.widthYaxis,
-      //    this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY
-      // );
-      // this.ctx.stroke();
-      // this.ctx.restore();
-
-
-   }
 
    CoordinateGrid() {
       /**
@@ -192,40 +176,38 @@ export class Chart {
        */
 
 
-
       this.Yaxis.painAxis();
       this.Xaxis.painAxis();
 
-
    }
 
-   horizontalPointerText(mouse) {
+   horizontalPointerText() {
       this.ctx.font = '25px Arial';
-      this.ctx.fillText(Math.ceil((this.HEIGHT_DPI - mouse.y) / this.scaleY * 100), this.WIDTH_DPI - 170, mouse.y);
-      this.ctx.fillText(Math.ceil(mouse.x), mouse.x, this.HEIGHT_DPI - 40);
+      this.ctx.fillText(Math.ceil((this.HEIGHT_DPI - this.mouse.y - this.paddingBottom - this.hightXaxis) / this.scaleY * 100) + 26, this.WIDTH_DPI - 70, this.mouse.y);
+      this.ctx.fillText(Math.ceil(this.mouse.x), this.mouse.x, this.HEIGHT_DPI - 40);
    }
 
-   horizontalPointer(mouse) {
+   horizontalPointer() {
       this.ctx.beginPath();
       this.ctx.lineWidth = 1;
       this.ctx.setLineDash([4, 16]);      // устанавливается для всего холста
-      this.ctx.moveTo(mouse.x, mouse.y);
-      this.ctx.lineTo(mouse.x, this.WIDTH_DPI);
+      this.ctx.moveTo(this.mouse.x, this.mouse.y);
+      this.ctx.lineTo(this.mouse.x, this.WIDTH_DPI);
       this.ctx.strokeStyle = '#3A3A3C';
       this.ctx.stroke();
       this.ctx.beginPath();
-      this.ctx.moveTo(mouse.x, mouse.y);
-      this.ctx.lineTo(this.WIDTH_DPI, mouse.y);
+      this.ctx.moveTo(this.mouse.x, this.mouse.y);
+      this.ctx.lineTo(this.WIDTH_DPI, this.mouse.y);
       this.ctx.closePath();
       this.ctx.stroke();
       this.ctx.setLineDash([]);     // сброс штриховки и возврат к сплошным линиям
    }
 
-   circul(mouse) {
+   circul() {
       this.ctx.beginPath();
       this.ctx.lineWidth = 2;
       this.ctx.strokeStyle = '#3A3A3C';
-      this.ctx.arc(mouse.x, mouse.y, 7, 0, Math.PI * 2);
+      this.ctx.arc(this.mouse.x, this.mouse.y, 7, 0, Math.PI * 2);
       this.ctx.stroke();
       this.ctx.closePath();
    }

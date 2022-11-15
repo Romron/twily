@@ -26,6 +26,6 @@ window.onload = function () {
 
    dP.GetData().then((data) => {
       chr.data = dP.PreparationData(data);
-      chr.qqq();
+      chr.graph();
    });
 }
