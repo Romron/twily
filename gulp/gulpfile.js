@@ -22,13 +22,6 @@ if (__dirname.includes('OSPanel')) {
    proxyPath = "http://web/twily/gulp/build/";    // рабочий комп
 }
 
-
-let phpFiles = [
-   './src/**/*.php',
-   './src/**/*.json',      // временно! 
-   '!./src/parts/*.*',     // т.к. fileinclude ...
-]
-
 let cssFiles = [      // для того чтобы файлы подключались в строго установленой последовательности
    './src/styles/normalize.css',
    './src/styles/style.css',
@@ -44,6 +37,12 @@ let imgFiles = [     // для того чтобы файлы подключал
 
 let fontFiles = [     // для того чтобы файлы подключались в строго установленой последовательности
    './src/fonts/**/*.*',
+]
+
+let phpFiles = [
+   './src/**/*.php',
+   './src/**/*.json',      // временно! 
+   '!./src/parts/*.*',     // т.к. fileinclude ...
 ]
 
 function php() {

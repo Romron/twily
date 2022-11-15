@@ -17,7 +17,7 @@ let params = {
    paddingLeft: 20,
    paddingRight: 20,
    widthYaxis: 100,
-   hightXaxis: 30
+   hightXaxis: 40
 };
 
 
