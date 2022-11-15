@@ -130,9 +130,8 @@ export class Chart {
 
    qqq() {
 
+      this.ctx.beginPath();
       Object.keys(this.data).forEach((key, n) => {
-         // this.ctx.beginPath();
-         // setTimeout(() => {         // для тестов
 
 
          this.ctx.lineWidth = 2;
@@ -140,24 +139,18 @@ export class Chart {
 
          if (n == 0) {
             this.ctx.moveTo(
-               this.WIDTH_DPI - n * this.scaleX - this.paddingRight,
-               this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY
+               this.WIDTH_DPI - n * this.scaleX - this.paddingRight - this.widthYaxis,
+               this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY/* + this.hightXaxis*/ - this.paddingBottom - this.hightXaxis
             );
          }
          this.ctx.lineTo(
-            this.WIDTH_DPI - n * this.scaleX - this.paddingRight,
-            this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY
+            this.WIDTH_DPI - n * this.scaleX - this.paddingRight - this.widthYaxis,
+            this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY/* + this.hightXaxis*/ - this.paddingBottom - this.hightXaxis
          );
-         this.ctx.stroke();
-
-
-
-
-         // this.graph(key, n);
-         // }, 100);                   // для тестов
 
       });
 
+      this.ctx.stroke();
 
    }
 
@@ -172,12 +165,12 @@ export class Chart {
 
       // if (n == 0) {
       //    this.ctx.moveTo(
-      //       this.WIDTH_DPI - n * this.scaleX - this.paddingRight,
+      //       this.WIDTH_DPI - n * this.scaleX - this.paddingRight - this.widthYaxis,
       //       this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY
       //    );
       // }
       // this.ctx.lineTo(
-      //    this.WIDTH_DPI - n * this.scaleX - this.paddingRight,
+      //    this.WIDTH_DPI - n * this.scaleX - this.paddingRight - this.widthYaxis,
       //    this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY
       // );
       // this.ctx.stroke();
@@ -254,7 +247,7 @@ class X_axis {
       // this.key = key;
       // this.n = n;
       this.canv = canv_this;
-
+      // this._field();
    }
 
    painAxis() {
@@ -265,16 +258,12 @@ class X_axis {
 
       for (let n = 0; n < 1000; n++) {
 
-
          let amountLine = Math.round(this.canv.WIDTH_GRAPH_FILD / 100);
          let k_X_axis = this.canv.WIDTH_GRAPH_FILD / amountLine;
          let xLine = Math.round(this.canv.WIDTH_DPI - (n * k_X_axis + this.canv.paddingRight + this.canv.widthYaxis));
-
-         // this.canv.ctx.save();
          this.canv.ctx.strokeStyle = '#ADB5D9';
-         this.canv.ctx.moveTo(xLine, this.canv.paddingTop);
-         this.canv.ctx.lineTo(xLine, this.canv.HEIGHT_DPI - this.canv.paddingBottom - this.canv.hightXaxis);
-         // this.canv.ctx.restore();
+         this.canv.ctx.moveTo(xLine, this.canv.paddingTop + 20);
+         this.canv.ctx.lineTo(xLine, this.canv.HEIGHT_DPI - this.canv.paddingBottom - this.canv.hightXaxis + 20);
       }
 
       this.canv.ctx.stroke();
@@ -314,19 +303,16 @@ class Y_axis {
       // this.key = key;
       // this.n = n;
 
-      // this.canv.ctx.save();
       this.canv.ctx.beginPath();
       this.canv.ctx.lineWidth = 1;
       this.canv.ctx.strokeStyle = '#ADB5D9';
       this.canv.ctx.font = '20px Arial';
-      for (let i = 0; i < this.canv.HEIGHT_DPI; i = i + 100) {
-
-         this.canv.ctx.moveTo(this.canv.paddingLeft, this.canv.HEIGHT_DPI - Math.abs(this.canv.HEIGHT_DPI - i) * this.canv.scaleY);
-         this.canv.ctx.lineTo(this.canv.WIDTH_DPI - this.canv.paddingRight - this.canv.widthYaxis + 20, this.canv.HEIGHT_DPI - Math.abs(this.canv.HEIGHT_DPI - i) * this.canv.scaleY);
-         this.canv.ctx.strokeText((this.canv.HEIGHT_DPI - i) * 100, this.canv.WIDTH_DPI - 80, this.canv.HEIGHT_DPI - Math.abs(this.canv.HEIGHT_DPI - i) * this.canv.scaleY);
+      for (let i = this.canv.HEIGHT_DPI; i > 0; i = i - 100) {
+         this.canv.ctx.moveTo(this.canv.paddingLeft, this.canv.HEIGHT_DPI - Math.abs(this.canv.HEIGHT_DPI - i) * this.canv.scaleY - this.canv.paddingBottom - this.canv.hightXaxis);
+         this.canv.ctx.lineTo(this.canv.WIDTH_DPI - this.canv.paddingRight - this.canv.widthYaxis + 20, this.canv.HEIGHT_DPI - Math.abs(this.canv.HEIGHT_DPI - i) * this.canv.scaleY - this.canv.paddingBottom - this.canv.hightXaxis);
+         this.canv.ctx.strokeText((this.canv.HEIGHT_DPI - i) * 100, this.canv.WIDTH_DPI - 80, this.canv.HEIGHT_DPI - Math.abs(this.canv.HEIGHT_DPI - i) * this.canv.scaleY - this.canv.paddingBottom - this.canv.hightXaxis);
       }
       this.canv.ctx.stroke();
-      // this.canv.ctx.restore();
    }
 
    _field() {
