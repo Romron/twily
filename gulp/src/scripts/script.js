@@ -81,22 +81,7 @@ export class Chart {
       this.WIDTH_GRAPH_FILD = this.WIDTH_DPI - (this.paddingLeft + this.paddingRight + this.widthYaxis);
 
       this.mouse = {};
-
-      this.offsetX = 100;   // для перерасчёто координат при движении всем холстом
-      this.offsetY = 20;   // для перерасчёто координат при движении всем холстом
-
-
-      this.coordinates = {
-         x: (this.WIDTH_DPI - this.paddingRight - this.widthYaxis) * this.scaleX - this.offsetX,
-         y: (this.HEIGHT_DPI - this.paddingBottom - this.hightXaxis) * this.scaleY - this.offsetY
-      }
-
-      console.log("this.WIDTH_DPI = ", this.WIDTH_DPI);
-      console.log("this.paddingRight = ", this.paddingRight);
-      console.log("this.widthYaxis = ", this.widthYaxis);
-      console.log("this.scaleX = ", this.scaleX);
-      console.log("this.offsetX = ", this.offsetX);
-      console.log("this.coordinates.x = ", this.coordinates.x);
+      this.coordinates = {}
 
 
 
@@ -116,9 +101,7 @@ export class Chart {
 
       }
 
-
       this._init();
-
    }
 
    _init() {
@@ -136,7 +119,7 @@ export class Chart {
                proxy.this.horizontalPointer();
                proxy.this.horizontalPointerText();
                proxy.this.circul();
-
+               proxy.this.coordinateseCalculation(100, 100);
 
                proxy.this.funcForTest();
 
@@ -164,13 +147,26 @@ export class Chart {
 
    }
 
+   coordinateseCalculation(offsetX, offsetY) {
+
+      let xNull = (this.WIDTH_DPI - this.paddingRight - this.widthYaxis) * this.scaleX;
+      let yNull = (this.HEIGHT_DPI - this.paddingBottom - this.hightXaxis) * this.scaleY;
+
+      this.coordinates = {
+         xNull: xNull,
+         yNull: yNull,
+         xOffset: xNull - offsetX,
+         yOffset: yNull - offsetY
+      }
+
+   }
 
    funcForTest() {
 
       this.ctx.beginPath();
       this.ctx.lineWidth = 2;
       this.ctx.strokeStyle = 'red';
-      this.ctx.arc(this.coordinates.x, this.coordinates.y, 5, 0, Math.PI * 2);
+      this.ctx.arc(this.coordinates.xOffset, this.coordinates.yOffset, 5, 0, Math.PI * 2);
       this.ctx.stroke();
 
    }
@@ -341,22 +337,42 @@ class X_axis {
    painAxis() {
 
 
-
       // this.key = key;
       // this.n = n;
       this.canv.ctx.beginPath();
+      this.canv.ctx.strokeStyle = '#ADB5D9';
+
+
+      let amountLine = Math.round(this.canv.WIDTH_GRAPH_FILD / 100);
+      let k_X_axis = this.canv.WIDTH_GRAPH_FILD / amountLine;  // растояние между линиями
+      let xLine = 0;
 
       for (let n = 0; n < 1000; n++) {
-         let amountLine = Math.round(this.canv.WIDTH_GRAPH_FILD / 100);
-         let k_X_axis = this.canv.WIDTH_GRAPH_FILD / amountLine;
-         // let xLine = Math.round(this.canv.WIDTH_DPI - this.canv.paddingRight - this.canv.widthYaxis - n * k_X_axis + this.canv.offsetX);
-         let xLine = Math.round(this.canv.coordinates.x - n * k_X_axis + this.canv.offsetX);
-         console.log("xLine = ", xLine);
-
-         this.canv.ctx.strokeStyle = '#ADB5D9';
-         this.canv.ctx.moveTo(xLine - this.canv.offsetX, this.canv.paddingTop + 20);
-         this.canv.ctx.lineTo(xLine - this.canv.offsetX, this.canv.HEIGHT_DPI - this.canv.paddingBottom - this.canv.hightXaxis + 20);
+         xLine = Math.round(this.canv.coordinates.xOffset - n * k_X_axis);
+         if (n == 0 && xLine + this.canv.paddingLeft < this.canv.WIDTH_GRAPH_FILD) {
+            let amountLineToRight = Math.abs(Math.round((xLine + this.canv.paddingLeft - this.canv.WIDTH_GRAPH_FILD) / 100));
+            let xLineTR = xLine;
+            for (let nTR = 1; nTR < amountLineToRight + 1; nTR++) {
+               xLineTR = xLine + nTR * k_X_axis;
+               this.canv.ctx.moveTo(xLineTR, this.canv.paddingTop + 20);
+               this.canv.ctx.lineTo(xLineTR, this.canv.HEIGHT_DPI - this.canv.paddingBottom - this.canv.hightXaxis + 20);
+            }
+         }
+         this.canv.ctx.moveTo(xLine, this.canv.paddingTop + 20);
+         this.canv.ctx.lineTo(xLine, this.canv.HEIGHT_DPI - this.canv.paddingBottom - this.canv.hightXaxis + 20);
+         // this.canv.ctx.lineTo(xLine, this.canv.coordinates.y + this.canv.hightXaxis);
+         // this.HEIGHT_DPI - this.     paddingBottom - this.     hightXaxis) * this.scaleY - this.offsetY
+         // this.canv.coordinates.y
       }
+
+      // this.coordinates = {
+      //    xNull: (this.WIDTH_DPI - this.paddingRight - this.widthYaxis) * this.scaleX,
+      //    yNull: (this.HEIGHT_DPI - this.paddingBottom - this.hightXaxis) * this.scaleY,
+      //    xOffset: this.xNull - this.offsetX,
+      //    yOffset: this.yNull - this.offsetY
+      // }
+
+
 
       this.canv.ctx.stroke();
    }
