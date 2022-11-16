@@ -142,15 +142,12 @@ export class Chart {
 
 
 
-
-
-
    }
 
    coordinateseCalculation(offsetX, offsetY) {
 
-      let xNull = (this.WIDTH_DPI - this.paddingRight - this.widthYaxis) * this.scaleX;
-      let yNull = (this.HEIGHT_DPI - this.paddingBottom - this.hightXaxis) * this.scaleY;
+      let xNull = (this.WIDTH_DPI - this.paddingRight - this.widthYaxis) /* this.scaleX*/;
+      let yNull = (this.HEIGHT_DPI - this.paddingBottom - this.hightXaxis) /* this.scaleY*/;
 
       this.coordinates = {
          xNull: xNull,
@@ -186,10 +183,10 @@ export class Chart {
             );
          }
          this.ctx.lineTo(
-            this.WIDTH_DPI - n * this.scaleX - this.paddingRight - this.widthYaxis - this.mainX,
+            this.coordinates.xOffset - n * this.scaleX,
             this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY - this.paddingBottom - this.hightXaxis
          );
-
+         // xNull = (this.WIDTH_DPI - this.paddingRight - this.widthYaxis) * this.scaleX;
       });
 
       this.ctx.stroke();
