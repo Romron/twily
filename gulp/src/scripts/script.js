@@ -227,9 +227,9 @@ export class Chart {
 
 
       this.Yaxis.painAxis();
-      this.Yaxis.field();
+      // this.Yaxis.field();     // здесь для того что бы попадали в фрейм анимации
       this.Xaxis.painAxis();
-      this.Xaxis.field();
+      // this.Xaxis.field();     // здесь для того что бы попадали в фрейм анимации
 
    }
 
@@ -358,7 +358,6 @@ class X_axis {
       for (let n = 0; n < 1000; n++) {
          xLine = Math.round(this.canv.coordinates.xOffset - n * k_X_axis);
          if (n == 0 && xLine + this.canv.paddingLeft < this.canv.WIDTH_GRAPH_FILD) {
-            console.log("xLine = ", xLine);
             let amountLineToRight = Math.abs(Math.round((xLine + this.canv.paddingLeft - this.canv.WIDTH_GRAPH_FILD) / 100));
             let xLineTR = xLine;
             for (let nTR = 1; nTR < amountLineToRight + 1; nTR++) {
