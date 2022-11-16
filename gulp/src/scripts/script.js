@@ -227,7 +227,9 @@ export class Chart {
 
 
       this.Yaxis.painAxis();
+      this.Yaxis.field();
       this.Xaxis.painAxis();
+      this.Xaxis.field();
 
    }
 
@@ -342,31 +344,36 @@ class X_axis {
    constructor(canv_this) {
 
       this.canv = canv_this;
-      // this._field();
    }
 
    painAxis() {
       this.canv.ctx.beginPath();
       this.canv.ctx.strokeStyle = '#ADB5D9';
+      this.canv.ctx.font = '20px Arial';
 
-
-      let amountLine = this.canv.WIDTH_GRAPH_FILD / 100 / this.canv.scaleX;
-      let k_X_axis = this.canv.WIDTH_GRAPH_FILD / amountLine;  // растояние между линиями
+      let amountLine = this.canv.WIDTH_GRAPH_FILD / 100;
+      let k_X_axis = this.canv.WIDTH_GRAPH_FILD / amountLine * this.canv.scaleX;  // растояние между линиями
       let xLine = 0;
 
       for (let n = 0; n < 1000; n++) {
          xLine = Math.round(this.canv.coordinates.xOffset - n * k_X_axis);
          if (n == 0 && xLine + this.canv.paddingLeft < this.canv.WIDTH_GRAPH_FILD) {
+            console.log("xLine = ", xLine);
             let amountLineToRight = Math.abs(Math.round((xLine + this.canv.paddingLeft - this.canv.WIDTH_GRAPH_FILD) / 100));
             let xLineTR = xLine;
             for (let nTR = 1; nTR < amountLineToRight + 1; nTR++) {
                xLineTR = xLine + nTR * k_X_axis;
+               if (xLineTR > this.canv.WIDTH_GRAPH_FILD) {
+                  break;
+               }
                this.canv.ctx.moveTo(xLineTR, this.canv.paddingTop + 20);
                this.canv.ctx.lineTo(xLineTR, this.canv.coordinates.yNull + 20);     // 20 декоративная риска на оси Х
             }
          }
          this.canv.ctx.moveTo(xLine, this.canv.paddingTop + 20);
          this.canv.ctx.lineTo(xLine, this.canv.coordinates.yNull + 20);    // 20 декоративная риска на оси Х
+
+         this.canv.ctx.strokeText('1000', xLine, this.canv.coordinates.yNull + 40);
       }
 
 
@@ -374,11 +381,12 @@ class X_axis {
       this.canv.ctx.stroke();
    }
 
-   _field() {
+   field() {
       this.canv.ctx.beginPath();
       this.canv.ctx.lineWidth = 2;
       // this.canv.ctx.strokeStyle = '#ADB5D9';
       this.canv.ctx.strokeStyle = 'blue';
+
       this.canv.ctx.moveTo(this.canv.paddingLeft, this.canv.HEIGHT_DPI - this.canv.paddingBottom);
       this.canv.ctx.lineTo(this.canv.WIDTH_DPI - this.canv.paddingRight - this.canv.widthYaxis, this.canv.HEIGHT_DPI - this.canv.paddingBottom);
       this.canv.ctx.lineTo(this.canv.WIDTH_DPI - this.canv.paddingRight - this.canv.widthYaxis, this.canv.HEIGHT_DPI - this.canv.paddingBottom - this.canv.hightXaxis);
@@ -398,7 +406,6 @@ class Y_axis {
    constructor(canv_this) {
       this.canv = canv_this;
 
-      // this._field();
    }
 
    painAxis() {
@@ -406,6 +413,7 @@ class Y_axis {
       this.canv.ctx.beginPath();
       this.canv.ctx.lineWidth = 1;
       this.canv.ctx.strokeStyle = '#ADB5D9';
+
       this.canv.ctx.font = '20px Arial';
       for (let i = this.canv.HEIGHT_DPI; i > 0; i = i - 100) {
          this.canv.ctx.moveTo(this.canv.paddingLeft, this.canv.coordinates.yNull - Math.abs(this.canv.HEIGHT_DPI - i) * this.canv.scaleY);
@@ -415,9 +423,11 @@ class Y_axis {
       this.canv.ctx.stroke();
    }
 
-   _field() {
+   field() {
+
       this.canv.ctx.beginPath();
       this.canv.ctx.lineWidth = 2;
+      // this.canv.ctx.globalAlpha = 1;
       // this.canv.ctx.strokeStyle = '#ADB5D9';
       this.canv.ctx.strokeStyle = 'blue';
       this.canv.ctx.moveTo(this.canv.WIDTH_DPI - this.canv.paddingRight, this.canv.paddingTop);
@@ -426,6 +436,7 @@ class Y_axis {
       this.canv.ctx.lineTo(this.canv.WIDTH_DPI - this.canv.paddingRight - this.canv.widthYaxis, this.canv.paddingTop);
       this.canv.ctx.closePath();
       this.canv.ctx.stroke();
+
    }
 
 
