@@ -62,6 +62,7 @@ export class Chart {
 
    data = {};
 
+
    constructor(params) {
       this.HEIGHT_DPI = params.canvasHight * 2;
       this.WIDTH_DPI = params.canvasWidht * 2;
@@ -79,11 +80,14 @@ export class Chart {
       this.HEIGHT_GRAPH_FILD = this.HEIGHT_DPI - (this.paddingTop + this.paddingBottom + this.hightXaxis);
       this.WIDTH_GRAPH_FILD = this.WIDTH_DPI - (this.paddingLeft + this.paddingRight + this.widthYaxis);
 
-      this.mc = new MouseControls(this.canvas);
       this.mouse = {};
 
-      this.mainX = 400;   // для перерасчёто координат при движении всем холстом
+      this.offsetX = 400;   // для перерасчёто координат при движении всем холстом
 
+      this.coordinates = {
+         x: (this.WIDTH_DPI - this.paddingRight - this.widthYaxis) * this.scaleX,
+         y: (this.HEIGHT_DPI - this.paddingBottom - this.hightXaxis) * this.scaleY
+      }
 
       if (!document.getElementById(params.idCanvas)) {
          this.canvas = document.createElement("canvas");
@@ -95,6 +99,7 @@ export class Chart {
          this.canvas.height = this.HEIGHT_DPI;
          this.ctx = this.canvas.getContext('2d');
 
+         this.mc = new MouseControls(this.canvas);
          this.Xaxis = new X_axis(this);
          this.Yaxis = new Y_axis(this);
 
@@ -121,6 +126,9 @@ export class Chart {
                proxy.this.horizontalPointerText();
                proxy.this.circul();
 
+
+               proxy.this.funcForTest();
+
             });
             return result;
          }
@@ -138,8 +146,23 @@ export class Chart {
          this.mouse = proxy.mouse;
       });
 
+
+
+
+
+
    }
 
+
+   funcForTest() {
+
+      this.ctx.beginPath();
+      this.ctx.lineWidth = 2;
+      this.ctx.strokeStyle = 'red';
+      this.ctx.arc(this.coordinates.x, this.coordinates.y, 5, 0, Math.PI * 2);
+      this.ctx.stroke();
+
+   }
 
    graph() {
 
@@ -202,7 +225,7 @@ export class Chart {
       this.ctx.beginPath();
       this.ctx.moveTo(this.mouse.x, this.mouse.y);
       this.ctx.lineTo(this.WIDTH_DPI, this.mouse.y);
-      this.ctx.closePath();
+      // this.ctx.closePath();
       this.ctx.stroke();
       this.ctx.setLineDash([]);     // сброс штриховки и возврат к сплошным линиям
    }
@@ -221,6 +244,74 @@ export class Chart {
    }
 
 }
+
+
+class MouseControls {
+   constructor(conteiner) {
+      this.conteiner = conteiner;
+
+      this.isPressed = false;
+      this.isDown = false;
+      this.isUp = false;
+      this.pos = { x: 0, y: 0 };
+      this.wheel = 0;
+
+
+      // conteiner.addEventListener('click', e => this.cangeState(e));
+      // conteiner.addEventListener('dblclick', e => this.cangeState(e));
+      // conteiner.addEventListener('mouseenter', e => this.cangeState(e));
+      this.conteiner.addEventListener('mousedown', e => this.cangeState(e));
+      this.conteiner.addEventListener('mouseup', e => this.cangeState(e));
+      this.conteiner.addEventListener('wheel', e => this.cangeState(e));
+      this.conteiner.addEventListener('mouseleave', e => this.cangeState(e));
+      this.conteiner.addEventListener('contextmenu', e => this.cangeState(e));
+   }
+
+   cangeState(e) {
+
+      this.pos.x = e.clientX;
+      this.pos.y = e.clientY;
+
+      if (e.type === 'mousedown') {
+         this.isPressed = true;
+         this.isDown = true;
+         this.isUp = false;
+      } else if (e.type === 'mouseup') {
+         this.isPressed = false;
+         this.isDown = false;
+         this.isUp = true;
+      } else if (e.type === 'wheel') {
+         e.preventDefault();
+         // console.log("e.deltaY = ", e.deltaY);
+
+         let q = e.deltaY + e.deltaX;
+
+         if (q > 0) {
+            this.wheel = 0.1;
+         } else if (q < 0) {
+            this.wheel = -0.1;
+         } else {
+            this.wheel = 0;
+         }
+
+         // if (e.deltaY > 0) {
+         //    this.wheel += 0.1;
+         // } else {
+         //    this.wheel -= 0.1;
+
+         // }
+
+      } else if (e.type === 'contextmenu') {
+         e.preventDefault();
+      }
+
+   }
+
+
+}
+
+
+
 
 class X_axis {
    /**
@@ -246,7 +337,7 @@ class X_axis {
 
          let amountLine = Math.round(this.canv.WIDTH_GRAPH_FILD / 100);
          let k_X_axis = this.canv.WIDTH_GRAPH_FILD / amountLine;
-         let xLine = Math.round(this.canv.WIDTH_DPI - (n * k_X_axis + this.canv.paddingRight + this.canv.widthYaxis) + this.canv.mainX);
+         let xLine = Math.round(this.canv.WIDTH_DPI - this.canv.paddingRight - this.canv.widthYaxis - n * k_X_axis + this.canv.mainX);
          this.canv.ctx.strokeStyle = '#ADB5D9';
          this.canv.ctx.moveTo(xLine - this.canv.mainX, this.canv.paddingTop + 20);
          this.canv.ctx.lineTo(xLine - this.canv.mainX, this.canv.HEIGHT_DPI - this.canv.paddingBottom - this.canv.hightXaxis + 20);
