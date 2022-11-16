@@ -137,9 +137,11 @@ export class Chart {
             x: (clientX - left) * 2,      // преобразование в WIDTH_DPI
             y: (clientY - top) * 2,       // преобразование в HEIGHT_DPI
          }
+
+         console.log("clientX = ", clientX);
+         console.log("proxy.mouse.x = ", proxy.mouse.x);
          this.mouse = proxy.mouse;
       });
-
 
 
    }
@@ -186,7 +188,6 @@ export class Chart {
             this.coordinates.xOffset - n * this.scaleX,
             this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY - this.paddingBottom - this.hightXaxis
          );
-         // xNull = (this.WIDTH_DPI - this.paddingRight - this.widthYaxis) * this.scaleX;
       });
 
       this.ctx.stroke();
@@ -214,8 +215,8 @@ export class Chart {
 
    horizontalPointerText() {
       this.ctx.font = '25px Arial';
-      this.ctx.fillText(Math.ceil((this.HEIGHT_DPI - this.mouse.y - this.paddingBottom - this.hightXaxis) / this.scaleY * 100) + 26, this.WIDTH_DPI - 70, this.mouse.y);
-      this.ctx.fillText(Math.ceil(this.mouse.x), this.mouse.x, this.HEIGHT_DPI - 40);
+      this.ctx.fillText(Math.ceil((this.coordinates.yNull - this.mouse.y) / this.scaleY * 100) + 26, this.WIDTH_DPI - this.widthYaxis / 1.1, this.mouse.y);
+      this.ctx.fillText(Math.ceil(this.coordinates.xNull - this.mouse.x), this.mouse.x, this.HEIGHT_DPI - this.hightXaxis / 2);
    }
 
    horizontalPointer() {
@@ -340,7 +341,7 @@ class X_axis {
       this.canv.ctx.strokeStyle = '#ADB5D9';
 
 
-      let amountLine = Math.round(this.canv.WIDTH_GRAPH_FILD / 100);
+      let amountLine = this.canv.WIDTH_GRAPH_FILD / 100;
       let k_X_axis = this.canv.WIDTH_GRAPH_FILD / amountLine;  // растояние между линиями
       let xLine = 0;
 
