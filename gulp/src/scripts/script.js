@@ -115,7 +115,6 @@ export class Chart {
                proxy.this.clear();
                proxy.this.CoordinateGrid();
                proxy.this.graph();
-
                proxy.this.horizontalPointer();
                proxy.this.horizontalPointerText();
                proxy.this.circul();
@@ -141,6 +140,27 @@ export class Chart {
          this.mouse = proxy.mouse;
       });
 
+      this.canvas.addEventListener('wheel', (e) => {
+         const DefouitScaleX = this.scaleX;
+
+         this.scaleX = this.scaleX + proxy.mc.wheel;
+         this.scaleX = +this.scaleX.toFixed(3);
+
+         if (this.scaleX < 0.1) {
+            this.scaleX = 0.1;
+            proxy.mc.wheel = 0.1;
+         }
+
+         proxy.this.clear();
+         proxy.this.CoordinateGrid();
+         proxy.this.graph();
+         proxy.this.horizontalPointer();
+         proxy.this.horizontalPointerText();
+         proxy.this.circul();
+         proxy.this.coordinateseCalculation(100, 0);
+
+         proxy.this.funcForTest();
+      });
 
    }
 
@@ -312,9 +332,6 @@ class MouseControls {
 
 
 }
-
-
-
 
 class X_axis {
    /**
