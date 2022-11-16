@@ -113,7 +113,7 @@ export class Chart {
             const result = Reflect.set(...args);
             requestAnimationFrame(() => {
                proxy.this.clear();
-               proxy.this.CoordinateGrid();
+               // proxy.this.CoordinateGrid();
                proxy.this.graph();
                proxy.this.horizontalPointer();
                proxy.this.horizontalPointerText();
@@ -190,6 +190,9 @@ export class Chart {
 
    graph() {
 
+      this.CoordinateGrid();
+
+
       this.ctx.beginPath();
       Object.keys(this.data).forEach((key, n) => {
 
@@ -228,7 +231,7 @@ export class Chart {
 
       this.Yaxis.painAxis();
       // this.Yaxis.field();     // здесь для того что бы попадали в фрейм анимации
-      this.Xaxis.painAxis();
+      this.Xaxis.painAxis(this.data);
       // this.Xaxis.field();     // здесь для того что бы попадали в фрейм анимации
 
    }
@@ -344,9 +347,13 @@ class X_axis {
    constructor(canv_this) {
 
       this.canv = canv_this;
+
    }
 
-   painAxis() {
+   painAxis(data) {
+
+      console.log("data = ", data);
+
       this.canv.ctx.beginPath();
       this.canv.ctx.strokeStyle = '#ADB5D9';
       this.canv.ctx.font = '20px Arial';
