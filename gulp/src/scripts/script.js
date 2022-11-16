@@ -82,12 +82,23 @@ export class Chart {
 
       this.mouse = {};
 
-      this.offsetX = 400;   // для перерасчёто координат при движении всем холстом
+      this.offsetX = 100;   // для перерасчёто координат при движении всем холстом
+      this.offsetY = 20;   // для перерасчёто координат при движении всем холстом
+
 
       this.coordinates = {
-         x: (this.WIDTH_DPI - this.paddingRight - this.widthYaxis) * this.scaleX,
-         y: (this.HEIGHT_DPI - this.paddingBottom - this.hightXaxis) * this.scaleY
+         x: (this.WIDTH_DPI - this.paddingRight - this.widthYaxis) * this.scaleX - this.offsetX,
+         y: (this.HEIGHT_DPI - this.paddingBottom - this.hightXaxis) * this.scaleY - this.offsetY
       }
+
+      console.log("this.WIDTH_DPI = ", this.WIDTH_DPI);
+      console.log("this.paddingRight = ", this.paddingRight);
+      console.log("this.widthYaxis = ", this.widthYaxis);
+      console.log("this.scaleX = ", this.scaleX);
+      console.log("this.offsetX = ", this.offsetX);
+      console.log("this.coordinates.x = ", this.coordinates.x);
+
+
 
       if (!document.getElementById(params.idCanvas)) {
          this.canvas = document.createElement("canvas");
@@ -329,18 +340,22 @@ class X_axis {
 
    painAxis() {
 
+
+
       // this.key = key;
       // this.n = n;
       this.canv.ctx.beginPath();
 
       for (let n = 0; n < 1000; n++) {
-
          let amountLine = Math.round(this.canv.WIDTH_GRAPH_FILD / 100);
          let k_X_axis = this.canv.WIDTH_GRAPH_FILD / amountLine;
-         let xLine = Math.round(this.canv.WIDTH_DPI - this.canv.paddingRight - this.canv.widthYaxis - n * k_X_axis + this.canv.mainX);
+         // let xLine = Math.round(this.canv.WIDTH_DPI - this.canv.paddingRight - this.canv.widthYaxis - n * k_X_axis + this.canv.offsetX);
+         let xLine = Math.round(this.canv.coordinates.x - n * k_X_axis + this.canv.offsetX);
+         console.log("xLine = ", xLine);
+
          this.canv.ctx.strokeStyle = '#ADB5D9';
-         this.canv.ctx.moveTo(xLine - this.canv.mainX, this.canv.paddingTop + 20);
-         this.canv.ctx.lineTo(xLine - this.canv.mainX, this.canv.HEIGHT_DPI - this.canv.paddingBottom - this.canv.hightXaxis + 20);
+         this.canv.ctx.moveTo(xLine - this.canv.offsetX, this.canv.paddingTop + 20);
+         this.canv.ctx.lineTo(xLine - this.canv.offsetX, this.canv.HEIGHT_DPI - this.canv.paddingBottom - this.canv.hightXaxis + 20);
       }
 
       this.canv.ctx.stroke();
