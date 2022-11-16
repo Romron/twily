@@ -350,7 +350,7 @@ class X_axis {
       this.canv.ctx.strokeStyle = '#ADB5D9';
 
 
-      let amountLine = this.canv.WIDTH_GRAPH_FILD / 100;
+      let amountLine = this.canv.WIDTH_GRAPH_FILD / 100 / this.canv.scaleX;
       let k_X_axis = this.canv.WIDTH_GRAPH_FILD / amountLine;  // растояние между линиями
       let xLine = 0;
 
@@ -408,9 +408,9 @@ class Y_axis {
       this.canv.ctx.strokeStyle = '#ADB5D9';
       this.canv.ctx.font = '20px Arial';
       for (let i = this.canv.HEIGHT_DPI; i > 0; i = i - 100) {
-         this.canv.ctx.moveTo(this.canv.paddingLeft, this.canv.HEIGHT_DPI - Math.abs(this.canv.HEIGHT_DPI - i) * this.canv.scaleY - this.canv.paddingBottom - this.canv.hightXaxis);
-         this.canv.ctx.lineTo(this.canv.WIDTH_DPI - this.canv.paddingRight - this.canv.widthYaxis + 20, this.canv.HEIGHT_DPI - Math.abs(this.canv.HEIGHT_DPI - i) * this.canv.scaleY - this.canv.paddingBottom - this.canv.hightXaxis);
-         this.canv.ctx.strokeText((this.canv.HEIGHT_DPI - i) * 100, this.canv.WIDTH_DPI - 80, this.canv.HEIGHT_DPI - Math.abs(this.canv.HEIGHT_DPI - i) * this.canv.scaleY - this.canv.paddingBottom - this.canv.hightXaxis);
+         this.canv.ctx.moveTo(this.canv.paddingLeft, this.canv.coordinates.yNull - Math.abs(this.canv.HEIGHT_DPI - i) * this.canv.scaleY);
+         this.canv.ctx.lineTo(this.canv.coordinates.xNull + 20, this.canv.coordinates.yNull - Math.abs(this.canv.HEIGHT_DPI - i) * this.canv.scaleY);
+         this.canv.ctx.strokeText((this.canv.HEIGHT_DPI - i) * 100, this.canv.WIDTH_DPI - 80, this.canv.coordinates.yNull - Math.abs(this.canv.HEIGHT_DPI - i) * this.canv.scaleY);
       }
       this.canv.ctx.stroke();
    }
