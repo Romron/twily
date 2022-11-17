@@ -83,7 +83,7 @@ export class Chart {
       this.mouse = {};
       this.coordinates = {}
 
-
+      this.offsetX = 2000;
 
       if (!document.getElementById(params.idCanvas)) {
          this.canvas = document.createElement("canvas");
@@ -106,7 +106,7 @@ export class Chart {
 
    _init() {
 
-      this.CoordinateGrid();
+      // this.CoordinateGrid();
 
       const proxy = new Proxy({}, {
          set(...args) {
@@ -118,7 +118,7 @@ export class Chart {
                proxy.this.horizontalPointer();
                proxy.this.horizontalPointerText();
                proxy.this.circul();
-               proxy.this.coordinateseCalculation(100, 0);
+               proxy.this.coordinateseCalculation(proxy.this.offsetX, 0);
 
                proxy.this.funcForTest();
 
@@ -152,12 +152,12 @@ export class Chart {
          }
 
          proxy.this.clear();
-         proxy.this.CoordinateGrid();
+         // proxy.this.CoordinateGrid();
          proxy.this.graph();
          proxy.this.horizontalPointer();
          proxy.this.horizontalPointerText();
          proxy.this.circul();
-         proxy.this.coordinateseCalculation(100, 0);
+         proxy.this.coordinateseCalculation(this.offsetX, 0);
 
          proxy.this.funcForTest();
       });
@@ -229,10 +229,9 @@ export class Chart {
        */
 
 
-      this.Yaxis.painAxis();
-      // this.Yaxis.field();     // здесь для того что бы попадали в фрейм анимации
-      this.Xaxis.painAxis(this.data);
-      // this.Xaxis.field();     // здесь для того что бы попадали в фрейм анимации
+      this.Xaxis.drawAxis(this.data);
+      this.Yaxis.drawAxis();
+      // this.Xaxis.writeText(this.data)
 
    }
 
@@ -272,7 +271,6 @@ export class Chart {
    }
 
 }
-
 
 class MouseControls {
    constructor(conteiner) {
@@ -350,46 +348,78 @@ class X_axis {
 
    }
 
-   painAxis(data) {
+   drawAxis(data) {
 
-      console.log("data = ", data);
+      this.field();
 
       this.canv.ctx.beginPath();
       this.canv.ctx.strokeStyle = '#ADB5D9';
       this.canv.ctx.font = '20px Arial';
 
-      let amountLine = this.canv.WIDTH_GRAPH_FILD / 100;
-      let k_X_axis = this.canv.WIDTH_GRAPH_FILD / amountLine * this.canv.scaleX;  // растояние между линиями
-      let xLine = 0;
 
-      for (let n = 0; n < 1000; n++) {
-         xLine = Math.round(this.canv.coordinates.xOffset - n * k_X_axis);
-         if (n == 0 && xLine + this.canv.paddingLeft < this.canv.WIDTH_GRAPH_FILD) {
-            let amountLineToRight = Math.abs(Math.round((xLine + this.canv.paddingLeft - this.canv.WIDTH_GRAPH_FILD) / 100));
-            let xLineTR = xLine;
-            for (let nTR = 1; nTR < amountLineToRight + 1; nTR++) {
-               xLineTR = xLine + nTR * k_X_axis;
-               if (xLineTR > this.canv.WIDTH_GRAPH_FILD) {
-                  break;
-               }
-               this.canv.ctx.moveTo(xLineTR, this.canv.paddingTop + 20);
-               this.canv.ctx.lineTo(xLineTR, this.canv.coordinates.yNull + 20);     // 20 декоративная риска на оси Х
-            }
+
+
+      this.widthToRight = this.canv.WIDTH_GRAPH_FILD - this.canv.coordinates.xOffset;     // расстояние от нуля графика до края
+      this.widthToLeft = this.canv.coordinates.xOffset;     // расстояние от нуля графика до края
+      this.distanceBetweenLines = 100;
+      this.xLine = 0;
+
+      let nLine = 0, xLineOld;
+
+
+      // let arrToMonths = Object.keys(data).filter((key) => {
+      //    if (key.endsWith('01')) {
+      //       return true;
+      //    }
+      // })
+
+      // for (let n = 0; n < arrToMonths.length; n++) {
+      //    console.log("arrToMonths[n] = ", arrToMonths[n]);
+
+      // }
+
+      let arrDays = Object.keys(data);
+      var qqq;
+
+      for (let n = 0; n < arrDays.length; n++) {
+         if (arrDays[n].endsWith('01')) {
+            nLine++;
+            console.log("nLine = ", nLine);
+            this.xLineOld = this.xLine;
+            this.xLine = Math.round(this.canv.coordinates.xOffset - n * this.canv.scaleX);
+            this.drawLines(arrDays[n], n, nLine);
+            this.writeText(arrDays[n], n, nLine);
          }
-         this.canv.ctx.moveTo(xLine, this.canv.paddingTop + 20);
-         this.canv.ctx.lineTo(xLine, this.canv.coordinates.yNull + 20);    // 20 декоративная риска на оси Х
+         if (this.xLine < 0) {
 
-         this.canv.ctx.strokeText('1000', xLine, this.canv.coordinates.yNull + 40);
+            break;
+         }
+
       }
 
+      // Object.keys(data).forEach((key, n) => {
+
+      //    if (key.endsWith('01')) {
+
+      //       this.xLine = Math.round(this.canv.coordinates.xOffset - n * this.canv.scaleX);
+      //       this.amountLineToRight = (this.canv.WIDTH_GRAPH_FILD - this.canv.coordinates.xOffset) / this.distanceBetweenLines;
+
+      //       this.drawLines(key, n, nLine);
+      //       this.writeText(key, n, nLine);
+
+      //       nLine++;
+      //    }
+
+      // });
 
 
       this.canv.ctx.stroke();
+
    }
 
    field() {
       this.canv.ctx.beginPath();
-      this.canv.ctx.lineWidth = 2;
+      this.canv.ctx.lineWidth = 1;
       // this.canv.ctx.strokeStyle = '#ADB5D9';
       this.canv.ctx.strokeStyle = 'blue';
 
@@ -400,6 +430,63 @@ class X_axis {
       this.canv.ctx.closePath();
       this.canv.ctx.stroke();
    }
+
+   drawLines(key, n, nLine) {
+
+      if (nLine == 2) {
+
+         this.distanceBetweenLines = this.xLineOld - this.xLine;
+
+         console.log(" this.xLineOld = ", this.xLineOld);
+         console.log("this.xLine = ", this.xLine);
+         console.log("this.distanceBetweenLines = ", this.distanceBetweenLines);
+
+
+         for (let xLineTR = this.xLine; xLineTR < this.canv.WIDTH_GRAPH_FILD; xLineTR = xLineTR + this.distanceBetweenLines) {
+            this.canv.ctx.moveTo(xLineTR, this.canv.paddingTop + 20);
+            this.canv.ctx.lineTo(xLineTR, this.canv.coordinates.yNull + 20);     // 20 -- декоративная риска на оси Х
+         }
+
+
+      }
+
+      this.canv.ctx.moveTo(this.xLine, this.canv.paddingTop + 20);
+      this.canv.ctx.lineTo(this.xLine, this.canv.coordinates.yNull + 20);    // 20 -- декоративная риска на оси Х
+
+
+   }
+
+   writeText(key, n) {
+
+      // this.canv.ctx.save();
+
+      // this.canv.ctx.beginPath();
+      // this.canv.ctx.lineWidth = 3;
+      // this.canv.ctx.strokeStyle = 'red';
+      // this.canv.ctx.font = '20px Arial';
+      // console.log("*** this.xLine = ", this.xLine);
+
+      let str = '';
+      let str_1 = '';
+      let str_2 = '';
+      let str_3 = '';
+
+
+      str_1 = key.slice(8, 10);
+      str_2 = key.slice(5, 7);
+      str_3 = key.slice(0, 4).slice(2, 4);
+      str = `${str_1}.${str_2}.${str_3}`;
+      // console.log("+++++++++++ this.xLine = ", this.xLine);
+      this.canv.ctx.strokeText(str, this.xLine, this.canv.coordinates.yNull + 40);
+
+
+      // this.canv.ctx.stroke();
+      // this.canv.ctx.restore();
+
+
+   }
+
+
 
 }
 
@@ -414,7 +501,9 @@ class Y_axis {
 
    }
 
-   painAxis() {
+   drawAxis() {
+
+      // this.field();
 
       this.canv.ctx.beginPath();
       this.canv.ctx.lineWidth = 1;
