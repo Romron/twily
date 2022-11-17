@@ -450,8 +450,6 @@ class X_axis {
 
    writeText(key, n, nLine) {
 
-      console.log(" this.distanceBetweenLines = ", this.distanceBetweenLines);
-
       let str = '';
       let str_1 = '';
       let str_2 = '';
