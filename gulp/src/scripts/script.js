@@ -350,7 +350,7 @@ class X_axis {
 
    drawAxis(data) {
 
-      this.field();
+      // this.field();
 
       this.canv.ctx.beginPath();
       this.canv.ctx.strokeStyle = '#ADB5D9';
@@ -387,10 +387,12 @@ class X_axis {
             this.xLine = Math.round(this.canv.coordinates.xOffset - n * this.canv.scaleX);
             this.distanceBetweenLines = this.xLineOld - this.xLine;
             this.drawLines(nLine);
-            if (this.distanceBetweenLines > 130) {
 
-               this.writeText(arrDays[n], n, nLine);
+
+            if (this.distanceBetweenLines < 150 && nLine % 2 != 0) {
+               continue;
             }
+            this.writeText(arrDays[n], n, nLine);
          }
          if (this.xLine < 0) {
 
@@ -446,7 +448,7 @@ class X_axis {
       this.canv.ctx.lineTo(this.xLine, this.canv.coordinates.yNull + 20);    // 20 -- декоративная риска на оси Х
    }
 
-   writeText(key, n) {
+   writeText(key, n, nLine) {
 
       console.log(" this.distanceBetweenLines = ", this.distanceBetweenLines);
 
@@ -464,7 +466,7 @@ class X_axis {
       str_2 = key.slice(5, 7);
       str_3 = key.slice(0, 4).slice(2, 4);
       str = `${str_1}.${str_2}.${str_3}`;
-      this.canv.ctx.strokeText(str, this.xLine, this.canv.coordinates.yNull + 40);
+      this.canv.ctx.strokeText(`${str}`, this.xLine - 40, this.canv.coordinates.yNull + 40);
 
 
 
