@@ -110,15 +110,7 @@ export class Chart {
          set(...args) {
             const result = Reflect.set(...args);
             requestAnimationFrame(() => {
-               proxy.this.clear();
-               proxy.this.graph();
-               proxy.this.horizontalPointer();
-               proxy.this.horizontalPointerText();
-               proxy.this.circul();
-               proxy.this.coordinateseCalculation(proxy.this.offsetX, 0);
-
-               proxy.this.funcForTest();
-
+               proxy.this.assembly();
             });
             return result;
          }
@@ -146,17 +138,24 @@ export class Chart {
             proxy.mc.wheel = 0.1;
          }
 
-         proxy.this.clear();
-         proxy.this.graph();
-         proxy.this.horizontalPointer();
-         proxy.this.horizontalPointerText();
-         proxy.this.circul();
-         proxy.this.coordinateseCalculation(this.offsetX, 0);
-
-         proxy.this.funcForTest();
+         this.assembly();
       });
 
    }
+
+
+   assembly() {         // сборка всего
+      this.clear();
+      this.graph();
+      this.horizontalPointer();
+      this.horizontalPointerText();
+      this.circul();
+      this.coordinateseCalculation(this.offsetX, 0);
+
+      this.funcForTest();
+   }
+
+
 
    coordinateseCalculation(offsetX, offsetY) {
 
