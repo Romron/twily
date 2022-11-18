@@ -106,14 +106,11 @@ export class Chart {
 
    _init() {
 
-      // this.CoordinateGrid();
-
       const proxy = new Proxy({}, {
          set(...args) {
             const result = Reflect.set(...args);
             requestAnimationFrame(() => {
                proxy.this.clear();
-               // proxy.this.CoordinateGrid();
                proxy.this.graph();
                proxy.this.horizontalPointer();
                proxy.this.horizontalPointerText();
@@ -141,8 +138,6 @@ export class Chart {
       });
 
       this.canvas.addEventListener('wheel', (e) => {
-         const DefouitScaleX = this.scaleX;
-
          this.scaleX = this.scaleX + proxy.mc.wheel;
          this.scaleX = +this.scaleX.toFixed(3);
 
@@ -152,7 +147,6 @@ export class Chart {
          }
 
          proxy.this.clear();
-         // proxy.this.CoordinateGrid();
          proxy.this.graph();
          proxy.this.horizontalPointer();
          proxy.this.horizontalPointerText();
@@ -192,7 +186,6 @@ export class Chart {
 
       this.CoordinateGrid();
 
-
       this.ctx.beginPath();
       Object.keys(this.data).forEach((key, n) => {
 
@@ -231,7 +224,6 @@ export class Chart {
 
       this.Xaxis.drawAxis(this.data);
       this.Yaxis.drawAxis();
-      // this.Xaxis.writeText(this.data)
 
    }
 
@@ -356,27 +348,11 @@ class X_axis {
       this.canv.ctx.strokeStyle = '#ADB5D9';
       this.canv.ctx.font = '20px Arial';
 
-
-
-
       this.widthToRight = this.canv.WIDTH_GRAPH_FILD - this.canv.coordinates.xOffset;     // расстояние от нуля графика до края
       this.widthToLeft = this.canv.coordinates.xOffset;     // расстояние от нуля графика до края
-      // this.distanceBetweenLines = 30;
       this.xLine = 0;
 
-      let nLine = 0, xLineOld;
-
-
-      // let arrToMonths = Object.keys(data).filter((key) => {
-      //    if (key.endsWith('01')) {
-      //       return true;
-      //    }
-      // })
-
-      // for (let n = 0; n < arrToMonths.length; n++) {
-      //    console.log("arrToMonths[n] = ", arrToMonths[n]);
-
-      // }
+      let nLine = 0;
 
       let arrDays = Object.keys(data);
       for (let n = 0; n < arrDays.length; n++) {
@@ -387,35 +363,16 @@ class X_axis {
             this.xLine = Math.round(this.canv.coordinates.xOffset - n * this.canv.scaleX);
             this.distanceBetweenLines = this.xLineOld - this.xLine;
             this.drawLines(nLine);
-
-
             if (this.distanceBetweenLines < 150 && nLine % 2 != 0) {
                continue;
             }
             this.writeText(arrDays[n], n, nLine);
          }
          if (this.xLine < 0) {
-
             break;
          }
 
       }
-
-      // Object.keys(data).forEach((key, n) => {
-
-      //    if (key.endsWith('01')) {
-
-      //       this.xLine = Math.round(this.canv.coordinates.xOffset - n * this.canv.scaleX);
-      //       this.amountLineToRight = (this.canv.WIDTH_GRAPH_FILD - this.canv.coordinates.xOffset) / this.distanceBetweenLines;
-
-      //       this.drawLines(key, n, nLine);
-      //       this.writeText(key, n, nLine);
-
-      //       nLine++;
-      //    }
-
-      // });
-
 
       this.canv.ctx.stroke();
 
@@ -436,9 +393,7 @@ class X_axis {
    }
 
    drawLines(nLine) {
-
       if (nLine == 2) {
-
          for (let xLineTR = this.xLine; xLineTR < this.canv.WIDTH_GRAPH_FILD; xLineTR = xLineTR + this.distanceBetweenLines) {
             this.canv.ctx.moveTo(xLineTR, this.canv.paddingTop + 20);
             this.canv.ctx.lineTo(xLineTR, this.canv.coordinates.yNull + 20);     // 20 -- декоративная риска на оси Х
@@ -448,30 +403,19 @@ class X_axis {
       this.canv.ctx.lineTo(this.xLine, this.canv.coordinates.yNull + 20);    // 20 -- декоративная риска на оси Х
    }
 
-   writeText(key, n, nLine) {
+   writeText(key) {
 
       let str = '';
       let str_1 = '';
       let str_2 = '';
       let str_3 = '';
 
-      if (this.distanceBetweenLines < 100) {
-
-
-      }
-
       str_1 = key.slice(8, 10);
       str_2 = key.slice(5, 7);
       str_3 = key.slice(0, 4).slice(2, 4);
       str = `${str_1}.${str_2}.${str_3}`;
-      this.canv.ctx.strokeText(`${str}`, this.xLine - 40, this.canv.coordinates.yNull + 40);
-
-
-
+      this.canv.ctx.strokeText(str, this.xLine - 40, this.canv.coordinates.yNull + 40);
    }
-
-
-
 }
 
 class Y_axis {

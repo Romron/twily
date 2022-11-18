@@ -91,9 +91,7 @@
 
 
 // рабочий вариант
-$file = __DIR__ . '/date.json';
-// __DIR__   = F:\web\twily\gulp\src\module_php
-//     $file = F:\web\twily\gulp\src\module_php\date.json
+$file = $_SERVER['DOCUMENT_ROOT'] . '/twily/gulp/src/module_php/date.json';
 
 // $json = file_get_contents('https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol=BTC&market=UAH&apikey=9PKRO03JZ2KF9LEV');
 // $data = json_decode($json, true);
@@ -102,6 +100,3 @@ $file = __DIR__ . '/date.json';
 $data_file = file_get_contents($file);         // для тестов из  файла
 
 echo $data_file;
-
-
-// src/module_php/parser.php
