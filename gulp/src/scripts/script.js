@@ -111,6 +111,9 @@ export class Chart {
             const result = Reflect.set(...args);
             requestAnimationFrame(() => {
                proxy.this.assembly();
+
+               console.log("proxy.this.mc.pos = ", proxy.this.mc.pos);
+               console.log("proxy.this.mc.wheel = ", proxy.this.mc.wheel);
             });
             return result;
          }
@@ -119,6 +122,8 @@ export class Chart {
       proxy.this = this;
       proxy.mc = this.mc;
 
+
+      /*
       this.canvas.addEventListener('mousemove', ({ clientX, clientY }) => {      // получание текущих координат курсора
          const { left, top } = this.canvas.getBoundingClientRect()      // т.к. координаты канваса не савпадают с координатами экрана  
          proxy.mouse = {
@@ -140,7 +145,7 @@ export class Chart {
 
          this.assembly();
       });
-
+      */
    }
 
 
@@ -154,8 +159,6 @@ export class Chart {
 
       this.funcForTest();
    }
-
-
 
    coordinateseCalculation(offsetX, offsetY) {
 
@@ -275,7 +278,6 @@ class MouseControls {
       this.pos = { x: 0, y: 0 };
       this.wheel = 0;
 
-
       // conteiner.addEventListener('click', e => this.cangeState(e));
       // conteiner.addEventListener('dblclick', e => this.cangeState(e));
       // conteiner.addEventListener('mouseenter', e => this.cangeState(e));
@@ -284,9 +286,15 @@ class MouseControls {
       this.conteiner.addEventListener('wheel', e => this.cangeState(e));
       this.conteiner.addEventListener('mouseleave', e => this.cangeState(e));
       this.conteiner.addEventListener('contextmenu', e => this.cangeState(e));
+
+
+
    }
 
    cangeState(e) {
+
+      // console.log("e = ", e);ё
+
 
       this.pos.x = e.clientX;
       this.pos.y = e.clientY;
