@@ -22,9 +22,14 @@
       <!-- автоматом удаляет закрывающюу кавычку тега php ???? -->
       <!-- @@include('./parts/footer.php') -->
 
+      <div class="for-loop">
+
+      </div>
+
 
    </div>
    <script type="module" src="../build/js/app.js"></script>
+   <script type="module" src="../build/js/appLoop.js"></script>
 </body>
 
 </html>

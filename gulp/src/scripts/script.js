@@ -1,4 +1,4 @@
-
+import { Layer } from "./Layer.js";
 
 export class Chart {
    /**
@@ -64,7 +64,7 @@ export class Chart {
 
 
    constructor(params) {
-      this.HEIGHT_DPI = params.canvasHight * 2;
+      this.HEIGHT_DPI = params.canvasHeight * 2;
       this.WIDTH_DPI = params.canvasWidht * 2;
 
       this.scaleX = params.scaleX;
@@ -85,24 +85,40 @@ export class Chart {
 
       this.offsetX = 100;
 
-      if (!document.getElementById(params.idCanvas)) {
-         this.canvas = document.createElement("canvas");
-         this.canvas.id = params.idCanvas;
-         document.getElementById(params.idTargetBlock).append(this.canvas);
-         this.canvas.style.width = params.canvasWidht + 'px';
-         this.canvas.style.height = params.canvasHight + 'px';
-         this.canvas.width = this.WIDTH_DPI;
-         this.canvas.height = this.HEIGHT_DPI;
-         this.ctx = this.canvas.getContext('2d');
+      const container = document.getElementById(params.idContainer);
+      container.style.width = params.canvasWidht + 'px';
+      container.style.height = params.canvasHeight + 'px';
+      this.layer = new Layer(container);
+      this.layer.width = this.WIDTH_DPI;
+      this.layer.height = this.HEIGHT_DPI;
+      console.log("this.layer = ", this.layer);
 
-         this.mc = new MouseControls(this.canvas);
-         this.Xaxis = new X_axis(this);
-         this.Yaxis = new Y_axis(this);
 
-      }
 
-      this._init();
+      //    if (!document.getElementById(params.idCanvas)) {
+      //       this.canvas = document.createElement("canvas");
+      //       this.canvas.id = params.idCanvas;
+      //       document.getElementById(params.idTargetBlock).append(this.canvas);
+      //       this.canvas.style.width = params.canvasWidht + 'px';
+      //       this.canvas.style.height = params.canvasHight + 'px';
+      //       this.canvas.width = this.WIDTH_DPI;
+      //       this.canvas.height = this.HEIGHT_DPI;
+      //       this.ctx = this.canvas.getContext('2d');
+
+      //       this.mc = new MouseControls(this.canvas);
+      //       this.Xaxis = new X_axis(this);
+      //       this.Yaxis = new Y_axis(this);
+
+      //    }
+
+      //    this._init();
+
+
    }
+
+
+
+
 
    _init() {
 
@@ -157,6 +173,8 @@ export class Chart {
       });
 
    }
+
+
 
    coordinateseCalculation(offsetX, offsetY) {
 
