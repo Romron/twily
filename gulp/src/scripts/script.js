@@ -264,6 +264,8 @@ export class Chart {
 
 }
 
+
+
 class MouseControls {
    constructor(conteiner) {
       this.conteiner = conteiner;
@@ -528,3 +530,7 @@ export const page = {
       console.log('page  page  page  page  page  page  page  page  ');
    }
 }
+
+
+
+
