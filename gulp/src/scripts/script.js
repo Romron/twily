@@ -238,20 +238,14 @@ export class Chart {
 
    }
 
-   horizontalPointerText(pos) {
-
-      // console.log("horizontalPointerText = ");
-
-      // console.log("this.mc.pos.x = ", pos.x);
-      // console.log("this.mc.pos.y = ", pos.y);
-
+   horizontalPointerText(pos = { x: 0, y: 0 }) {
 
       this.ctx.font = '25px Arial';
-      this.ctx.fillText(Math.ceil((this.coordinates.yNull - this.mouse.y) / this.scaleY * 100) + 26, this.WIDTH_DPI - this.widthYaxis / 1.1, this.mouse.y);
-      this.ctx.fillText(Math.ceil(this.coordinates.xNull - this.mouse.x), this.mouse.x, this.HEIGHT_DPI - this.hightXaxis / 2);
+      this.ctx.fillText(Math.ceil((this.coordinates.yNull - pos.y) / this.scaleY * 100) + 26, this.WIDTH_DPI - this.widthYaxis / 1.1, pos.y);
+      this.ctx.fillText(Math.ceil(this.coordinates.xNull - pos.x), pos.x, this.HEIGHT_DPI - this.hightXaxis / 2);
    }
 
-   horizontalPointer(pos) {
+   horizontalPointer(pos = { x: 0, y: 0 }) {
       this.ctx.beginPath();
       this.ctx.lineWidth = 1;
       this.ctx.setLineDash([4, 16]);      // устанавливается для всего холста
@@ -267,7 +261,7 @@ export class Chart {
       this.ctx.setLineDash([]);     // сброс штриховки и возврат к сплошным линиям
    }
 
-   circul(pos) {
+   circul(pos = { x: 0, y: 0 }) {
       this.ctx.beginPath();
       this.ctx.lineWidth = 2;
       this.ctx.strokeStyle = '#3A3A3C';
@@ -310,24 +304,32 @@ class X_axis {
       let nLine = 0;
 
       let arrDays = Object.keys(data);
-      for (let n = 0; n < arrDays.length; n++) {
-         if (arrDays[n].endsWith('01')) {
-            this.distanceBetweenLines = this.xLineOld - this.xLine;
-            nLine++;
-            this.xLineOld = this.xLine;
-            this.xLine = Math.round(this.canv.coordinates.xOffset - n * this.canv.scaleX);
-            this.distanceBetweenLines = this.xLineOld - this.xLine;
-            this.drawLines(nLine);
-            if (this.distanceBetweenLines < 150 && nLine % 2 != 0) {
-               continue;
-            }
-            this.writeText(arrDays[n], n, nLine);
-         }
-         if (this.xLine < 0) {
-            break;
-         }
 
+      if (arrDays.length != 0) {
+         for (let n = 0; n < arrDays.length; n++) {
+            if (arrDays[n].endsWith('01')) {
+               this.distanceBetweenLines = this.xLineOld - this.xLine;
+               nLine++;
+               this.xLineOld = this.xLine;
+               this.xLine = Math.round(this.canv.coordinates.xOffset - n * this.canv.scaleX);
+               this.distanceBetweenLines = this.xLineOld - this.xLine;
+               this.drawLines(nLine);
+               if (this.distanceBetweenLines < 150 && nLine % 2 != 0) {
+                  continue;
+               }
+               this.writeText(arrDays[n], n, nLine);
+            }
+            if (this.xLine < 0) {
+               break;
+            }
+
+         }
+      } else {
+         console.log(" -- Данные ещё не получены -- ");
       }
+
+
+
 
       this.canv.ctx.stroke();
 

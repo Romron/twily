@@ -1,9 +1,12 @@
 export class MouseControls {
-   constructor(conteiner) {
+   constructor(conteiner, proxy = {}) {
       this.conteiner = conteiner.canvas;
       const { left, top } = this.conteiner.getBoundingClientRect()      // т.к. координаты канваса не савпадают с координатами экрана
       this.left = left;
       this.top = top;
+      this.proxy = proxy;
+
+
 
       this.isPressed = false;
       this.isDown = false;
@@ -29,6 +32,17 @@ export class MouseControls {
          x: (e.clientX - this.left) * 2,      // преобразование в WIDTH_DPI
          y: (e.clientY - this.top) * 2,       // преобразование в HEIGHT_DPI
       }
+      // console.log("this.pos.x = ", this.pos.x);
+
+
+      this.proxy.mouse = {
+         x: (e.clientX - this.left) * 2,      // преобразование в WIDTH_DPI
+         y: (e.clientY - this.top) * 2,       // преобразование в HEIGHT_DPI
+      }
+
+      this.mouse = this.proxy.mouse;
+
+
 
       if (e.type === 'mousedown') {
          this.isPressed = true;

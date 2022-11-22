@@ -7,31 +7,40 @@ export class Loop {
       this.lastUpdate = 0;
       this.maxInterval = 40;
 
-      this.animate = this.animate.bind(this);
-      this.animate();
 
    }
 
    loopWithProxy() {
-      console.log("loopWithProxy() {");
 
-      return proxy = new Proxy({}, {
+
+      const proxy = new Proxy({}, {
          set(...args) {
             const result = Reflect.set(...args);
+            requestAnimationFrame(() => {
+               console.log("proxy");
+
+               proxy.this.update();
+               proxy.this.display();
 
 
+            });
             return result;
          }
       });
 
       proxy.this = this;
+
+      return proxy;
    }
 
+   animate() {
 
+      this._animate = this._animate.bind(this);
+      this._animate();
+   }
 
-
-   animate(currentTime = 0) {
-      // requestAnimationFrame(this.animate);
+   _animate(currentTime = 0) {
+      requestAnimationFrame(this._animate);
 
       this.deltaTime = currentTime - this.lastUpdate;
 

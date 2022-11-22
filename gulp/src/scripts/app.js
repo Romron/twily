@@ -38,16 +38,23 @@ let params = {
 
 class App {
    constructor(params) {
+      this.pos = { x: 0, y: 0 }
+
+
       this.layer = new Layer(params);
-      this.mc = new MouseControls(this.layer);
       this.chart = new Chart(this.layer, params);
+      this.loop = new Loop(this.update.bind(this), this.display.bind(this));
+      this.proxyLoop = this.loop.loopWithProxy();
+      // this.proxyLoop = this.loop.animate();
 
-      console.log("this.mc.loopWithProxy = ", this.mc.loopWithProxy);
-
+      this.mc = new MouseControls(this.layer, this.proxyLoop);
+      this.pos = this.mc.pos
+      // console.log("this.pos = ", this.pos);
 
       dP.GetData().then((data) => {
          this.chart.data = dP.PreparationData(data);
-         new Loop(this.update.bind(this), this.display.bind(this));
+
+
       });
 
 
@@ -59,9 +66,9 @@ class App {
       this.chart.clear();
       this.chart.coordinateseCalculation(100, 0);
       this.chart.graph();
-      this.chart.horizontalPointer(this.mc.pos);
-      this.chart.horizontalPointerText(this.mc.pos);
-      this.chart.circul(this.mc.pos);
+      this.chart.horizontalPointer(this.pos);
+      this.chart.horizontalPointerText(this.pos);
+      this.chart.circul(this.pos);
 
 
 
