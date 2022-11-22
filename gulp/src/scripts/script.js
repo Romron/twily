@@ -69,8 +69,6 @@ export class Chart {
       this.HEIGHT_DPI = canvas.HEIGHT_DPI;
       this.WIDTH_DPI = canvas.WIDTH_DPI;
 
-      console.log("this.mouse = ", this.mouse);
-
       this.scaleX = params.scaleX;
       this.scaleY = params.scaleY;
       this.paddingTop = params.paddingTop;
@@ -87,32 +85,9 @@ export class Chart {
 
       this.offsetX = 100;
 
-      // const container = document.getElementById(params.idContainer);
-      // container.style.width = params.canvasWidht + 'px';
-      // container.style.height = params.canvasHeight + 'px';
-      // this.layer = new Layer(container);
-      // this.layer.width = this.WIDTH_DPI;
-      // this.layer.height = this.HEIGHT_DPI;
-      // console.log("this.layer = ", this.layer);
-
-
-
-      //    if (!document.getElementById(params.idCanvas)) {
-      //       this.canvas = document.createElement("canvas");
-      //       this.canvas.id = params.idCanvas;
-      //       document.getElementById(params.idTargetBlock).append(this.canvas);
-      //       this.canvas.style.width = params.canvasWidht + 'px';
-      //       this.canvas.style.height = params.canvasHight + 'px';
-      //       this.canvas.width = this.WIDTH_DPI;
-      //       this.canvas.height = this.HEIGHT_DPI;
-      //       this.ctx = this.canvas.getContext('2d');
-
       this.Xaxis = new X_axis(this);
       this.Yaxis = new Y_axis(this);
 
-      //    }
-
-      //    this._init();
 
 
    }
@@ -199,6 +174,19 @@ export class Chart {
 
       this.CoordinateGrid();
 
+
+      if (this.mouse.x > this.paddingLeft
+         && this.mouse.x < this.WIDTH_GRAPH_FILD
+         && this.mouse.y > this.paddingTop
+         && this.mouse.y < this.HEIGHT_GRAPH_FILD) {
+
+         this.horizontalPointer();
+         this.horizontalPointerText();
+         this.circul();
+      }
+
+
+
       this.ctx.beginPath();
       Object.keys(this.data).forEach((key, n) => {
 
@@ -249,15 +237,24 @@ export class Chart {
    horizontalPointer() {
       this.ctx.beginPath();
       this.ctx.lineWidth = 1;
+      this.ctx.strokeStyle = '#3A3A3C';
       this.ctx.setLineDash([4, 16]);      // устанавливается для всего холста
+
+      console.log("this.WIDTH_GRAPH_FILD = ", this.WIDTH_GRAPH_FILD);
+      console.log("this.mouse.x = ", this.mouse.x);
+      console.log("this.HEIGHT_GRAPH_FILD = ", this.HEIGHT_GRAPH_FILD);
+      console.log("this.mouse.y = ", this.mouse.y);
+
+
+
+
       this.ctx.moveTo(this.mouse.x, this.mouse.y);
       this.ctx.lineTo(this.mouse.x, this.WIDTH_DPI);
-      this.ctx.strokeStyle = '#3A3A3C';
-      this.ctx.stroke();
-      this.ctx.beginPath();
+
       this.ctx.moveTo(this.mouse.x, this.mouse.y);
       this.ctx.lineTo(this.WIDTH_DPI, this.mouse.y);
-      // this.ctx.closePath();
+
+
       this.ctx.stroke();
       this.ctx.setLineDash([]);     // сброс штриховки и возврат к сплошным линиям
    }

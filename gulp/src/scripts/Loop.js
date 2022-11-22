@@ -7,19 +7,13 @@ export class Loop {
       this.lastUpdate = 0;
       this.maxInterval = 40;
 
-
-   }
-
-   loopWithProxy() {
-
-
       const proxy = new Proxy({}, {
          set(...args) {
             const result = Reflect.set(...args);
             requestAnimationFrame(() => {
 
                proxy.this.update();
-               proxy.this.display();
+               // proxy.this.display();
 
 
             });
@@ -30,24 +24,7 @@ export class Loop {
       proxy.this = this;
 
       return proxy;
+
    }
 
-   animate() {
-
-      this._animate = this._animate.bind(this);
-      this._animate();
-   }
-
-   _animate(currentTime = 0) {
-      requestAnimationFrame(this._animate);
-
-      this.deltaTime = currentTime - this.lastUpdate;
-
-      if (this.deltaTime < this.maxInterval) {
-         this.update(this.deltaTime / 1000);
-         this.display();
-      }
-
-      this.lastUpdate = currentTime;
-   }
 }

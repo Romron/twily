@@ -31,8 +31,7 @@ class App {
 
       this.layer = new Layer(params);
       this.chart = new Chart(this.layer, params);
-      this.loop = new Loop(this.update.bind(this), this.display.bind(this));
-      this.proxyLoop = this.loop.loopWithProxy();
+      this.proxyLoop = new Loop(this.update.bind(this), this.display.bind(this));
       this.mc = new MouseControls(this.layer, this.proxyLoop);
 
       dP.GetData().then((data) => {
@@ -50,11 +49,11 @@ class App {
       this.chart.mouse = this.mc.pos
 
       this.chart.clear();
-      this.chart.coordinateseCalculation(100, 0);
+      this.chart.coordinateseCalculation(0, 0);
       this.chart.graph();
-      this.chart.horizontalPointer(this.pos);
-      this.chart.horizontalPointerText(this.pos);
-      this.chart.circul(this.pos);
+      // this.chart.horizontalPointer();
+      // this.chart.horizontalPointerText();
+      // this.chart.circul();
 
 
 
@@ -63,7 +62,7 @@ class App {
    display() {
 
       this.chart.clear();
-      this.chart.coordinateseCalculation(100, 0);
+      this.chart.coordinateseCalculation(0, 0);
       this.chart.graph();
       this.chart.horizontalPointer();
       this.chart.horizontalPointerText();
