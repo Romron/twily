@@ -29,7 +29,6 @@
 
    </div>
    <script type="module" src="../build/js/app.js"></script>
-   <script type="module" src="../build/js/appLoop.js"></script>
 </body>
 
 </html>

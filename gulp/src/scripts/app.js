@@ -13,8 +13,6 @@ let params = {
    idContainer: "block-results",
    canvasHeight: 600,
    canvasWidht: 1400,
-   HEIGHT_DPI: 1200,
-   WIDTH_DPI: 2800,
    scaleX: 2.6,
    scaleY: 1,
    ROWS_AMOUNT: 5,
@@ -39,15 +37,39 @@ let params = {
 
 class App {
    constructor(params) {
+      this.layer = new Layer(params);
+      this.chart = new Chart(this.layer, params);
+
+      dP.GetData().then((data) => {
+         this.chart.data = dP.PreparationData(data);
+         new Loop(this.update.bind(this), this.display.bind(this));
+      });
 
 
-      const container = document.getElementById(params.idContainer);
-      container.style.width = params.canvasWidht + 'px';
-      container.style.height = params.canvasHeight + 'px';
-      this.layer = new Layer(container);
-      // this.layer.height = params.HEIGHT_DPI;
-      // this.layer.width = params.WIDTH_DPI;
-      console.log("***this.layer = ", this.layer);
+   }
+
+   update() {
+
+      console.log("update()");
+      this.chart.clear();
+      this.chart.coordinateseCalculation(100, 0);
+      this.chart.graph();
+      this.chart.horizontalPointer();
+      this.chart.horizontalPointerText();
+      this.chart.circul();
+
+
+
+   }
+
+   display() {
+
+      // this.chart.clear();
+      // this.chart.coordinateseCalculation(100, 0);
+      // this.chart.graph();
+      // this.chart.horizontalPointer();
+      // this.chart.horizontalPointerText();
+      // this.chart.circul();
 
 
    }

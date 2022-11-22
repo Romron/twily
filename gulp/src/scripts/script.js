@@ -1,4 +1,3 @@
-import { Layer } from "./Layer.js";
 
 export class Chart {
    /**
@@ -63,13 +62,15 @@ export class Chart {
    data = {};
 
 
-   constructor(params) {
-      this.HEIGHT_DPI = params.canvasHeight * 2;
-      this.WIDTH_DPI = params.canvasWidht * 2;
+   constructor(canvas, params) {
+
+      this.canvas = canvas;
+      this.ctx = canvas.context;
+      this.HEIGHT_DPI = canvas.HEIGHT_DPI;
+      this.WIDTH_DPI = canvas.WIDTH_DPI;
 
       this.scaleX = params.scaleX;
       this.scaleY = params.scaleY;
-
       this.paddingTop = params.paddingTop;
       this.paddingBottom = params.paddingBottom;
       this.paddingLeft = params.paddingLeft;
@@ -85,13 +86,13 @@ export class Chart {
 
       this.offsetX = 100;
 
-      const container = document.getElementById(params.idContainer);
-      container.style.width = params.canvasWidht + 'px';
-      container.style.height = params.canvasHeight + 'px';
-      this.layer = new Layer(container);
-      this.layer.width = this.WIDTH_DPI;
-      this.layer.height = this.HEIGHT_DPI;
-      console.log("this.layer = ", this.layer);
+      // const container = document.getElementById(params.idContainer);
+      // container.style.width = params.canvasWidht + 'px';
+      // container.style.height = params.canvasHeight + 'px';
+      // this.layer = new Layer(container);
+      // this.layer.width = this.WIDTH_DPI;
+      // this.layer.height = this.HEIGHT_DPI;
+      // console.log("this.layer = ", this.layer);
 
 
 
@@ -105,9 +106,9 @@ export class Chart {
       //       this.canvas.height = this.HEIGHT_DPI;
       //       this.ctx = this.canvas.getContext('2d');
 
-      //       this.mc = new MouseControls(this.canvas);
-      //       this.Xaxis = new X_axis(this);
-      //       this.Yaxis = new Y_axis(this);
+      this.mc = new MouseControls(this.canvas);
+      this.Xaxis = new X_axis(this);
+      this.Yaxis = new Y_axis(this);
 
       //    }
 
@@ -115,10 +116,6 @@ export class Chart {
 
 
    }
-
-
-
-
 
    _init() {
 
@@ -174,8 +171,6 @@ export class Chart {
 
    }
 
-
-
    coordinateseCalculation(offsetX, offsetY) {
 
       let xNull = (this.WIDTH_DPI - this.paddingRight - this.widthYaxis);
@@ -226,7 +221,6 @@ export class Chart {
 
    }
 
-
    CoordinateGrid() {
       /**
        * рисует координатную сетку которая 
@@ -246,6 +240,13 @@ export class Chart {
    }
 
    horizontalPointerText() {
+
+      console.log("horizontalPointerText = ");
+
+      console.log("this.mc.pos.x = ", this.mc.pos.x);
+      console.log("this.mc.pos.y = ", this.mc.pos.y);
+
+
       this.ctx.font = '25px Arial';
       this.ctx.fillText(Math.ceil((this.coordinates.yNull - this.mouse.y) / this.scaleY * 100) + 26, this.WIDTH_DPI - this.widthYaxis / 1.1, this.mouse.y);
       this.ctx.fillText(Math.ceil(this.coordinates.xNull - this.mouse.x), this.mouse.x, this.HEIGHT_DPI - this.hightXaxis / 2);
@@ -284,7 +285,7 @@ export class Chart {
 
 class MouseControls {
    constructor(conteiner) {
-      this.conteiner = conteiner;
+      this.conteiner = conteiner.canvas;
 
       this.isPressed = false;
       this.isDown = false;
@@ -292,10 +293,11 @@ class MouseControls {
       this.pos = { x: 0, y: 0 };
       this.wheel = 0;
 
-
       // conteiner.addEventListener('click', e => this.cangeState(e));
       // conteiner.addEventListener('dblclick', e => this.cangeState(e));
       // conteiner.addEventListener('mouseenter', e => this.cangeState(e));
+
+      this.conteiner.addEventListener('mousemove', e => this.cangeState(e));
       this.conteiner.addEventListener('mousedown', e => this.cangeState(e));
       this.conteiner.addEventListener('mouseup', e => this.cangeState(e));
       this.conteiner.addEventListener('wheel', e => this.cangeState(e));
@@ -307,6 +309,11 @@ class MouseControls {
 
       this.pos.x = e.clientX;
       this.pos.y = e.clientY;
+      const { left, top } = this.conteiner.getBoundingClientRect()      // т.к. координаты канваса не савпадают с координатами экрана  
+      this.conteiner.mouse = {
+         x: (this.pos.x - left) * 2,      // преобразование в WIDTH_DPI
+         y: (this.pos.y - top) * 2,       // преобразование в HEIGHT_DPI
+      }
 
       if (e.type === 'mousedown') {
          this.isPressed = true;
@@ -397,6 +404,7 @@ class X_axis {
    }
 
    field() {
+
       this.canv.ctx.beginPath();
       this.canv.ctx.lineWidth = 1;
       // this.canv.ctx.strokeStyle = '#ADB5D9';

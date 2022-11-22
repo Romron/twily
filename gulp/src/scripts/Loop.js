@@ -1,16 +1,34 @@
 export class Loop {
-   constructor(update, display) {
-      this.update = update;
-      this.display = display;
+   constructor(_update, _display) {
+      this.update = _update;
+      this.display = _display;
 
       this.deltaTime = 0;
       this.lastUpdate = 0;
       this.maxInterval = 40;
 
-      requestAnimationFrame(stampTime => this.animate(stampTime));
+      this.animate = this.animate.bind(this);
+      // this.animate();
+
+      const proxy = new Proxy({}, {
+         set(...args) {
+            const result = Reflect.set(...args);
+            requestAnimationFrame(() => {
+
+
+               proxy.this.animate();
+
+            });
+            return result;
+         }
+      });
+
+      proxy.this = this;
+
    }
-   animate(currentTime) {
-      requestAnimationFrame(stampTime => this.animate(stampTime));
+
+   animate(currentTime = 0) {
+      // requestAnimationFrame(this.animate);
 
       this.deltaTime = currentTime - this.lastUpdate;
 
