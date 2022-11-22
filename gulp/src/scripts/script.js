@@ -106,7 +106,6 @@ export class Chart {
       //       this.canvas.height = this.HEIGHT_DPI;
       //       this.ctx = this.canvas.getContext('2d');
 
-      this.mc = new MouseControls(this.canvas);
       this.Xaxis = new X_axis(this);
       this.Yaxis = new Y_axis(this);
 
@@ -239,12 +238,12 @@ export class Chart {
 
    }
 
-   horizontalPointerText() {
+   horizontalPointerText(pos) {
 
-      console.log("horizontalPointerText = ");
+      // console.log("horizontalPointerText = ");
 
-      console.log("this.mc.pos.x = ", this.mc.pos.x);
-      console.log("this.mc.pos.y = ", this.mc.pos.y);
+      // console.log("this.mc.pos.x = ", pos.x);
+      // console.log("this.mc.pos.y = ", pos.y);
 
 
       this.ctx.font = '25px Arial';
@@ -252,27 +251,27 @@ export class Chart {
       this.ctx.fillText(Math.ceil(this.coordinates.xNull - this.mouse.x), this.mouse.x, this.HEIGHT_DPI - this.hightXaxis / 2);
    }
 
-   horizontalPointer() {
+   horizontalPointer(pos) {
       this.ctx.beginPath();
       this.ctx.lineWidth = 1;
       this.ctx.setLineDash([4, 16]);      // устанавливается для всего холста
-      this.ctx.moveTo(this.mouse.x, this.mouse.y);
-      this.ctx.lineTo(this.mouse.x, this.WIDTH_DPI);
+      this.ctx.moveTo(pos.x, pos.y);
+      this.ctx.lineTo(pos.x, this.WIDTH_DPI);
       this.ctx.strokeStyle = '#3A3A3C';
       this.ctx.stroke();
       this.ctx.beginPath();
-      this.ctx.moveTo(this.mouse.x, this.mouse.y);
-      this.ctx.lineTo(this.WIDTH_DPI, this.mouse.y);
+      this.ctx.moveTo(pos.x, pos.y);
+      this.ctx.lineTo(this.WIDTH_DPI, pos.y);
       // this.ctx.closePath();
       this.ctx.stroke();
       this.ctx.setLineDash([]);     // сброс штриховки и возврат к сплошным линиям
    }
 
-   circul() {
+   circul(pos) {
       this.ctx.beginPath();
       this.ctx.lineWidth = 2;
       this.ctx.strokeStyle = '#3A3A3C';
-      this.ctx.arc(this.mouse.x, this.mouse.y, 7, 0, Math.PI * 2);
+      this.ctx.arc(pos.x, pos.y, 7, 0, Math.PI * 2);
       this.ctx.stroke();
       this.ctx.closePath();
    }
@@ -283,75 +282,6 @@ export class Chart {
 
 }
 
-class MouseControls {
-   constructor(conteiner) {
-      this.conteiner = conteiner.canvas;
-
-      this.isPressed = false;
-      this.isDown = false;
-      this.isUp = false;
-      this.pos = { x: 0, y: 0 };
-      this.wheel = 0;
-
-      // conteiner.addEventListener('click', e => this.cangeState(e));
-      // conteiner.addEventListener('dblclick', e => this.cangeState(e));
-      // conteiner.addEventListener('mouseenter', e => this.cangeState(e));
-
-      this.conteiner.addEventListener('mousemove', e => this.cangeState(e));
-      this.conteiner.addEventListener('mousedown', e => this.cangeState(e));
-      this.conteiner.addEventListener('mouseup', e => this.cangeState(e));
-      this.conteiner.addEventListener('wheel', e => this.cangeState(e));
-      this.conteiner.addEventListener('mouseleave', e => this.cangeState(e));
-      this.conteiner.addEventListener('contextmenu', e => this.cangeState(e));
-   }
-
-   cangeState(e) {
-
-      this.pos.x = e.clientX;
-      this.pos.y = e.clientY;
-      const { left, top } = this.conteiner.getBoundingClientRect()      // т.к. координаты канваса не савпадают с координатами экрана  
-      this.conteiner.mouse = {
-         x: (this.pos.x - left) * 2,      // преобразование в WIDTH_DPI
-         y: (this.pos.y - top) * 2,       // преобразование в HEIGHT_DPI
-      }
-
-      if (e.type === 'mousedown') {
-         this.isPressed = true;
-         this.isDown = true;
-         this.isUp = false;
-      } else if (e.type === 'mouseup') {
-         this.isPressed = false;
-         this.isDown = false;
-         this.isUp = true;
-      } else if (e.type === 'wheel') {
-         e.preventDefault();
-         // console.log("e.deltaY = ", e.deltaY);
-
-         let q = e.deltaY + e.deltaX;
-
-         if (q > 0) {
-            this.wheel = 0.1;
-         } else if (q < 0) {
-            this.wheel = -0.1;
-         } else {
-            this.wheel = 0;
-         }
-
-         // if (e.deltaY > 0) {
-         //    this.wheel += 0.1;
-         // } else {
-         //    this.wheel -= 0.1;
-
-         // }
-
-      } else if (e.type === 'contextmenu') {
-         e.preventDefault();
-      }
-
-   }
-
-
-}
 
 class X_axis {
    /**

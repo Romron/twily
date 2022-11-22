@@ -2,6 +2,7 @@ import { Chart, page, DataProcessing } from "./script.js";
 
 import { Loop } from "./Loop.js";
 import { Layer } from "./Layer.js";
+import { MouseControls } from "./MouseControls.js";
 
 
 let url = './module_php/parser.php';
@@ -38,7 +39,11 @@ let params = {
 class App {
    constructor(params) {
       this.layer = new Layer(params);
+      this.mc = new MouseControls(this.layer);
       this.chart = new Chart(this.layer, params);
+
+      console.log("this.mc.loopWithProxy = ", this.mc.loopWithProxy);
+
 
       dP.GetData().then((data) => {
          this.chart.data = dP.PreparationData(data);
@@ -54,9 +59,9 @@ class App {
       this.chart.clear();
       this.chart.coordinateseCalculation(100, 0);
       this.chart.graph();
-      this.chart.horizontalPointer();
-      this.chart.horizontalPointerText();
-      this.chart.circul();
+      this.chart.horizontalPointer(this.mc.pos);
+      this.chart.horizontalPointerText(this.mc.pos);
+      this.chart.circul(this.mc.pos);
 
 
 

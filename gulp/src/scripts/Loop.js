@@ -8,24 +8,27 @@ export class Loop {
       this.maxInterval = 40;
 
       this.animate = this.animate.bind(this);
-      // this.animate();
+      this.animate();
 
-      const proxy = new Proxy({}, {
+   }
+
+   loopWithProxy() {
+      console.log("loopWithProxy() {");
+
+      return proxy = new Proxy({}, {
          set(...args) {
             const result = Reflect.set(...args);
-            requestAnimationFrame(() => {
 
 
-               proxy.this.animate();
-
-            });
             return result;
          }
       });
 
       proxy.this = this;
-
    }
+
+
+
 
    animate(currentTime = 0) {
       // requestAnimationFrame(this.animate);
