@@ -11,7 +11,7 @@ export class MouseControls {
       this.isPressed = false;
       this.isDown = false;
       this.isUp = false;
-      this.pos = { x: 300, y: 300 };
+      this.pos = { x: -10, y: -10 };
       this.wheel = 0;
 
       // conteiner.addEventListener('click', e => this.cangeState(e));

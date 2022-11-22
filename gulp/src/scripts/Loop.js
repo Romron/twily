@@ -17,7 +17,6 @@ export class Loop {
          set(...args) {
             const result = Reflect.set(...args);
             requestAnimationFrame(() => {
-               console.log("proxy");
 
                proxy.this.update();
                proxy.this.display();

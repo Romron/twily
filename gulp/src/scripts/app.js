@@ -26,35 +26,18 @@ let params = {
 };
 
 
-// window.onload = function () {
-//    const chr = new Chart(params);
-
-//    dP.GetData().then((data) => {
-//       chr.data = dP.PreparationData(data);
-//       chr.graph();
-//    });
-// }
-
-
 class App {
    constructor(params) {
-      this.pos = { x: 0, y: 0 }
-
 
       this.layer = new Layer(params);
       this.chart = new Chart(this.layer, params);
       this.loop = new Loop(this.update.bind(this), this.display.bind(this));
       this.proxyLoop = this.loop.loopWithProxy();
-      // this.proxyLoop = this.loop.animate();
-
       this.mc = new MouseControls(this.layer, this.proxyLoop);
-      this.pos = this.mc.pos
-      // console.log("this.pos = ", this.pos);
 
       dP.GetData().then((data) => {
          this.chart.data = dP.PreparationData(data);
-
-
+         this.display();
       });
 
 
@@ -63,6 +46,9 @@ class App {
    update() {
 
       console.log("update()");
+
+      this.chart.mouse = this.mc.pos
+
       this.chart.clear();
       this.chart.coordinateseCalculation(100, 0);
       this.chart.graph();
@@ -76,12 +62,12 @@ class App {
 
    display() {
 
-      // this.chart.clear();
-      // this.chart.coordinateseCalculation(100, 0);
-      // this.chart.graph();
-      // this.chart.horizontalPointer();
-      // this.chart.horizontalPointerText();
-      // this.chart.circul();
+      this.chart.clear();
+      this.chart.coordinateseCalculation(100, 0);
+      this.chart.graph();
+      this.chart.horizontalPointer();
+      this.chart.horizontalPointerText();
+      this.chart.circul();
 
 
    }

@@ -60,7 +60,7 @@ export class Chart {
     */
 
    data = {};
-
+   mouse = {};
 
    constructor(canvas, params) {
 
@@ -68,6 +68,8 @@ export class Chart {
       this.ctx = canvas.context;
       this.HEIGHT_DPI = canvas.HEIGHT_DPI;
       this.WIDTH_DPI = canvas.WIDTH_DPI;
+
+      console.log("this.mouse = ", this.mouse);
 
       this.scaleX = params.scaleX;
       this.scaleY = params.scaleY;
@@ -81,7 +83,6 @@ export class Chart {
       this.HEIGHT_GRAPH_FILD = this.HEIGHT_DPI - (this.paddingTop + this.paddingBottom + this.hightXaxis);
       this.WIDTH_GRAPH_FILD = this.WIDTH_DPI - (this.paddingLeft + this.paddingRight + this.widthYaxis);
 
-      this.mouse = {};
       this.coordinates = {}
 
       this.offsetX = 100;
@@ -238,34 +239,34 @@ export class Chart {
 
    }
 
-   horizontalPointerText(pos = { x: 0, y: 0 }) {
+   horizontalPointerText() {
 
       this.ctx.font = '25px Arial';
-      this.ctx.fillText(Math.ceil((this.coordinates.yNull - pos.y) / this.scaleY * 100) + 26, this.WIDTH_DPI - this.widthYaxis / 1.1, pos.y);
-      this.ctx.fillText(Math.ceil(this.coordinates.xNull - pos.x), pos.x, this.HEIGHT_DPI - this.hightXaxis / 2);
+      this.ctx.fillText(Math.ceil((this.coordinates.yNull - this.mouse.y) / this.scaleY * 100) + 26, this.WIDTH_DPI - this.widthYaxis / 1.1, this.mouse.y);
+      this.ctx.fillText(Math.ceil(this.coordinates.xNull - this.mouse.x), this.mouse.x, this.HEIGHT_DPI - this.hightXaxis / 2);
    }
 
-   horizontalPointer(pos = { x: 0, y: 0 }) {
+   horizontalPointer() {
       this.ctx.beginPath();
       this.ctx.lineWidth = 1;
       this.ctx.setLineDash([4, 16]);      // устанавливается для всего холста
-      this.ctx.moveTo(pos.x, pos.y);
-      this.ctx.lineTo(pos.x, this.WIDTH_DPI);
+      this.ctx.moveTo(this.mouse.x, this.mouse.y);
+      this.ctx.lineTo(this.mouse.x, this.WIDTH_DPI);
       this.ctx.strokeStyle = '#3A3A3C';
       this.ctx.stroke();
       this.ctx.beginPath();
-      this.ctx.moveTo(pos.x, pos.y);
-      this.ctx.lineTo(this.WIDTH_DPI, pos.y);
+      this.ctx.moveTo(this.mouse.x, this.mouse.y);
+      this.ctx.lineTo(this.WIDTH_DPI, this.mouse.y);
       // this.ctx.closePath();
       this.ctx.stroke();
       this.ctx.setLineDash([]);     // сброс штриховки и возврат к сплошным линиям
    }
 
-   circul(pos = { x: 0, y: 0 }) {
+   circul() {
       this.ctx.beginPath();
       this.ctx.lineWidth = 2;
       this.ctx.strokeStyle = '#3A3A3C';
-      this.ctx.arc(pos.x, pos.y, 7, 0, Math.PI * 2);
+      this.ctx.arc(this.mouse.x, this.mouse.y, 7, 0, Math.PI * 2);
       this.ctx.stroke();
       this.ctx.closePath();
    }
