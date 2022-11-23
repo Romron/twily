@@ -159,7 +159,6 @@ export class Chart {
          yOffset: yNull - offsetY
       }
 
-
       this.scaleX = this.scaleX + this.mouse.wheel;
       this.scaleX = +this.scaleX.toFixed(3);
 

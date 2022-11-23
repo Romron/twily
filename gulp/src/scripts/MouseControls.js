@@ -27,7 +27,7 @@ export class MouseControls {
 
    cangeState(e) {
 
-
+      this.wheel = 0;      // для того что бы при любом другом событии мыши, кроме wheel, не имитировалась прокрутка
 
       if (e.type === 'mousemove') {
          this.pos = {
@@ -37,11 +37,7 @@ export class MouseControls {
          this.proxy.mouse = this.pos;
       } else if (e.type === 'wheel') {
          e.preventDefault();     // запрещает перемотку всей страницы
-         // console.log("e.deltaY = ", e.deltaY);
-
-
          let q = e.deltaY + e.deltaX;
-
          if (q > 0) {
             this.wheel = 0.1;
          } else if (q < 0) {
@@ -49,14 +45,7 @@ export class MouseControls {
          } else {
             this.wheel = 0;
          }
-
          this.proxy.mouse = this.wheel;
-         // if (e.deltaY > 0) {
-         //    this.wheel += 0.1;
-         // } else {
-         //    this.wheel -= 0.1;
-
-         // }
 
       } else if (e.type === 'mousedown') {
          this.isPressed = true;
