@@ -11,11 +11,7 @@ export class Loop {
          set(...args) {
             const result = Reflect.set(...args);
             requestAnimationFrame(() => {
-
                proxy.this.update();
-               // proxy.this.display();
-
-
             });
             return result;
          }

@@ -1,5 +1,7 @@
-import { Chart, page, DataProcessing } from "./script.js";
 
+
+import { DataProcessing } from "./DataProcessing.js";
+import { Chart } from "./Chart.js";
 import { Loop } from "./Loop.js";
 import { Layer } from "./Layer.js";
 import { MouseControls } from "./MouseControls.js";
@@ -44,8 +46,7 @@ class App {
 
    update() {
 
-      this.chart.mouse.pos = this.mc.pos;
-      this.chart.mouse.wheel = this.mc.wheel;
+      this.chart.mouse = this.mc;      // получить управляющие сигналы от мыши
 
       this.chart.clear();
       this.chart.coordinateseCalculation(0, 0);

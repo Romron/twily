@@ -10,7 +10,7 @@ export class MouseControls {
       this.isPressed = false;
       this.isDown = false;
       this.isUp = false;
-      this.pos = { x: -10, y: -10 };
+      this.pos = { x: -10, y: -10 };         // прячу курсор до начала работы приложения
       this.wheel = 0;
 
       // conteiner.addEventListener('click', e => this.cangeState(e));
