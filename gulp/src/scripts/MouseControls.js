@@ -1,12 +1,11 @@
 export class MouseControls {
-   constructor(conteiner, proxy = {}) {
+   constructor(conteiner, proxy = {}, params) {
       this.conteiner = conteiner.canvas;
       const { left, top } = this.conteiner.getBoundingClientRect()      // т.к. координаты канваса не савпадают с координатами экрана
       this.left = left;
       this.top = top;
       this.proxy = proxy;
-
-
+      this.params = params;
 
       this.isPressed = false;
       this.isDown = false;
@@ -29,20 +28,11 @@ export class MouseControls {
    cangeState(e) {
 
       this.pos = {
-         x: (e.clientX - this.left) * 2,      // преобразование в WIDTH_DPI
-         y: (e.clientY - this.top) * 2,       // преобразование в HEIGHT_DPI
-      }
-      // console.log("this.pos.x = ", this.pos.x);
-
-
-      this.proxy.mouse = {
-         x: (e.clientX - this.left) * 2,      // преобразование в WIDTH_DPI
-         y: (e.clientY - this.top) * 2,       // преобразование в HEIGHT_DPI
+         x: (e.clientX - this.left) * 2 - this.params.paddingRight,      // преобразование в WIDTH_DPI
+         y: (e.clientY - this.top) * 2 - this.params.paddingTop,       // преобразование в HEIGHT_DPI
       }
 
-      this.mouse = this.proxy.mouse;
-
-
+      this.proxy.mouse = this.pos;
 
       if (e.type === 'mousedown') {
          this.isPressed = true;

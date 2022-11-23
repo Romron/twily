@@ -32,7 +32,7 @@ class App {
       this.layer = new Layer(params);
       this.chart = new Chart(this.layer, params);
       this.proxyLoop = new Loop(this.update.bind(this), this.display.bind(this));
-      this.mc = new MouseControls(this.layer, this.proxyLoop);
+      this.mc = new MouseControls(this.layer, this.proxyLoop, params);
 
       dP.GetData().then((data) => {
          this.chart.data = dP.PreparationData(data);
@@ -44,18 +44,11 @@ class App {
 
    update() {
 
-      console.log("update()");
-
       this.chart.mouse = this.mc.pos
 
       this.chart.clear();
       this.chart.coordinateseCalculation(0, 0);
       this.chart.graph();
-      // this.chart.horizontalPointer();
-      // this.chart.horizontalPointerText();
-      // this.chart.circul();
-
-
 
    }
 
