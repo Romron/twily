@@ -60,7 +60,10 @@ export class Chart {
     */
 
    data = {};
-   mouse = {};
+   mouse = {
+      pos: {},
+      wheel: {}
+   };
 
    constructor(canvas, params) {
 
@@ -92,36 +95,36 @@ export class Chart {
 
    _init() {
 
-      const proxy = new Proxy({}, {
-         set(...args) {
-            const result = Reflect.set(...args);
-            requestAnimationFrame(() => {
-               proxy.this.clear();
-               proxy.this.graph();
-               proxy.this.horizontalPointer();
-               proxy.this.horizontalPointerText();
-               proxy.this.circul();
-               proxy.this.coordinateseCalculation(proxy.this.offsetX, 0);
+      // const proxy = new Proxy({}, {
+      //    set(...args) {
+      //       const result = Reflect.set(...args);
+      //       requestAnimationFrame(() => {
+      //          proxy.this.clear();
+      //          proxy.this.graph();
+      //          proxy.this.horizontalPointer();
+      //          proxy.this.horizontalPointerText();
+      //          proxy.this.circul();
+      //          proxy.this.coordinateseCalculation(proxy.this.offsetX, 0);
 
-               proxy.this.funcForTest();
+      //          proxy.this.funcForTest();
 
-            });
-            return result;
-         }
-      });
+      //       });
+      //       return result;
+      //    }
+      // });
 
-      proxy.this = this;
-      proxy.mc = this.mc;
+      // proxy.this = this;
+      // proxy.mc = this.mc;
 
-      this.canvas.addEventListener('mousemove', ({ clientX, clientY }) => {      // получание текущих координат курсора
-         const { left, top } = this.canvas.getBoundingClientRect()      // т.к. координаты канваса не савпадают с координатами экрана  
-         proxy.mouse = {
-            x: (clientX - left) * 2,      // преобразование в WIDTH_DPI
-            y: (clientY - top) * 2,       // преобразование в HEIGHT_DPI
-         }
+      // this.canvas.addEventListener('mousemove', ({ clientX, clientY }) => {      // получание текущих координат курсора
+      //    const { left, top } = this.canvas.getBoundingClientRect()      // т.к. координаты канваса не савпадают с координатами экрана  
+      //    proxy.mouse = {
+      //       x: (clientX - left) * 2,      // преобразование в WIDTH_DPI
+      //       y: (clientY - top) * 2,       // преобразование в HEIGHT_DPI
+      //    }
 
-         this.mouse = proxy.mouse;
-      });
+      //    this.mouse = proxy.mouse;
+      // });
 
       this.canvas.addEventListener('wheel', (e) => {
          this.scaleX = this.scaleX + proxy.mc.wheel;
@@ -156,6 +159,16 @@ export class Chart {
          yOffset: yNull - offsetY
       }
 
+
+      this.scaleX = this.scaleX + this.mouse.wheel;
+      this.scaleX = +this.scaleX.toFixed(3);
+
+      if (this.scaleX < 0.1) {
+         this.scaleX = 0.1;
+         this.mouse.wheel = 0.1;
+      }
+
+
    }
 
    funcForTest() {
@@ -173,23 +186,19 @@ export class Chart {
       // this.mainField();    // для тестов
       this.CoordinateGrid();
 
-      if (this.mouse.x > this.paddingLeft
-         && this.mouse.x < this.WIDTH_GRAPH_FILD
-         && this.mouse.y > this.paddingTop
-         && this.mouse.y < this.HEIGHT_GRAPH_FILD) {
+      if (this.mouse.pos.x > this.paddingLeft
+         && this.mouse.pos.x < this.WIDTH_GRAPH_FILD
+         && this.mouse.pos.y > this.paddingTop
+         && this.mouse.pos.y < this.HEIGHT_GRAPH_FILD) {
          this.horizontalPointer();
          this.horizontalPointerText();
          this.circul();
       }
 
-
-
       this.ctx.beginPath();
       Object.keys(this.data).forEach((key, n) => {
-
          this.ctx.lineWidth = 2;
          this.ctx.strokeStyle = '#252229';
-
          if (n == 0) {
             this.ctx.moveTo(
                this.WIDTH_DPI - n * this.scaleX - this.paddingRight - this.widthYaxis - this.mainX,
@@ -225,10 +234,9 @@ export class Chart {
    }
 
    horizontalPointerText() {
-
       this.ctx.font = '25px Arial';
-      this.ctx.fillText(Math.ceil((this.coordinates.yNull - this.mouse.y - this.paddingTop) / this.scaleY * 100) + 26, this.WIDTH_DPI - this.widthYaxis / 1.1, this.mouse.y);
-      this.ctx.fillText(Math.ceil(this.coordinates.xNull - this.mouse.x), this.mouse.x, this.HEIGHT_DPI - this.hightXaxis / 2);
+      this.ctx.fillText(Math.ceil((this.coordinates.yNull - this.mouse.pos.y - this.paddingTop) / this.scaleY * 100) + 26, this.WIDTH_DPI - this.widthYaxis / 1.1, this.mouse.pos.y);
+      this.ctx.fillText(Math.ceil(this.coordinates.xNull - this.mouse.pos.x), this.mouse.pos.x, this.HEIGHT_DPI - this.hightXaxis / 2);
    }
 
    horizontalPointer() {
@@ -239,13 +247,13 @@ export class Chart {
 
 
       // вертикальный указатель
-      this.ctx.moveTo(this.mouse.x + this.paddingRight, this.mouse.y + this.paddingTop);
-      this.ctx.lineTo(this.mouse.x + this.paddingRight, this.coordinates.yNull);
+      this.ctx.moveTo(this.mouse.pos.x + this.paddingRight, this.mouse.pos.y + this.paddingTop);
+      this.ctx.lineTo(this.mouse.pos.x + this.paddingRight, this.coordinates.yNull);
 
       // горизонтальный указатель
 
-      this.ctx.moveTo(this.mouse.x + this.paddingRight, this.mouse.y + this.paddingTop);
-      this.ctx.lineTo(this.coordinates.xNull, this.mouse.y + this.paddingTop);
+      this.ctx.moveTo(this.mouse.pos.x + this.paddingRight, this.mouse.pos.y + this.paddingTop);
+      this.ctx.lineTo(this.coordinates.xNull, this.mouse.pos.y + this.paddingTop);
 
 
       this.ctx.stroke();
@@ -257,7 +265,7 @@ export class Chart {
       this.ctx.beginPath();
       this.ctx.lineWidth = 2;
       this.ctx.strokeStyle = '#3A3A3C';
-      this.ctx.arc(this.mouse.x + this.paddingRight, this.mouse.y + this.paddingTop, 7, 0, Math.PI * 2);
+      this.ctx.arc(this.mouse.pos.x + this.paddingRight, this.mouse.pos.y + this.paddingTop, 7, 0, Math.PI * 2);
       this.ctx.stroke();
       // this.ctx.closePath();
    }
@@ -265,7 +273,6 @@ export class Chart {
    clear() {
       this.ctx.clearRect(0, 0, this.WIDTH_DPI, this.HEIGHT_DPI);
    }
-
 
    mainField() {
       this.ctx.beginPath();

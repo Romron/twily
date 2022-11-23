@@ -27,24 +27,18 @@ export class MouseControls {
 
    cangeState(e) {
 
-      this.pos = {
-         x: (e.clientX - this.left) * 2 - this.params.paddingRight,      // преобразование в WIDTH_DPI
-         y: (e.clientY - this.top) * 2 - this.params.paddingTop,       // преобразование в HEIGHT_DPI
-      }
 
-      this.proxy.mouse = this.pos;
 
-      if (e.type === 'mousedown') {
-         this.isPressed = true;
-         this.isDown = true;
-         this.isUp = false;
-      } else if (e.type === 'mouseup') {
-         this.isPressed = false;
-         this.isDown = false;
-         this.isUp = true;
+      if (e.type === 'mousemove') {
+         this.pos = {
+            x: (e.clientX - this.left) * 2 - this.params.paddingRight,      // преобразование в WIDTH_DPI
+            y: (e.clientY - this.top) * 2 - this.params.paddingTop,       // преобразование в HEIGHT_DPI
+         }
+         this.proxy.mouse = this.pos;
       } else if (e.type === 'wheel') {
-         e.preventDefault();
+         e.preventDefault();     // запрещает перемотку всей страницы
          // console.log("e.deltaY = ", e.deltaY);
+
 
          let q = e.deltaY + e.deltaX;
 
@@ -56,6 +50,7 @@ export class MouseControls {
             this.wheel = 0;
          }
 
+         this.proxy.mouse = this.wheel;
          // if (e.deltaY > 0) {
          //    this.wheel += 0.1;
          // } else {
@@ -63,6 +58,14 @@ export class MouseControls {
 
          // }
 
+      } else if (e.type === 'mousedown') {
+         this.isPressed = true;
+         this.isDown = true;
+         this.isUp = false;
+      } else if (e.type === 'mouseup') {
+         this.isPressed = false;
+         this.isDown = false;
+         this.isUp = true;
       } else if (e.type === 'contextmenu') {
          e.preventDefault();
       }

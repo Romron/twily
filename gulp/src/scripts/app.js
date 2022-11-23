@@ -44,7 +44,8 @@ class App {
 
    update() {
 
-      this.chart.mouse = this.mc.pos
+      this.chart.mouse.pos = this.mc.pos;
+      this.chart.mouse.wheel = this.mc.wheel;
 
       this.chart.clear();
       this.chart.coordinateseCalculation(0, 0);
