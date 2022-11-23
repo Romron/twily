@@ -351,7 +351,7 @@ class Y_axis {
 
    drawAxis() {
 
-      this.field();
+      // this.field();
 
       // this.canv.canvas.canvas.style.cursor = 'row-resize';
       this.canv.canvas.canvas.style.cursor = 'pointer';
