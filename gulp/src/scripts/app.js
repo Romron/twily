@@ -1,4 +1,10 @@
-import { Chart, page, DataProcessing } from "./script.js";
+
+
+import { DataProcessing } from "./DataProcessing.js";
+import { Chart } from "./Chart.js";
+import { Loop } from "./Loop.js";
+import { Layer } from "./Layer.js";
+import { MouseControls } from "./MouseControls.js";
 
 
 let url = './module_php/parser.php';
@@ -7,10 +13,10 @@ const dP = new DataProcessing(url);   // всё что касается полу
 let params = {
    idTargetBlock: "block-results",
    idCanvas: "canv-1",
-   canvasHight: 600,
+   idContainer: "block-results",
+   canvasHeight: 600,
    canvasWidht: 1400,
    scaleX: 2.6,
-   // scaleX: 1,
    scaleY: 1,
    ROWS_AMOUNT: 5,
    paddingTop: 20,
@@ -22,11 +28,40 @@ let params = {
 };
 
 
-window.onload = function () {
-   const chr = new Chart(params);
+class App {
+   constructor(params) {
 
-   dP.GetData().then((data) => {
-      chr.data = dP.PreparationData(data);
-      chr.graph();
-   });
+      this.layer = new Layer(params);
+      this.chart = new Chart(this.layer, params);
+      this.proxyLoop = new Loop(this.update.bind(this), this.display.bind(this));
+      this.mc = new MouseControls(this.layer, this.proxyLoop, params);
+
+      dP.GetData().then((data) => {
+         this.chart.data = dP.PreparationData(data);
+         this.display();
+      });
+
+
+   }
+
+   update() {
+
+      this.chart.mouse = this.mc;      // получить управляющие сигналы от мыши
+
+      this.chart.clear();
+      this.chart.coordinateseCalculation(0, 0);
+      this.chart.graph();
+
+   }
+
+   display() {
+
+      this.chart.clear();
+      this.chart.coordinateseCalculation(0, 0);
+      this.chart.graph();
+
+
+   }
 }
+
+onload = () => { new App(params) }
