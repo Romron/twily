@@ -64,6 +64,7 @@ export class Chart {
       pos: {},
       wheel: {}
    };
+   coordinates = {}
 
    constructor(canvas, params) {
 
@@ -84,68 +85,12 @@ export class Chart {
       this.HEIGHT_GRAPH_FILD = this.HEIGHT_DPI - (this.paddingTop + this.paddingBottom + this.hightXaxis);
       this.WIDTH_GRAPH_FILD = this.WIDTH_DPI - (this.paddingLeft + this.paddingRight + this.widthYaxis);
 
-      this.coordinates = {}
 
-      this.offsetX = 100;
-
-      this.Xaxis = new X_axis(this);
+      this.Xaxis = new X_axis(this);      // здесь для того что бы можно было отключать координатную сетку а шкалы оставались
       this.Yaxis = new Y_axis(this);
 
    }
 
-   _init() {
-
-      // const proxy = new Proxy({}, {
-      //    set(...args) {
-      //       const result = Reflect.set(...args);
-      //       requestAnimationFrame(() => {
-      //          proxy.this.clear();
-      //          proxy.this.graph();
-      //          proxy.this.horizontalPointer();
-      //          proxy.this.horizontalPointerText();
-      //          proxy.this.circul();
-      //          proxy.this.coordinateseCalculation(proxy.this.offsetX, 0);
-
-      //          proxy.this.funcForTest();
-
-      //       });
-      //       return result;
-      //    }
-      // });
-
-      // proxy.this = this;
-      // proxy.mc = this.mc;
-
-      // this.canvas.addEventListener('mousemove', ({ clientX, clientY }) => {      // получание текущих координат курсора
-      //    const { left, top } = this.canvas.getBoundingClientRect()      // т.к. координаты канваса не савпадают с координатами экрана  
-      //    proxy.mouse = {
-      //       x: (clientX - left) * 2,      // преобразование в WIDTH_DPI
-      //       y: (clientY - top) * 2,       // преобразование в HEIGHT_DPI
-      //    }
-
-      //    this.mouse = proxy.mouse;
-      // });
-
-      this.canvas.addEventListener('wheel', (e) => {
-         this.scaleX = this.scaleX + proxy.mc.wheel;
-         this.scaleX = +this.scaleX.toFixed(3);
-
-         if (this.scaleX < 0.1) {
-            this.scaleX = 0.1;
-            proxy.mc.wheel = 0.1;
-         }
-
-         proxy.this.clear();
-         proxy.this.graph();
-         proxy.this.horizontalPointer();
-         proxy.this.horizontalPointerText();
-         proxy.this.circul();
-         proxy.this.coordinateseCalculation(this.offsetX, 0);
-
-         proxy.this.funcForTest();
-      });
-
-   }
 
    coordinateseCalculation(offsetX, offsetY) {
 
@@ -235,7 +180,7 @@ export class Chart {
    horizontalPointerText() {
       this.ctx.font = '25px Arial';
       this.ctx.fillText(Math.ceil((this.coordinates.yNull - this.mouse.pos.y - this.paddingTop) / this.scaleY * 100) + 26, this.WIDTH_DPI - this.widthYaxis / 1.1, this.mouse.pos.y);
-      this.ctx.fillText(Math.ceil(this.coordinates.xNull - this.mouse.pos.x), this.mouse.pos.x, this.HEIGHT_DPI - this.hightXaxis / 2);
+      this.ctx.fillText(Math.ceil(this.coordinates.xNull - this.mouse.pos.x - this.paddingRight), this.mouse.pos.x, this.HEIGHT_DPI - this.hightXaxis / 2);
    }
 
    horizontalPointer() {
@@ -406,7 +351,7 @@ class Y_axis {
 
    drawAxis() {
 
-      // this.field();
+      this.field();
 
       // this.canv.canvas.canvas.style.cursor = 'row-resize';
       this.canv.canvas.canvas.style.cursor = 'pointer';

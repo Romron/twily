@@ -58,9 +58,6 @@ class App {
       this.chart.clear();
       this.chart.coordinateseCalculation(0, 0);
       this.chart.graph();
-      this.chart.horizontalPointer();
-      this.chart.horizontalPointerText();
-      this.chart.circul();
 
 
    }
