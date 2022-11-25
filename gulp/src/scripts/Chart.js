@@ -88,6 +88,8 @@ export class Chart {
       this.HEIGHT_GRAPH_FILD = this.HEIGHT_DPI - (this.paddingTop + this.paddingBottom + this.hightXaxis);
       this.WIDTH_GRAPH_FILD = this.WIDTH_DPI - (this.paddingLeft + this.paddingRight + this.widthYaxis);
 
+      this.oldMousePosY = 0;  // для отслеживания движения курсора 
+
 
       this.Xaxis = new X_axis(this);      // здесь для того что бы можно было отключать координатную сетку а шкалы оставались
       this.Yaxis = new Y_axis(this);
@@ -109,11 +111,26 @@ export class Chart {
 
       this.scaleX = this.scaleX + this.mouse.wheel;
       this.scaleX = +this.scaleX.toFixed(3);
-
       if (this.scaleX < 0.1) {
          this.scaleX = 0.1;
          this.mouse.wheel = 0.1;
       }
+
+      if (this.mouse.isPressed == true && this.mouse.pos.x > this.WIDTH_GRAPH_FILD) {
+
+         if (this.oldMousePosY - this.mouse.pos.y > 0) {
+            this.scaleY = this.scaleY - 0.01;
+         } else {
+            this.scaleY = this.scaleY + 0.01;
+         }
+         this.oldMousePosY = this.mouse.pos.y;
+      }
+
+      // if (this.mouse.isPressed == true && this.mouse.pos.x > this.WIDTH_GRAPH_FILD & ) { 
+
+
+      // }
+
 
 
    }
