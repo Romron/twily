@@ -107,7 +107,6 @@ export class Chart {
          yOffset: yNull - offsetY
       }
 
-      // колёсико мыши - изменяет масштаб по оси Х
       this.scaleX = this.scaleX + this.mouse.wheel;
       this.scaleX = +this.scaleX.toFixed(3);
 
@@ -115,8 +114,6 @@ export class Chart {
          this.scaleX = 0.1;
          this.mouse.wheel = 0.1;
       }
-
-      // движение курсора вертикально в пределах школы Y - изменяет масштаб по этой шкале
 
 
    }
