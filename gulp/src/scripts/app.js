@@ -49,7 +49,7 @@ class App {
       this.chart.mouse = this.mc;      // получить управляющие сигналы от мыши
 
       this.chart.clear();
-      this.chart.coordinateseCalculation(0, 0);
+      this.chart.coordinateseCalculation();
       this.chart.graph();
 
    }

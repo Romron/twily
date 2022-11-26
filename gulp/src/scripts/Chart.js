@@ -89,16 +89,10 @@ export class Chart {
       this.WIDTH_GRAPH_FILD = this.WIDTH_DPI - (this.paddingLeft + this.paddingRight + this.widthYaxis);
 
       this.oldMousePosY = 0;  // для отслеживания движения курсора 
+      this.oldMousePosX = 0;  // для отслеживания движения курсора 
 
-
-      this.Xaxis = new X_axis(this);      // здесь для того что бы можно было отключать координатную сетку а шкалы оставались
-      this.Yaxis = new Y_axis(this);
-
-   }
-
-
-   coordinateseCalculation(offsetX, offsetY) {
-
+      let offsetX = 0;
+      let offsetY = 0;
       let xNull = (this.WIDTH_DPI - this.paddingRight - this.widthYaxis);
       let yNull = (this.HEIGHT_DPI - this.paddingBottom - this.hightXaxis);
 
@@ -108,6 +102,19 @@ export class Chart {
          xOffset: xNull - offsetX,
          yOffset: yNull - offsetY
       }
+
+
+console.log("this.coordinates", this.coordinates);
+
+      this.Xaxis = new X_axis(this);      // здесь для того что бы можно было отключать координатную сетку а шкалы оставались
+      this.Yaxis = new Y_axis(this);
+
+   }
+
+
+   coordinateseCalculation() {
+
+
 
       this.scaleX = this.scaleX + this.mouse.wheel;
       this.scaleX = +this.scaleX.toFixed(3);
@@ -126,60 +133,93 @@ export class Chart {
          this.oldMousePosY = this.mouse.pos.y;
       }
 
-      // if (this.mouse.isPressed == true && this.mouse.pos.x > this.WIDTH_GRAPH_FILD & ) { 
+      if (this.mouse.isPressed == true &&    
+         this.mouse.pos.x > this.paddingLeft && 
+         this.mouse.pos.x < this.WIDTH_GRAPH_FILD ) { 
 
 
-      // }
+         if ((this.oldMousePosx - this.mouse.pos.x) < 0) {
 
+            this.coordinates.xOffset = this.coordinates.xOffset + 10; 
+            this.oldMousePosx = this.mouse.pos.x;
+            return;
+
+         }else if ((this.oldMousePosx - this.mouse.pos.x) > 0) {}{
+
+            this.coordinates.xOffset = this.coordinates.xOffset - 10; 
+            this.oldMousePosx = this.mouse.pos.x;
+            return;
+         }
+
+         if ((this.oldMousePosy - this.mouse.pos.y) < 0) {
+
+            this.coordinates.yOffset = this.coordinates.yOffset + 10; 
+            this.oldMousePosy = this.mouse.pos.y;
+            return;
+
+         }else if ((this.oldMousePosy - this.mouse.pos.y) > 0) {}{
+
+            this.coordinates.yOffset = this.coordinates.yOffset - 10; 
+            this.oldMousePosy = this.mouse.pos.y;
+            return;
+         }
 
 
    }
 
-   funcForTest() {
 
-      this.ctx.beginPath();
-      this.ctx.lineWidth = 2;
-      this.ctx.strokeStyle = 'red';
-      this.ctx.arc(this.coordinates.xOffset, this.coordinates.yOffset, 5, 0, Math.PI * 2);
-      this.ctx.stroke();
+}
 
-   }
+funcForTest() {
 
-   graph() {
+   this.ctx.beginPath();
+   this.ctx.lineWidth = 2;
+   this.ctx.strokeStyle = 'red';
+   this.ctx.arc(this.coordinates.xOffset, this.coordinates.yOffset, 5, 0, Math.PI * 2);
+   this.ctx.stroke();
+
+}
+
+graph() {
 
       // this.mainField();    // для тестов
-      this.CoordinateGrid();
+   this.CoordinateGrid();
 
-      if (this.mouse.pos.x > this.paddingLeft
-         && this.mouse.pos.x < this.WIDTH_GRAPH_FILD
-         && this.mouse.pos.y > this.paddingTop
-         && this.mouse.pos.y < this.HEIGHT_GRAPH_FILD) {
-         this.horizontalPointer();
-         this.horizontalPointerText();
-         this.circul();
-      }
 
-      this.ctx.beginPath();
-      Object.keys(this.data).forEach((key, n) => {
-         this.ctx.lineWidth = 2;
-         this.ctx.strokeStyle = '#252229';
-         if (n == 0) {
-            this.ctx.moveTo(
-               this.WIDTH_DPI - n * this.scaleX - this.paddingRight - this.widthYaxis - this.mainX,
-               this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY - this.paddingBottom - this.hightXaxis
-            );
-         }
-         this.ctx.lineTo(
-            this.coordinates.xOffset - n * this.scaleX,
-            this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY - this.paddingBottom - this.hightXaxis
+
+console.log("this.coordinates.yOffset", this.coordinates.yOffset);
+
+
+   if (this.mouse.pos.x > this.paddingLeft
+      && this.mouse.pos.x < this.WIDTH_GRAPH_FILD
+      && this.mouse.pos.y > this.paddingTop
+      && this.mouse.pos.y < this.HEIGHT_GRAPH_FILD) {
+      this.horizontalPointer();
+   this.horizontalPointerText();
+   this.circul();
+}
+
+this.ctx.beginPath();
+Object.keys(this.data).forEach((key, n) => {
+   this.ctx.lineWidth = 2;
+   this.ctx.strokeStyle = '#252229';
+   if (n == 0) {
+      this.ctx.moveTo(
+         this.WIDTH_DPI -this.coordinates.xOffset - n * this.scaleX - this.paddingRight - this.widthYaxis - this.mainX,
+         this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY - this.paddingBottom - this.hightXaxis
          );
-      });
-
-      this.ctx.stroke();
-
    }
+   this.ctx.lineTo(
+      this.coordinates.xOffset - n * this.scaleX,
+      this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY - this.paddingBottom - this.hightXaxis
+      );
+});
 
-   CoordinateGrid() {
+this.ctx.stroke();
+
+}
+
+CoordinateGrid() {
       /**
        * рисует координатную сетку которая 
        *    изменяеться при изменении масштаба
@@ -192,21 +232,21 @@ export class Chart {
        */
 
 
-      this.Xaxis.drawAxis(this.data);
-      this.Yaxis.drawAxis();
+   this.Xaxis.drawAxis(this.data);
+   this.Yaxis.drawAxis();
 
-   }
+}
 
-   horizontalPointerText() {
-      this.ctx.font = '25px Arial';
-      this.ctx.fillText(Math.ceil((this.coordinates.yNull - this.mouse.pos.y - this.paddingTop) / this.scaleY * 100) + 26, this.WIDTH_DPI - this.widthYaxis / 1.1, this.mouse.pos.y);
-      this.ctx.fillText(Math.ceil(this.coordinates.xNull - this.mouse.pos.x - this.paddingRight), this.mouse.pos.x, this.HEIGHT_DPI - this.hightXaxis / 2);
-   }
+horizontalPointerText() {
+   this.ctx.font = '25px Arial';
+   this.ctx.fillText(Math.ceil((this.coordinates.yNull - this.mouse.pos.y - this.paddingTop) / this.scaleY * 100) + 26, this.WIDTH_DPI - this.widthYaxis / 1.1, this.mouse.pos.y);
+   this.ctx.fillText(Math.ceil(this.coordinates.xNull - this.mouse.pos.x - this.paddingRight), this.mouse.pos.x, this.HEIGHT_DPI - this.hightXaxis / 2);
+}
 
-   horizontalPointer() {
-      this.ctx.beginPath();
-      this.ctx.lineWidth = 1;
-      this.ctx.strokeStyle = '#3A3A3C';
+horizontalPointer() {
+   this.ctx.beginPath();
+   this.ctx.lineWidth = 1;
+   this.ctx.strokeStyle = '#3A3A3C';
       this.ctx.setLineDash([4, 16]);      // устанавливается для всего холста
 
 
