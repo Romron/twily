@@ -96,25 +96,22 @@ export class Chart {
       let xNull = (this.WIDTH_DPI - this.paddingRight - this.widthYaxis);
       let yNull = (this.HEIGHT_DPI - this.paddingBottom - this.hightXaxis);
 
-      this.coordinates = {
+      this.coordinates = {    // добавить: из this.coordinates.xNull и this.coordinates.yNull вычитать offsetX и offsetX 
          xNull: xNull,
          yNull: yNull,
-         xOffset: xNull - offsetX,
-         yOffset: yNull - offsetY
+         // xOffset: xNull - offsetX,
+         // yOffset: yNull - offsetX         
+
+         xOffset: 0,
+         yOffset: 0,
       }
-
-
-console.log("this.coordinates", this.coordinates);
 
       this.Xaxis = new X_axis(this);      // здесь для того что бы можно было отключать координатную сетку а шкалы оставались
       this.Yaxis = new Y_axis(this);
 
    }
 
-
    coordinateseCalculation() {
-
-
 
       this.scaleX = this.scaleX + this.mouse.wheel;
       this.scaleX = +this.scaleX.toFixed(3);
@@ -164,7 +161,6 @@ console.log("this.coordinates", this.coordinates);
             return;
          }
 
-
    }
 
 
@@ -186,7 +182,12 @@ graph() {
    this.CoordinateGrid();
 
 
+console.log("----------------------------");
 
+console.log("this.WIDTH_DPI", this.WIDTH_DPI);
+console.log("this.HEIGHT_DPI", this.HEIGHT_DPI);
+
+console.log("this.coordinates.xOffset", this.coordinates.xOffset);
 console.log("this.coordinates.yOffset", this.coordinates.yOffset);
 
 
@@ -204,14 +205,14 @@ Object.keys(this.data).forEach((key, n) => {
    this.ctx.lineWidth = 2;
    this.ctx.strokeStyle = '#252229';
    if (n == 0) {
-      this.ctx.moveTo(
-         this.WIDTH_DPI -this.coordinates.xOffset - n * this.scaleX - this.paddingRight - this.widthYaxis - this.mainX,
-         this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY - this.paddingBottom - this.hightXaxis
+         this.ctx.moveTo(
+         this.coordinates.xNull - n * this.scaleX - this.mainX,
+         this.coordinates.yNull - this.data[key]['1b. open (USD)'] / 100 * this.scaleY
          );
    }
    this.ctx.lineTo(
-      this.coordinates.xOffset - n * this.scaleX,
-      this.HEIGHT_DPI - this.data[key]['1b. open (USD)'] / 100 * this.scaleY - this.paddingBottom - this.hightXaxis
+      this.coordinates.xNull - n * this.scaleX - this.coordinates.xOffset,
+      this.coordinates.yNull - this.data[key]['1b. open (USD)'] / 100 * this.scaleY - this.coordinates.yOffset
       );
 });
 
