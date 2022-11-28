@@ -27,16 +27,13 @@ export class X_axis {
       let nLine = 0;
       let arrDays = Object.keys(data);
 
-      // let xNull = (this.WIDTH_DPI - this.paddingRight - this.widthYaxis);
-      // let yNull = (this.HEIGHT_DPI - this.paddingBottom - this.hightXaxis);
-
       if (arrDays.length != 0) {
          for (let n = 0; n < arrDays.length; n++) {
             if (arrDays[n].endsWith('01')) {
                this.distanceBetweenLines = this.xLineOld - this.xLine;
                nLine++;
                this.xLineOld = this.xLine;
-               this.xLine = Math.round(this.canv.coordinates.xNull - n * this.canv.scaleX - this.canv.coordinates.xOffset);
+               this.xLine = Math.round(this.canv.coordinates.xNull - n * this.canv.scaleX);
                this.distanceBetweenLines = this.xLineOld - this.xLine;
                this.drawLines(nLine);
                if (this.distanceBetweenLines < 150 && nLine % 2 != 0) {
