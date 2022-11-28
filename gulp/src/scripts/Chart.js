@@ -93,18 +93,13 @@ export class Chart {
       this.HEIGHT_GRAPH_FILD = this.HEIGHT_DPI - (this.paddingTop + this.paddingBottom + this.hightXaxis);
       this.WIDTH_GRAPH_FILD = this.WIDTH_DPI - (this.paddingLeft + this.paddingRight + this.widthYaxis);
 
-      this.oldMousePosY = 0;  // для отслеживания движения курсора 
       this.oldMousePosX = 0;  // для отслеживания движения курсора 
-
-      console.log("this.coordinates = ", this.coordinates);
+      this.oldMousePosY = 0;  // для отслеживания движения курсора 
 
       this.Xaxis = new X_axis(this);      // здесь для того что бы можно было отключать координатную сетку а шкалы оставались
       this.Yaxis = new Y_axis(this);
 
    }
-
-
-
 
    coordinateseCalculation() {
 
@@ -114,53 +109,46 @@ export class Chart {
       this.scaleX = this.scaleX + this.mouse.wheel;
       this.scaleX = +this.scaleX.toFixed(3);
 
-      let deltaX = this.oldMousePosx - this.mouse.pos.x
-      let deltaY = this.oldMousePosy - this.mouse.pos.y;
+      let deltaX = Math.abs(this.oldMousePosX - this.mouse.pos.x);
+      let deltaY = Math.abs(this.oldMousePosY - this.mouse.pos.y);
 
-      if (this.scaleX < 0.1) {
+
+      if (this.scaleX < 0.1) {   // изменение масштаба по оси X 
          this.scaleX = 0.1;
          this.mouse.wheel = 0.1;
       }
 
-      if (this.mouse.isPressed == true && this.mouse.pos.x > this.WIDTH_GRAPH_FILD) {
-
+      if (this.mouse.isPressed == true && this.mouse.pos.x > this.WIDTH_GRAPH_FILD) {  // изменение масштаба по оси Y 
          if (deltaY > 0) {
+            console.log("deltaY = ", deltaY);
             this.scaleY = this.scaleY - 0.01;
          } else {
+            console.log("deltaY = ", deltaY);
             this.scaleY = this.scaleY + 0.01;
          }
          this.oldMousePosY = this.mouse.pos.y;
       }
 
-      if (this.mouse.isPressed == true &&
+      if (this.mouse.isPressed == true &&    // перемещение поля графика вслед за курсором
          this.mouse.pos.x > this.paddingLeft &&
          this.mouse.pos.x < this.WIDTH_GRAPH_FILD) {
 
+         console.log("deltaX = ", deltaX);
+         console.log("deltaY = ", deltaY);
 
          if (deltaX < 0) {
-
-            this.coordinates.xOffset = this.coordinates.xOffset - 10;
-            this.oldMousePosx = this.mouse.pos.x;
-            // return;
-
+            this.coordinates.xOffset = this.coordinates.xOffset - 5;
+            this.oldMousePosX = this.mouse.pos.x;
          } else if (deltaX > 0) {
-
-            this.coordinates.xOffset = this.coordinates.xOffset + 10;
-            this.oldMousePosx = this.mouse.pos.x;
-            // return;
+            this.coordinates.xOffset = this.coordinates.xOffset + 5;
+            this.oldMousePosX = this.mouse.pos.x;
          }
-
          if (deltaY < 0) {
-
-            this.coordinates.yOffset = this.coordinates.yOffset - 10;
-            this.oldMousePosy = this.mouse.pos.y;
-            return;
-
+            this.coordinates.yOffset = this.coordinates.yOffset - 5;
+            this.oldMousePosY = this.mouse.pos.y;
          } else if (deltaY > 0) {
-
-            this.coordinates.yOffset = this.coordinates.yOffset + 10;
-            this.oldMousePosy = this.mouse.pos.y;
-            // return;
+            this.coordinates.yOffset = this.coordinates.yOffset + 5;
+            this.oldMousePosY = this.mouse.pos.y;
          }
 
       }
@@ -172,17 +160,6 @@ export class Chart {
 
       // this.mainField();    // для тестов
       this.CoordinateGrid();
-
-
-      console.log("----------------------------");
-
-      console.log("this.WIDTH_DPI", this.WIDTH_DPI);
-      console.log("this.HEIGHT_DPI", this.HEIGHT_DPI);
-      console.log("this.coordinates.xNull = ", this.coordinates.xNull);
-      console.log("this.coordinates.yNull = ", this.coordinates.yNull);
-      console.log("this.coordinates.xOffset", this.coordinates.xOffset);
-      console.log("this.coordinates.yOffset", this.coordinates.yOffset);
-
 
       if (this.mouse.pos.x > this.paddingLeft
          && this.mouse.pos.x < this.WIDTH_GRAPH_FILD
