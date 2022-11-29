@@ -109,8 +109,8 @@ export class Chart {
       this.scaleX = this.scaleX + this.mouse.wheel;
       this.scaleX = +this.scaleX.toFixed(3);
 
-      let deltaX = Math.abs(this.oldMousePosX - this.mouse.pos.x);
-      let deltaY = Math.abs(this.oldMousePosY - this.mouse.pos.y);
+      let deltaX = this.oldMousePosX - this.mouse.pos.x;
+      let deltaY = this.oldMousePosY - this.mouse.pos.y;
 
 
       if (this.scaleX < 0.1) {   // изменение масштаба по оси X 
@@ -120,10 +120,8 @@ export class Chart {
 
       if (this.mouse.isPressed == true && this.mouse.pos.x > this.WIDTH_GRAPH_FILD) {  // изменение масштаба по оси Y 
          if (deltaY > 0) {
-            console.log("deltaY = ", deltaY);
             this.scaleY = this.scaleY - 0.01;
          } else {
-            console.log("deltaY = ", deltaY);
             this.scaleY = this.scaleY + 0.01;
          }
          this.oldMousePosY = this.mouse.pos.y;
@@ -132,9 +130,6 @@ export class Chart {
       if (this.mouse.isPressed == true &&    // перемещение поля графика вслед за курсором
          this.mouse.pos.x > this.paddingLeft &&
          this.mouse.pos.x < this.WIDTH_GRAPH_FILD) {
-
-         console.log("deltaX = ", deltaX);
-         console.log("deltaY = ", deltaY);
 
          if (deltaX < 0) {
             this.coordinates.xOffset = this.coordinates.xOffset - 5;
