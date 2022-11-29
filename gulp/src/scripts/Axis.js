@@ -124,12 +124,12 @@ export class Y_axis {
       console.log("this.canv.coordinates.yOffset = ", this.canv.coordinates.yOffset);
 
       for (let i = 0; i < this.canv.HEIGHT_DPI + Math.abs(this.canv.coordinates.yOffset); i = i + 100) {
-         this.canv.ctx.moveTo(this.canv.coordinates.xNull, (this.canv.coordinates.yNull - this.canv.coordinates.yOffset - i) * this.canv.scaleY);
-         this.canv.ctx.lineTo(this.canv.paddingLeft, (this.canv.coordinates.yNull - this.canv.coordinates.yOffset - i) * this.canv.scaleY);
+         this.canv.ctx.moveTo(this.canv.coordinates.xNull, this.canv.coordinates.yNull - this.canv.coordinates.yOffset - i * this.canv.scaleY);
+         this.canv.ctx.lineTo(this.canv.paddingLeft, this.canv.coordinates.yNull - this.canv.coordinates.yOffset - i * this.canv.scaleY);
 
 
 
-         this.canv.ctx.strokeText(i * 100, this.canv.WIDTH_DPI - 80, (this.canv.coordinates.yNull - this.canv.coordinates.yOffset - i) * this.canv.scaleY);
+         this.canv.ctx.strokeText(i * 100, this.canv.WIDTH_DPI - 80, this.canv.coordinates.yNull - this.canv.coordinates.yOffset - i * this.canv.scaleY);
       }
 
 
