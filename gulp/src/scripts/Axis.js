@@ -121,30 +121,17 @@ export class Y_axis {
       this.canv.ctx.strokeStyle = '#ADB5D9';
       this.canv.ctx.font = '20px Arial';
 
-
+      console.log("this.canv.coordinates.yOffset = ", this.canv.coordinates.yOffset);
 
       for (let i = 0; i < this.canv.HEIGHT_DPI + Math.abs(this.canv.coordinates.yOffset); i = i + 100) {
-         this.canv.ctx.moveTo(this.canv.coordinates.xNull, (this.canv.coordinates.yNull - i) * this.canv.scaleY);
-         this.canv.ctx.lineTo(this.canv.paddingLeft, (this.canv.coordinates.yNull - i) * this.canv.scaleY);
+         this.canv.ctx.moveTo(this.canv.coordinates.xNull, (this.canv.coordinates.yNull - this.canv.coordinates.yOffset - i) * this.canv.scaleY);
+         this.canv.ctx.lineTo(this.canv.paddingLeft, (this.canv.coordinates.yNull - this.canv.coordinates.yOffset - i) * this.canv.scaleY);
 
-         console.log("this.canv.coordinates.yOffset = ", this.canv.coordinates.yOffset);
 
-         if (this.canv.coordinates.yOffset != 0) {
-            this.canv.ctx.strokeText(
-               i * 100 / this.canv.coordinates.yOffset,
-               this.canv.WIDTH_DPI - 80,
-               (this.canv.coordinates.yNull - i) * this.canv.scaleY
-            );
-         } else {
 
-            this.canv.ctx.strokeText(
-               i * 100,
-               this.canv.WIDTH_DPI - 80,
-               (this.canv.coordinates.yNull - i) * this.canv.scaleY
-            );
-
-         }
+         this.canv.ctx.strokeText(i * 100, this.canv.WIDTH_DPI - 80, (this.canv.coordinates.yNull - this.canv.coordinates.yOffset - i) * this.canv.scaleY);
       }
+
 
 
       // for (let i = this.canv.HEIGHT_DPI; i > 0; i = i - 100) {
