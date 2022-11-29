@@ -33,7 +33,7 @@ export class X_axis {
                this.distanceBetweenLines = this.xLineOld - this.xLine;
                nLine++;
                this.xLineOld = this.xLine;
-               this.xLine = Math.round(this.canv.coordinates.xNull - n * this.canv.scaleX);
+               this.xLine = Math.round(this.canv.coordinates.xNull - n * this.canv.scaleX - this.canv.coordinates.xOffset);
                this.distanceBetweenLines = this.xLineOld - this.xLine;
                this.drawLines(nLine);
                if (this.distanceBetweenLines < 150 && nLine % 2 != 0) {

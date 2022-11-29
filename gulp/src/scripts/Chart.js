@@ -103,8 +103,8 @@ export class Chart {
 
    coordinateseCalculation() {
 
-      this.coordinates.xNull = this.WIDTH_DPI - this.paddingRight - this.widthYaxis - this.coordinates.xOffset;
-      this.coordinates.yNull = this.HEIGHT_DPI - this.paddingBottom - this.hightXaxis - this.coordinates.yOffset;
+      this.coordinates.xNull = this.WIDTH_DPI - this.paddingRight - this.widthYaxis;
+      this.coordinates.yNull = this.HEIGHT_DPI - this.paddingBottom - this.hightXaxis;
 
       this.scaleX = this.scaleX + this.mouse.wheel;
       this.scaleX = +this.scaleX.toFixed(3);
@@ -171,13 +171,13 @@ export class Chart {
          this.ctx.strokeStyle = '#252229';
          if (n == 0) {
             this.ctx.moveTo(
-               this.coordinates.xNull - n * this.scaleX - this.mainX,
-               this.coordinates.yNull - this.data[key]['1b. open (USD)'] / 100 * this.scaleY
+               this.coordinates.xNull - n * this.scaleX - this.mainX - this.coordinates.xOffset,
+               this.coordinates.yNull - this.data[key]['1b. open (USD)'] / 100 * this.scaleY - this.coordinates.yOffset
             );
          }
          this.ctx.lineTo(
-            this.coordinates.xNull - n * this.scaleX,
-            this.coordinates.yNull - this.data[key]['1b. open (USD)'] / 100 * this.scaleY
+            this.coordinates.xNull - n * this.scaleX - this.coordinates.xOffset,
+            this.coordinates.yNull - this.data[key]['1b. open (USD)'] / 100 * this.scaleY - this.coordinates.yOffset
          );
       });
 
