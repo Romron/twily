@@ -161,7 +161,7 @@ export class Chart {
          && this.mouse.pos.y > this.paddingTop
          && this.mouse.pos.y < this.HEIGHT_GRAPH_FILD) {
          this.horizontalPointer();
-         this.horizontalPointerText();
+         // this.horizontalPointerText();
          this.circul();
       }
 

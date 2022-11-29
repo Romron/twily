@@ -116,17 +116,43 @@ export class Y_axis {
       // this.canv.canvas.canvas.style.cursor = 'row-resize';
       this.canv.canvas.canvas.style.cursor = 'pointer';
 
-
       this.canv.ctx.beginPath();
       this.canv.ctx.lineWidth = 1;
       this.canv.ctx.strokeStyle = '#ADB5D9';
-
       this.canv.ctx.font = '20px Arial';
-      for (let i = this.canv.HEIGHT_DPI; i > 0; i = i - 100) {
-         this.canv.ctx.moveTo(this.canv.paddingLeft, this.canv.coordinates.yNull - Math.abs(this.canv.HEIGHT_DPI - i) * this.canv.scaleY);
-         this.canv.ctx.lineTo(this.canv.coordinates.xNull + 20, this.canv.coordinates.yNull - Math.abs(this.canv.HEIGHT_DPI - i) * this.canv.scaleY);
-         this.canv.ctx.strokeText((this.canv.HEIGHT_DPI - i) * 100, this.canv.WIDTH_DPI - 80, this.canv.coordinates.yNull - Math.abs(this.canv.HEIGHT_DPI - i) * this.canv.scaleY);
+
+
+
+      for (let i = 0; i < this.canv.HEIGHT_DPI + Math.abs(this.canv.coordinates.yOffset); i = i + 100) {
+         this.canv.ctx.moveTo(this.canv.coordinates.xNull, (this.canv.coordinates.yNull - i) * this.canv.scaleY);
+         this.canv.ctx.lineTo(this.canv.paddingLeft, (this.canv.coordinates.yNull - i) * this.canv.scaleY);
+
+
+         if (this.canv.coordinates.yOffset != 0) {
+            this.canv.ctx.strokeText(
+               i / this.canv.coordinates.yOffset * 100,
+               this.canv.WIDTH_DPI - 80,
+               (this.canv.coordinates.yNull - i) * this.canv.scaleY
+            );
+         } else {
+
+            this.canv.ctx.strokeText(
+               i * 100,
+               this.canv.WIDTH_DPI - 80,
+               (this.canv.coordinates.yNull - i) * this.canv.scaleY
+            );
+
+         }
       }
+
+
+      // for (let i = this.canv.HEIGHT_DPI; i > 0; i = i - 100) {
+      //    this.canv.ctx.moveTo(this.canv.paddingLeft, this.canv.coordinates.yNull - Math.abs(this.canv.HEIGHT_DPI - i) * this.canv.scaleY);
+      //    this.canv.ctx.lineTo(this.canv.coordinates.xNull + 20, this.canv.coordinates.yNull - Math.abs(this.canv.HEIGHT_DPI - i) * this.canv.scaleY);
+      //    this.canv.ctx.strokeText((this.canv.HEIGHT_DPI - i) * 100, this.canv.WIDTH_DPI - 80, this.canv.coordinates.yNull - Math.abs(this.canv.HEIGHT_DPI - i) * this.canv.scaleY);
+      // }
+
+
       this.canv.ctx.stroke();
    }
 
