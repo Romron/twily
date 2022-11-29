@@ -120,9 +120,9 @@ export class Chart {
 
       if (this.mouse.isPressed == true && this.mouse.pos.x > this.WIDTH_GRAPH_FILD) {  // изменение масштаба по оси Y 
          if (deltaY > 0) {
-            this.scaleY = this.scaleY - 0.01;
+            this.scaleY = this.scaleY + 0.02;
          } else {
-            this.scaleY = this.scaleY + 0.01;
+            this.scaleY = this.scaleY - 0.02;
          }
          this.oldMousePosY = this.mouse.pos.y;
       }

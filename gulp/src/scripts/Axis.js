@@ -127,10 +127,11 @@ export class Y_axis {
          this.canv.ctx.moveTo(this.canv.coordinates.xNull, (this.canv.coordinates.yNull - i) * this.canv.scaleY);
          this.canv.ctx.lineTo(this.canv.paddingLeft, (this.canv.coordinates.yNull - i) * this.canv.scaleY);
 
+         console.log("this.canv.coordinates.yOffset = ", this.canv.coordinates.yOffset);
 
          if (this.canv.coordinates.yOffset != 0) {
             this.canv.ctx.strokeText(
-               i / this.canv.coordinates.yOffset * 100,
+               i * 100 / this.canv.coordinates.yOffset,
                this.canv.WIDTH_DPI - 80,
                (this.canv.coordinates.yNull - i) * this.canv.scaleY
             );
