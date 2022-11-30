@@ -16,11 +16,8 @@
          <div id='initial-data' class="initial-data">Исходные данные</div>
          <!-- <div class="button" id="parser-start-button" type="submit">Старт парсера</div> -->
       </div>
-      <div id="block-results" class="block-results">
-         <!-- <canvas id="canv-1" width="1800" height="600"></canvas> -->
+      <div id="wrap-canvas" class="wrap-canvas">
       </div>
-      <!-- автоматом удаляет закрывающюу кавычку тега php ???? -->
-      <!-- @@include('./parts/footer.php') -->
 
       <div class="for-loop">
 

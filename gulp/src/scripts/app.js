@@ -11,9 +11,9 @@ let url = './module_php/parser.php';
 const dP = new DataProcessing(url);   // всё что касается получения и оброботки данных
 
 let params = {
-   idTargetBlock: "block-results",
+   idTargetBlock: "wrap-canvas",
    idCanvas: "canv-1",
-   idContainer: "block-results",
+   idContainer: "wrap-canvas",
    canvasHeight: 600,
    canvasWidht: 1400,
    scaleX: 2.6,

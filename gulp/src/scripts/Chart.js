@@ -2,6 +2,7 @@ import { X_axis, Y_axis } from "./Axis.js";
 
 
 
+
 export class Chart {
    /**
     * патерн Фасад
