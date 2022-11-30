@@ -34,14 +34,14 @@ export class X_axis {
                this.xLineOld = this.xLine;
                this.xLine = Math.round(this.canv.coordinates.xNull - n * this.canv.scaleX - this.canv.coordinates.xOffset);
                this.distanceBetweenLines = this.xLineOld - this.xLine;
-               if (this.xLine < this.canv.coordinates.xNull) {    // запрет отрисовки координамтной сетки на шкале
+               if (this.xLine < this.canv.coordinates.xNull && this.xLine > this.canv.paddingLeft) {    // запрет отрисовки координамтной сетки на шкале
                   this.drawLines(nLine);
+                  this.writeText(arrDays[n], n, nLine);
                }
 
                if (this.distanceBetweenLines < 150 && nLine % 2 != 0) {
                   continue;
                }
-               this.writeText(arrDays[n], n, nLine);
             }
             if (this.xLine < 0) {
                break;
@@ -119,35 +119,31 @@ export class Y_axis {
       this.canv.canvas.canvas.style.cursor = 'pointer';
 
       this.canv.ctx.beginPath();
-      this.canv.ctx.lineWidth = 1;
+      this.canv.ctx.lineWidth = 0.;
       this.canv.ctx.strokeStyle = '#ADB5D9';
       this.canv.ctx.font = '20px Arial';
 
+      let x, y;
+      for (let i = 0; i < this.canv.HEIGHT_DPI + Math.abs(this.canv.coordinates.yOffset); i = i + 10) {
+         x = this.canv.coordinates.xNull;
+         y = this.canv.coordinates.yNull - this.canv.coordinates.yOffset - i * this.canv.scaleY;
 
+         if (y < this.canv.coordinates.yNull && y > this.canv.paddingTop + 10) {
+            this.canv.ctx.moveTo(x + 10, y);   // 10 -- декоративная риска на оси Y 
+            this.canv.ctx.lineTo(this.canv.paddingLeft, y);
+            this.canv.ctx.strokeText(i * 100, x + 25, y);
 
-      for (let i = 0; i < this.canv.HEIGHT_DPI + Math.abs(this.canv.coordinates.yOffset); i = i + 100) {
+         }
 
-         this.canv.ctx.moveTo(this.canv.coordinates.xNull, this.canv.coordinates.yNull - this.canv.coordinates.yOffset - i * this.canv.scaleY);
-         this.canv.ctx.lineTo(this.canv.paddingLeft, this.canv.coordinates.yNull - this.canv.coordinates.yOffset - i * this.canv.scaleY);
-         this.canv.ctx.strokeText(i * 100, this.canv.WIDTH_DPI - 80, this.canv.coordinates.yNull - this.canv.coordinates.yOffset - i * this.canv.scaleY);
       }
 
 
-      if (this.canv.coordinates.yOffset > 100) {
-         for (let i = 0; i < this.canv.coordinates.yOffset; i = i + 100) {
+      if (this.canv.coordinates.yOffset > 10) {
+         for (let i = 0; i < this.canv.coordinates.yOffset; i = i + 10) {
             this.canv.ctx.moveTo(this.canv.coordinates.xNull, this.canv.coordinates.yNull - this.canv.coordinates.yOffset + i * this.canv.scaleY);
             this.canv.ctx.lineTo(this.canv.paddingLeft, this.canv.coordinates.yNull - this.canv.coordinates.yOffset + i * this.canv.scaleY);
          }
       }
-
-
-
-
-      // for (let i = this.canv.HEIGHT_DPI; i > 0; i = i - 100) {
-      //    this.canv.ctx.moveTo(this.canv.paddingLeft, this.canv.coordinates.yNull - Math.abs(this.canv.HEIGHT_DPI - i) * this.canv.scaleY);
-      //    this.canv.ctx.lineTo(this.canv.coordinates.xNull + 20, this.canv.coordinates.yNull - Math.abs(this.canv.HEIGHT_DPI - i) * this.canv.scaleY);
-      //    this.canv.ctx.strokeText((this.canv.HEIGHT_DPI - i) * 100, this.canv.WIDTH_DPI - 80, this.canv.coordinates.yNull - Math.abs(this.canv.HEIGHT_DPI - i) * this.canv.scaleY);
-      // }
 
 
       this.canv.ctx.stroke();

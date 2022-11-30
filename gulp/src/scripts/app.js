@@ -17,7 +17,7 @@ let params = {
    canvasHeight: 600,
    canvasWidht: 1400,
    scaleX: 2.6,
-   scaleY: 1,
+   scaleY: 5.5,
    ROWS_AMOUNT: 5,
    paddingTop: 20,
    paddingBottom: 10,

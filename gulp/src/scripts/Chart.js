@@ -99,6 +99,7 @@ export class Chart {
       this.Xaxis = new X_axis(this);      // здесь для того что бы можно было отключать координатную сетку а шкалы оставались
       this.Yaxis = new Y_axis(this);
 
+
    }
 
    coordinateseCalculation() {
@@ -172,7 +173,8 @@ export class Chart {
       Object.keys(this.data).forEach((key, n) => {
          x = this.coordinates.xNull - n * this.scaleX - this.coordinates.xOffset;
          y = this.coordinates.yNull - this.data[key]['1b. open (USD)'] / 100 * this.scaleY - this.coordinates.yOffset;
-         if (x < this.coordinates.xNull && y < this.coordinates.yNull) {
+         if (x < this.coordinates.xNull
+            && x > this.paddingLeft) {
 
             if (n == 0) {
                this.ctx.moveTo(x - this.mainX, y);
@@ -205,8 +207,9 @@ export class Chart {
 
    horizontalPointerText() {
       this.ctx.font = '25px Arial';
+
       this.ctx.fillText(
-         Math.ceil((this.coordinates.yNull - this.mouse.pos.y - this.paddingTop) / this.scaleY * 100) + 26,
+         Math.ceil((this.coordinates.yNull - this.mouse.pos.y - this.paddingTop - this.coordinates.yOffset) / this.scaleY * 100),
          this.WIDTH_DPI - this.widthYaxis / 1.1,
          this.mouse.pos.y
       );
