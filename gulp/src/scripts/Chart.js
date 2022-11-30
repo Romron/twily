@@ -161,7 +161,7 @@ export class Chart {
          && this.mouse.pos.y > this.paddingTop
          && this.mouse.pos.y < this.HEIGHT_GRAPH_FILD) {
          this.horizontalPointer();
-         // this.horizontalPointerText();
+         this.horizontalPointerText();
          this.circul();
       }
 
@@ -205,8 +205,15 @@ export class Chart {
 
    horizontalPointerText() {
       this.ctx.font = '25px Arial';
-      this.ctx.fillText(Math.ceil((this.coordinates.yNull - this.mouse.pos.y - this.paddingTop) / this.scaleY * 100) + 26, this.WIDTH_DPI - this.widthYaxis / 1.1, this.mouse.pos.y);
-      this.ctx.fillText(Math.ceil(this.coordinates.xNull - this.mouse.pos.x - this.paddingRight), this.mouse.pos.x, this.HEIGHT_DPI - this.hightXaxis / 2);
+      this.ctx.fillText(
+         Math.ceil((this.coordinates.yNull - this.mouse.pos.y - this.paddingTop) / this.scaleY * 100) + 26,
+         this.WIDTH_DPI - this.widthYaxis / 1.1,
+         this.mouse.pos.y
+      );
+      this.ctx.fillText(
+         Math.ceil(this.coordinates.xNull - this.mouse.pos.x - this.paddingRight),
+         this.mouse.pos.x,
+         this.HEIGHT_DPI - this.hightXaxis / 2);
    }
 
    horizontalPointer() {
