@@ -11,25 +11,24 @@ let url = './module_php/parser.php';
 const dP = new DataProcessing(url);   // всё что касается получения и оброботки данных
 
 let params = {
-   idTargetBlock: "wrap-canvas",
-   idCanvas: "canv-1",
    idContainer: "wrap-canvas",
+   idCanvas: "canvas-chart",
    canvasHeight: 600,
    canvasWidht: 1400,
    scaleX: 2.6,
    scaleY: 5.5,
    ROWS_AMOUNT: 5,
-   paddingTop: 20,
-   paddingBottom: 10,
+   paddingTop: 0,
+   paddingBottom: 0,
    paddingLeft: 20,
    paddingRight: 20,
    widthYaxis: 100,
    hightXaxis: 40
 };
 
-
 class App {
    constructor(params) {
+      // const conteinerCanvas = document.getElementById(params.idContainer).createElement("div"); // создать независимую обёртку для всех канвасов нужно для абсолютного позиционирования
 
       this.layer = new Layer(params);
       this.chart = new Chart(this.layer, params);

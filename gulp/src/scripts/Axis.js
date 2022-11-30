@@ -7,12 +7,29 @@ export class X_axis {
     * градуировка шкалы не меняется
     */
 
-   params = {}
+   params = {
+      idContainer: "wrap-canvas",
+      idCanvas: "canvas__X-axis",
+      canvasHeight: 20,
+      canvasWidht: 1400,
+      scaleX: 1,
+      scaleY: 1,
+      paddingTop: 20,
+      paddingBottom: 10,
+      paddingLeft: 20,
+      paddingRight: 20,
+   }
 
 
    constructor(chart) {
       this.chart = chart;     // контекст слоя графика
-      this.layer = new Layer(params);
+      this.layer = new Layer(this.params);
+
+
+      console.log("this.layer = ", this.layer);
+      this.layer.canvas.style.border = '1px solid blue';
+      this.layer.canvas.style.position = 'absolute';
+      this.layer.canvas.style.bottom = '0';
 
    }
 
