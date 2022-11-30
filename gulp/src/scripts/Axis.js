@@ -12,7 +12,7 @@ export class X_axis {
 
    drawAxis(data) {
 
-      // this.field();
+      this.field();
 
       // this.canv.canvas.canvas.style.cursor = 'col-resize';
 
@@ -26,7 +26,6 @@ export class X_axis {
 
       let nLine = 0;
       let arrDays = Object.keys(data);
-
       if (arrDays.length != 0) {
          for (let n = 0; n < arrDays.length; n++) {
             if (arrDays[n].endsWith('01')) {
@@ -35,7 +34,10 @@ export class X_axis {
                this.xLineOld = this.xLine;
                this.xLine = Math.round(this.canv.coordinates.xNull - n * this.canv.scaleX - this.canv.coordinates.xOffset);
                this.distanceBetweenLines = this.xLineOld - this.xLine;
-               this.drawLines(nLine);
+               if (this.xLine < this.canv.coordinates.xNull) {    // запрет отрисовки координамтной сетки на шкале
+                  this.drawLines(nLine);
+               }
+
                if (this.distanceBetweenLines < 150 && nLine % 2 != 0) {
                   continue;
                }
@@ -62,7 +64,7 @@ export class X_axis {
       this.canv.ctx.beginPath();
       this.canv.ctx.lineWidth = 1;
       // this.canv.ctx.strokeStyle = '#ADB5D9';
-      this.canv.ctx.strokeStyle = 'blue';
+      this.canv.ctx.strokeStyle = '#8A8EA3';
 
       this.canv.ctx.moveTo(this.canv.paddingLeft, this.canv.HEIGHT_DPI - this.canv.paddingBottom);
       this.canv.ctx.lineTo(this.canv.WIDTH_DPI - this.canv.paddingRight - this.canv.widthYaxis, this.canv.HEIGHT_DPI - this.canv.paddingBottom);
@@ -111,7 +113,7 @@ export class Y_axis {
 
    drawAxis() {
 
-      // this.field();
+      this.field();
 
       // this.canv.canvas.canvas.style.cursor = 'row-resize';
       this.canv.canvas.canvas.style.cursor = 'pointer';
@@ -125,27 +127,16 @@ export class Y_axis {
 
       for (let i = 0; i < this.canv.HEIGHT_DPI + Math.abs(this.canv.coordinates.yOffset); i = i + 100) {
 
-
          this.canv.ctx.moveTo(this.canv.coordinates.xNull, this.canv.coordinates.yNull - this.canv.coordinates.yOffset - i * this.canv.scaleY);
          this.canv.ctx.lineTo(this.canv.paddingLeft, this.canv.coordinates.yNull - this.canv.coordinates.yOffset - i * this.canv.scaleY);
-
-
-
-
          this.canv.ctx.strokeText(i * 100, this.canv.WIDTH_DPI - 80, this.canv.coordinates.yNull - this.canv.coordinates.yOffset - i * this.canv.scaleY);
       }
 
 
       if (this.canv.coordinates.yOffset > 100) {
          for (let i = 0; i < this.canv.coordinates.yOffset; i = i + 100) {
-
-            console.log("this.canv.coordinates.yOffset = ", this.canv.coordinates.yOffset);
-
             this.canv.ctx.moveTo(this.canv.coordinates.xNull, this.canv.coordinates.yNull - this.canv.coordinates.yOffset + i * this.canv.scaleY);
             this.canv.ctx.lineTo(this.canv.paddingLeft, this.canv.coordinates.yNull - this.canv.coordinates.yOffset + i * this.canv.scaleY);
-
-
-
          }
       }
 
@@ -165,10 +156,10 @@ export class Y_axis {
    field() {
 
       this.canv.ctx.beginPath();
-      this.canv.ctx.lineWidth = 2;
+      this.canv.ctx.lineWidth = 1;
       // this.canv.ctx.globalAlpha = 1;
       // this.canv.ctx.strokeStyle = '#ADB5D9';
-      this.canv.ctx.strokeStyle = 'blue';
+      this.canv.ctx.strokeStyle = '#8A8EA3';
       this.canv.ctx.moveTo(this.canv.WIDTH_DPI - this.canv.paddingRight, this.canv.paddingTop);
       this.canv.ctx.lineTo(this.canv.WIDTH_DPI - this.canv.paddingRight, this.canv.HEIGHT_DPI - this.canv.paddingBottom - this.canv.hightXaxis);
       this.canv.ctx.lineTo(this.canv.WIDTH_DPI - this.canv.paddingRight - this.canv.widthYaxis, this.canv.HEIGHT_DPI - this.canv.paddingBottom - this.canv.hightXaxis);

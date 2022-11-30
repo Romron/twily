@@ -166,19 +166,19 @@ export class Chart {
       }
 
       this.ctx.beginPath();
+      this.ctx.lineWidth = 2;
+      this.ctx.strokeStyle = '#252229';
+      let x, y;
       Object.keys(this.data).forEach((key, n) => {
-         this.ctx.lineWidth = 2;
-         this.ctx.strokeStyle = '#252229';
-         if (n == 0) {
-            this.ctx.moveTo(
-               this.coordinates.xNull - n * this.scaleX - this.mainX - this.coordinates.xOffset,
-               this.coordinates.yNull - this.data[key]['1b. open (USD)'] / 100 * this.scaleY - this.coordinates.yOffset
-            );
+         x = this.coordinates.xNull - n * this.scaleX - this.coordinates.xOffset;
+         y = this.coordinates.yNull - this.data[key]['1b. open (USD)'] / 100 * this.scaleY - this.coordinates.yOffset;
+         if (x < this.coordinates.xNull && y < this.coordinates.yNull) {
+
+            if (n == 0) {
+               this.ctx.moveTo(x - this.mainX, y);
+            }
+            this.ctx.lineTo(x, y);
          }
-         this.ctx.lineTo(
-            this.coordinates.xNull - n * this.scaleX - this.coordinates.xOffset,
-            this.coordinates.yNull - this.data[key]['1b. open (USD)'] / 100 * this.scaleY - this.coordinates.yOffset
-         );
       });
 
       this.ctx.stroke();
