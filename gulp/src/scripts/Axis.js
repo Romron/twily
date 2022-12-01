@@ -24,14 +24,17 @@ export class X_axis {
 
    constructor(chart) {
       this.chart = chart;     // контекст слоя графика
-      // this.layer = new Layer(this.params);
-      // this.layer.canvas.style.cssText = ` position: absolute;
-      //                                     bottom: 0;
-      //                                     background-color: white; 
-      //                                     left:0;
-      //                                     z-index: 10;
-      //                                     /*border: 1px solid #38478D;*/
-      //                                  `;
+
+      console.log("--- X_axis ---");
+      this.layer = new Layer(this.params);
+      this.layer.canvas.style.cssText = ` position: absolute;
+                                          bottom: 0;
+                                          background-color: white; 
+                                          left:0;
+                                          z-index: 10;
+                                          cursor: pointer;
+                                          /*border: 1px solid #38478D;*/
+                                       `;
 
    }
    drawAxis(data) {
@@ -67,8 +70,8 @@ export class Y_axis {
       idContainerCSS: "wrap-canvas",
       idCanvas: "canvas-chart__Y-axis",
       idMainConteiner: 'mainConteiner',
-      heightCanvas: 323,
-      widhtCanvas: 26,
+      heightCanvas: 600,
+      widthCanvas: 50,
       scaleX: 1,
       scaleY: 1,
       paddingTop: 20,
@@ -81,15 +84,20 @@ export class Y_axis {
    constructor(chart) {
       this.chart = chart;     // контекст слоя графика
 
-      // this.layer = new Layer(this.params);
-      // this.layer.canvas.style.cssText = ` position: absolute;
-      //                                     bottom: 0px;
-      //                                     background-color: white; 
-      //                                     right:0px;
-      //                                     z-index: 10;
-      //                                     cursor: pointer;
-      //                                     /*border: 0.5px solid #38478D;*/
-      //                                     `;
+
+      console.log("--- Y_axis ---");
+
+      this.layer = new Layer(this.params);
+      this.layer.canvas.style.cssText = ` position: absolute;
+                                          bottom: 0px;
+                                          background-color: white; 
+                                          right:0px;
+                                          z-index: 10;
+                                          cursor: pointer;
+                                          height:${this.params.heightCanvas}px;
+                                          width:${this.params.widthCanvas}px;
+                                          /*border: 0.5px solid #38478D;*/
+                                          `;
 
       // console.log("this.layer = ", this.layer);
    }

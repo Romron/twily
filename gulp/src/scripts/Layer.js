@@ -10,6 +10,10 @@ export class Layer {
       this.canvas.id = params.idCanvas;
       container.appendChild(this.canvas);
 
+
+      console.log("params.heightCanvas = ", params.heightCanvas);
+      console.log("params.widhtCanvas = ", params.widhtCanvas);
+
       this.canvas.style.height = params.heightCanvas + 'px';
       this.canvas.style.width = params.widhtCanvas + 'px';
       this.canvas.height = this.HEIGHT_DPI;

@@ -106,7 +106,6 @@ export class Chart {
                                      border: 1px solid blue;
                                      `;
 
-
       this.canvas.canvas.height = this.HEIGHT_DPI;
       this.canvas.canvas.width = this.WIDTH_DPI;
 

@@ -14,10 +14,10 @@ let params = {
    idTargetBlock: "wrap-canvas",
    idCanvas: "canvas-chart",
    idMainConteiner: 'mainConteiner',
-   heightMainConteiner: 500,
-   widthMainConteiner: 1200,
-   widthYaxis: 100,
-   hightXaxis: 40,
+   heightMainConteiner: 600,
+   widthMainConteiner: 1400,
+   hightXaxis: 25,
+   widthYaxis: 50,
    scaleX: 2.6,
    scaleY: 1, // 5.5,
    // ROWS_AMOUNT: 5,
@@ -31,7 +31,7 @@ class App {
    constructor(params) {
 
       this._mainConteiner();
-
+      console.log("--- App ---");
       this.layer = new Layer(params);
       this.chart = new Chart(this.layer, params);
       this.proxyLoop = new Loop(this.update.bind(this), this.display.bind(this));
