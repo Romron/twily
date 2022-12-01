@@ -25,7 +25,8 @@ export class X_axis {
    constructor(chart) {
       this.chart = chart;     // контекст слоя графика
 
-      console.log("--- X_axis ---");
+      console.log("this.chart = ", this.chart);  навести порядок!!!!!!!!!!!!!!!!
+
       this.layer = new Layer(this.params);
       this.layer.canvas.style.cssText = ` position: absolute;
                                           bottom: 0;
@@ -87,7 +88,6 @@ export class Y_axis {
       this.chart = chart;     // контекст слоя графика
 
 
-      console.log("--- Y_axis ---");
 
       this.layer = new Layer(this.params);
       this.layer.canvas.style.cssText = ` position: absolute;
