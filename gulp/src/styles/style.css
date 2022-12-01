@@ -78,7 +78,7 @@ h1 {
    /* margin: 5px; */
 }
 
-.wrap-canvas {
+/* .wrap-canvas {
 
    display: flex;
    justify-content: space-between;
@@ -87,7 +87,7 @@ h1 {
    border: 1px solid #9ea8a0;
    padding: 10px;
 
-}
+} */
 
 #formuls-block {
    margin: 0 10px;
@@ -95,20 +95,20 @@ h1 {
    justify-content: center;
 }
 
-#canvas-chart {
+/* #canvas-chart {
    width: 1800px;
    height: 600px;
    border-radius: 5px;
    align-self: center;
 
 
-}
+} */
 
-#canvas__X-axis {
-   /* position: absolute; */
-   border: 1px solid #5103f7;
+/* #canvas__X-axis {
+   position: absolute; 
+    border: 1px solid #5103f7;
 
-}
+} */
 
 
 

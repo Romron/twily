@@ -11,24 +11,26 @@ let url = './module_php/parser.php';
 const dP = new DataProcessing(url);   // всё что касается получения и оброботки данных
 
 let params = {
-   idContainer: "wrap-canvas",
+   idTargetBlock: "wrap-canvas",
    idCanvas: "canvas-chart",
-   canvasHeight: 600,
-   canvasWidht: 1400,
+   idMainConteiner: 'mainConteiner',
+   heightCanvas: 600,
+   widhtCanvas: 1300,
+   widthYaxis: 100,
+   hightXaxis: 40,
    scaleX: 2.6,
-   scaleY: 5.5,
-   ROWS_AMOUNT: 5,
+   scaleY: 1, // 5.5,
+   // ROWS_AMOUNT: 5,
    paddingTop: 0,
    paddingBottom: 0,
-   paddingLeft: 20,
-   paddingRight: 20,
-   widthYaxis: 100,
-   hightXaxis: 40
+   paddingLeft: 0,
+   paddingRight: 0,
 };
 
 class App {
    constructor(params) {
-      // const conteinerCanvas = document.getElementById(params.idContainer).createElement("div"); // создать независимую обёртку для всех канвасов нужно для абсолютного позиционирования
+
+      this._mainConteiner();
 
       this.layer = new Layer(params);
       this.chart = new Chart(this.layer, params);
@@ -61,6 +63,29 @@ class App {
 
 
    }
+
+   _mainConteiner() {
+      /**
+       * т.к. холстов будет много и их позиционирование будет absolute 
+       * нужен независимый контейнер
+       */
+
+
+      // независимая обёртка для всех канвасов нужно для абсолютного позиционирования
+      const TargetBlock = document.getElementById(params.idTargetBlock);
+      const mainConteiner = document.createElement("div");
+      mainConteiner.id = params.idMainConteiner;
+      TargetBlock.append(mainConteiner);
+      mainConteiner.style.cssText = `  position: relative; 
+                                       height: ${params.heightCanvas + params.hightXaxis + 6}px;
+                                       width: ${params.widhtCanvas + params.widthYaxis}px;
+                                       /*background-color: red;*/
+                                       border: 1px solid black;
+                                   `;
+
+
+   }
+
 }
 
 onload = () => { new App(params) }

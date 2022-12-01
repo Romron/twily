@@ -19,9 +19,8 @@
       <div id="wrap-canvas" class="wrap-canvas">
       </div>
 
-      <div class="for-loop">
 
-      </div>
+   </div>
 
 
    </div>

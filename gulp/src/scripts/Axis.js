@@ -8,10 +8,11 @@ export class X_axis {
     */
 
    params = {
-      idContainer: "wrap-canvas",
-      idCanvas: "canvas__X-axis",
-      canvasHeight: 20,
-      canvasWidht: 1400,
+      idContainerCSS: "wrap-canvas",
+      idCanvas: "canvas-chart__X-axis",
+      idMainConteiner: 'mainConteiner',
+      heightCanvas: 20,
+      widhtCanvas: 1400,
       scaleX: 1,
       scaleY: 1,
       paddingTop: 20,
@@ -24,61 +25,18 @@ export class X_axis {
    constructor(chart) {
       this.chart = chart;     // контекст слоя графика
       this.layer = new Layer(this.params);
-
-
-      console.log("this.layer = ", this.layer);
-      this.layer.canvas.style.border = '1px solid blue';
-      this.layer.canvas.style.position = 'absolute';
-      this.layer.canvas.style.bottom = '0';
+      this.layer.canvas.style.cssText = ` position: absolute;
+                                          bottom: 0;
+                                          background-color: white; 
+                                          left:0;
+                                          z-index: 10;
+                                          /*border: 1px solid blue;*/
+                                       `;
 
    }
-
    drawAxis(data) {
 
       this.field();
-
-      // this.chart.canvas.canvas.style.cursor = 'col-resize';
-
-      this.chart.ctx.beginPath();
-      this.chart.ctx.strokeStyle = '#ADB5D9';
-      this.chart.ctx.font = '20px Arial';
-
-      this.widthToRight = this.chart.WIDTH_GRAPH_FILD - this.chart.coordinates.xOffset;     // расстояние от нуля графика до края
-      this.widthToLeft = this.chart.coordinates.xOffset;     // расстояние от нуля графика до края
-      this.xLine = 0;
-
-      let nLine = 0;
-      let arrDays = Object.keys(data);
-      if (arrDays.length != 0) {
-         for (let n = 0; n < arrDays.length; n++) {
-            if (arrDays[n].endsWith('01')) {
-               this.distanceBetweenLines = this.xLineOld - this.xLine;
-               nLine++;
-               this.xLineOld = this.xLine;
-               this.xLine = Math.round(this.chart.coordinates.xNull - n * this.chart.scaleX - this.chart.coordinates.xOffset);
-               this.distanceBetweenLines = this.xLineOld - this.xLine;
-               if (this.xLine < this.chart.coordinates.xNull && this.xLine > this.chart.paddingLeft) {    // запрет отрисовки координамтной сетки на шкале
-                  this.drawLines(nLine);
-                  this.writeText(arrDays[n], n, nLine);
-               }
-
-               if (this.distanceBetweenLines < 150 && nLine % 2 != 0) {
-                  continue;
-               }
-            }
-            if (this.xLine < 0) {
-               break;
-            }
-
-         }
-      } else {
-         console.log(" -- Данные ещё не получены -- ");
-      }
-
-
-
-
-      this.chart.ctx.stroke();
 
    }
 
@@ -96,31 +54,6 @@ export class X_axis {
       this.chart.ctx.closePath();
       this.chart.ctx.stroke();
    }
-
-   drawLines(nLine) {
-      if (nLine == 2) {
-         for (let xLineTR = this.xLine; xLineTR < this.chart.WIDTH_GRAPH_FILD; xLineTR = xLineTR + this.distanceBetweenLines) {
-            this.chart.ctx.moveTo(xLineTR, this.chart.paddingTop + 20);
-            this.chart.ctx.lineTo(xLineTR, this.chart.coordinates.yNull + 20);     // 20 -- декоративная риска на оси Х
-         }
-      }
-      this.chart.ctx.moveTo(this.xLine, this.chart.paddingTop + 20);
-      this.chart.ctx.lineTo(this.xLine, this.chart.coordinates.yNull + 20);    // 20 -- декоративная риска на оси Х
-   }
-
-   writeText(key) {
-
-      let str = '';
-      let str_1 = '';
-      let str_2 = '';
-      let str_3 = '';
-
-      str_1 = key.slice(8, 10);
-      str_2 = key.slice(5, 7);
-      str_3 = key.slice(0, 4).slice(2, 4);
-      str = `${str_1}.${str_2}.${str_3}`;
-      this.chart.ctx.strokeText(str, this.xLine - 40, this.chart.coordinates.yNull + 40);
-   }
 }
 
 export class Y_axis {
@@ -129,47 +62,40 @@ export class Y_axis {
     * градуировка шкалы меняется 
     */
 
-   constructor(canv_this) {
-      this.chart = canv_this;
-
+   params = {
+      idContainerCSS: "wrap-canvas",
+      idCanvas: "canvas-chart__Y-axis",
+      idMainConteiner: 'mainConteiner',
+      heightCanvas: 323,
+      widhtCanvas: 26,
+      scaleX: 1,
+      scaleY: 1,
+      paddingTop: 20,
+      paddingBottom: 10,
+      paddingLeft: 20,
+      paddingRight: 20,
    }
+
+
+   constructor(chart) {
+      this.chart = chart;     // контекст слоя графика
+
+      this.layer = new Layer(this.params);
+      this.layer.canvas.style.cssText = ` position: absolute;
+                                          bottom: 0px;
+                                          background-color: white; 
+                                          right:0px;
+                                          z-index: 10;
+                                          cursor: pointer;
+                                          /*border: 1px solid red;*/
+                                          `;
+   }
+
 
    drawAxis() {
 
       this.field();
 
-      // this.chart.canvas.canvas.style.cursor = 'row-resize';
-      this.chart.canvas.canvas.style.cursor = 'pointer';
-
-      this.chart.ctx.beginPath();
-      this.chart.ctx.lineWidth = 0.;
-      this.chart.ctx.strokeStyle = '#ADB5D9';
-      this.chart.ctx.font = '20px Arial';
-
-      let x, y;
-      for (let i = 0; i < this.chart.HEIGHT_DPI + Math.abs(this.chart.coordinates.yOffset); i = i + 10) {
-         x = this.chart.coordinates.xNull;
-         y = this.chart.coordinates.yNull - this.chart.coordinates.yOffset - i * this.chart.scaleY;
-
-         if (y < this.chart.coordinates.yNull && y > this.chart.paddingTop + 10) {
-            this.chart.ctx.moveTo(x + 10, y);   // 10 -- декоративная риска на оси Y 
-            this.chart.ctx.lineTo(this.chart.paddingLeft, y);
-            this.chart.ctx.strokeText(i * 100, x + 25, y);
-
-         }
-
-      }
-
-
-      if (this.chart.coordinates.yOffset > 10) {
-         for (let i = 0; i < this.chart.coordinates.yOffset; i = i + 10) {
-            this.chart.ctx.moveTo(this.chart.coordinates.xNull, this.chart.coordinates.yNull - this.chart.coordinates.yOffset + i * this.chart.scaleY);
-            this.chart.ctx.lineTo(this.chart.paddingLeft, this.chart.coordinates.yNull - this.chart.coordinates.yOffset + i * this.chart.scaleY);
-         }
-      }
-
-
-      this.chart.ctx.stroke();
    }
 
    field() {
