@@ -12,7 +12,7 @@ export class X_axis {
       idCanvas: "canvas-chart__X-axis",
       idMainConteiner: 'mainConteiner',
       heightCanvas: 20,
-      widhtCanvas: 1400,
+      widthCanvas: 1400,
       scaleX: 1,
       scaleY: 1,
       paddingTop: 20,
@@ -33,6 +33,8 @@ export class X_axis {
                                           left:0;
                                           z-index: 10;
                                           cursor: pointer;
+                                          height:${this.params.heightCanvas}px;
+                                          width:${this.params.widthCanvas}px;
                                           /*border: 1px solid #38478D;*/
                                        `;
 
