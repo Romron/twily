@@ -24,19 +24,20 @@ export class X_axis {
 
    constructor(chart) {
       this.chart = chart;     // контекст слоя графика
-      this.layer = new Layer(this.params);
-      this.layer.canvas.style.cssText = ` position: absolute;
-                                          bottom: 0;
-                                          background-color: white; 
-                                          left:0;
-                                          z-index: 10;
-                                          /*border: 1px solid blue;*/
-                                       `;
+      // this.layer = new Layer(this.params);
+      // this.layer.canvas.style.cssText = ` position: absolute;
+      //                                     bottom: 0;
+      //                                     background-color: white; 
+      //                                     left:0;
+      //                                     z-index: 10;
+      //                                     /*border: 1px solid #38478D;*/
+      //                                  `;
 
    }
    drawAxis(data) {
 
-      this.field();
+
+
 
    }
 
@@ -80,22 +81,43 @@ export class Y_axis {
    constructor(chart) {
       this.chart = chart;     // контекст слоя графика
 
-      this.layer = new Layer(this.params);
-      this.layer.canvas.style.cssText = ` position: absolute;
-                                          bottom: 0px;
-                                          background-color: white; 
-                                          right:0px;
-                                          z-index: 10;
-                                          cursor: pointer;
-                                          /*border: 1px solid red;*/
-                                          `;
+      // this.layer = new Layer(this.params);
+      // this.layer.canvas.style.cssText = ` position: absolute;
+      //                                     bottom: 0px;
+      //                                     background-color: white; 
+      //                                     right:0px;
+      //                                     z-index: 10;
+      //                                     cursor: pointer;
+      //                                     /*border: 0.5px solid #38478D;*/
+      //                                     `;
+
+      // console.log("this.layer = ", this.layer);
    }
 
-
    drawAxis() {
+      // this.layer.context.beginPath();
+      // this.layer.context.lineWidth = 1;
+      // this.layer.context.strokeStyle = '#ADB5D9';
+      // this.layer.context.font = '10px Arial';
+      // let x, y;
 
-      this.field();
 
+      // for (let i = 0; i < this.params.heightCanvas * 2 + Math.abs(this.chart.coordinates.yOffset); i = i + 10) {
+      //    x = this.params.widhtCanvas;
+      //    y = (this.params.heightCanvas * 2 - this.chart.coordinates.yOffset - i * this.chart.scaleY);
+
+      //    console.log("x = ", x);
+      //    console.log("y = ", y);
+
+      //    // if (y < this.coordinates.yNull && y > this.paddingTop + 10) {
+      //    this.layer.context.moveTo(x, y);   // 10 -- декоративная риска на оси Y 
+      //    this.layer.context.lineTo(x - 10, y);
+      //    this.layer.context.strokeText(i * 100, x, y);
+      //    // }
+
+      // }
+
+      // this.layer.context.stroke();
    }
 
    field() {

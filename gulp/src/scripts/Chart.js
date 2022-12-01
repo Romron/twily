@@ -78,8 +78,12 @@ export class Chart {
 
       this.canvas = canvas;
       this.ctx = canvas.context;
-      this.HEIGHT_DPI = canvas.HEIGHT_DPI;
-      this.WIDTH_DPI = canvas.WIDTH_DPI;
+
+      this.heightCanvas = params.heightMainConteiner - params.hightXaxis;
+      this.widthCanvas = params.widthMainConteiner - params.widthYaxis;
+
+      this.HEIGHT_DPI = this.heightCanvas * 2; // canvas.HEIGHT_DPI;
+      this.WIDTH_DPI = this.widthCanvas * 2; //canvas.WIDTH_DPI;
 
       this.scaleX = params.scaleX;
       this.scaleY = params.scaleY;
@@ -97,7 +101,16 @@ export class Chart {
                                      top:0px;
                                      left:0px;
                                      z-index: 5;
-                                     /*border: 1px solid green;*/`;
+                                     height:${this.heightCanvas}px;
+                                     width:${this.widthCanvas}px;
+                                     border: 1px solid blue;
+                                     `;
+
+
+      this.canvas.canvas.height = this.HEIGHT_DPI;
+      this.canvas.canvas.width = this.WIDTH_DPI;
+
+
 
       this.oldMousePosX = 0;  // для отслеживания движения курсора 
       this.oldMousePosY = 0;  // для отслеживания движения курсора

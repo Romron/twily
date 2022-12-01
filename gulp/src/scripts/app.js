@@ -14,8 +14,8 @@ let params = {
    idTargetBlock: "wrap-canvas",
    idCanvas: "canvas-chart",
    idMainConteiner: 'mainConteiner',
-   heightCanvas: 600,
-   widhtCanvas: 1300,
+   heightMainConteiner: 500,
+   widthMainConteiner: 1200,
    widthYaxis: 100,
    hightXaxis: 40,
    scaleX: 2.6,
@@ -76,9 +76,13 @@ class App {
       const mainConteiner = document.createElement("div");
       mainConteiner.id = params.idMainConteiner;
       TargetBlock.append(mainConteiner);
+
+      let heightCont = 600;
+      let widhtCont = 1400;
+
       mainConteiner.style.cssText = `  position: relative; 
-                                       height: ${params.heightCanvas + params.hightXaxis + 6}px;
-                                       width: ${params.widhtCanvas + params.widthYaxis}px;
+                                       height: ${params.heightMainConteiner}px;
+                                       width: ${params.widthMainConteiner}px;
                                        /*background-color: red;*/
                                        border: 1px solid black;
                                    `;
