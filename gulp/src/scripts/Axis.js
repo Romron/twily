@@ -1,6 +1,7 @@
 import { Layer } from "./Layer.js";
 
 
+
 export class X_axis {
    /**
     * при маштобировании сетки растояния между вертикальными линиями меняются!!
@@ -69,7 +70,7 @@ export class Y_axis {
          widthCanvas: chart.params.widthYaxis,
          background: chart.params.backgroundYaxis,
          background: chart.params.backgroundXaxis,
-         colorCoordinatsLineY: chart.params.colorCoordinatsLineY,
+         colorTextYaxis: chart.params.colorTextYaxis,
          widthCoordinatsLineY: chart.params.widthCoordinatsLineY,
       }
 
@@ -84,14 +85,29 @@ export class Y_axis {
                                           width:${this.params.widthCanvas}px;
                                           /*border: 0.5px solid #38478D;*/
                                           `;
+
+
+
    }
 
    drawAxis(x, y, i) {
 
       this.layer.context.beginPath();
+      this.layer.context.lineWidth = this.params.widthCoordinatsLineY * 6;
+      this.layer.context.strokeStyle = this.params.colorCoordinatsLineY;
+
+      this.layer.context.moveTo(0, 0);
+      this.layer.context.lineTo(0, this.params.heightCanvas * 2);
+      this.layer.context.stroke();
+
+      this.drawLines(y, i);
+   }
+
+   drawLines(y, i) {
+      this.layer.context.beginPath();
       this.layer.context.lineWidth = this.params.widthCoordinatsLineY;
 
-      this.layer.context.strokeStyle = this.params.colorCoordinatsLineY;
+      this.layer.context.strokeStyle = this.params.colorTextYaxis;
       this.layer.context.font = '20px Arial';
 
       this.layer.context.moveTo(0, y);
@@ -99,6 +115,8 @@ export class Y_axis {
       this.layer.context.strokeText(i * 100, 35, y);
       this.layer.context.stroke();
    }
+
+
 
    clearAxis() {
       this.layer.context.clearRect(0, 0, this.params.widthCanvas * 2, this.params.heightCanvas * 2);
