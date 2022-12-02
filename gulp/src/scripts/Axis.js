@@ -7,33 +7,26 @@ export class X_axis {
     * градуировка шкалы не меняется
     */
 
-   params = {
-      idContainerCSS: "wrap-canvas",
-      idCanvas: "canvas-chart__X-axis",
-      idMainConteiner: 'mainConteiner',
-      heightCanvas: 20,
-      widthCanvas: 1400,
-      scaleX: 1,
-      scaleY: 1,
-      paddingTop: 20,
-      paddingBottom: 10,
-      paddingLeft: 20,
-      paddingRight: 20,
-   }
-
 
    constructor(chart) {
       this.chart = chart;     // контекст слоя графика
 
-      console.log("this.chart = ", this.chart);  навести порядок!!!!!!!!!!!!!!!!
+      this.params = {
+         idMainConteiner: chart.params.idMainConteiner,
+         heightCanvas: chart.params.hightXaxis,
+         widthCanvas: chart.params.widthMainConteiner,
+         background: chart.params.backgroundXaxis,
+         colorCoordinatsLineY: chart.params.colorCoordinatsLineY,
+         widthCoordinatsLineY: chart.params.widthCoordinatsLineY,
+      }
 
       this.layer = new Layer(this.params);
       this.layer.canvas.style.cssText = ` position: absolute;
                                           bottom: 0;
-                                          background-color: white; 
                                           left:0;
                                           z-index: 10;
                                           cursor: pointer;
+                                          background-color: ${this.params.background};
                                           height:${this.params.heightCanvas}px;
                                           width:${this.params.widthCanvas}px;
                                           /*border: 1px solid #38478D;*/
@@ -41,8 +34,6 @@ export class X_axis {
 
    }
    drawAxis(data) {
-
-
 
 
    }
@@ -69,66 +60,50 @@ export class Y_axis {
     * градуировка шкалы меняется 
     */
 
-   params = {
-      idContainerCSS: "wrap-canvas",
-      idCanvas: "canvas-chart__Y-axis",
-      idMainConteiner: 'mainConteiner',
-      heightCanvas: 600,
-      widthCanvas: 50,
-      scaleX: 1,
-      scaleY: 1,
-      paddingTop: 20,
-      paddingBottom: 10,
-      paddingLeft: 20,
-      paddingRight: 20,
-   }
-
-
    constructor(chart) {
       this.chart = chart;     // контекст слоя графика
 
-
+      this.params = {
+         idMainConteiner: chart.params.idMainConteiner,
+         heightCanvas: chart.params.heightMainConteiner,
+         widthCanvas: chart.params.widthYaxis,
+         background: chart.params.backgroundYaxis,
+         background: chart.params.backgroundXaxis,
+         colorCoordinatsLineY: chart.params.colorCoordinatsLineY,
+         widthCoordinatsLineY: chart.params.widthCoordinatsLineY,
+      }
 
       this.layer = new Layer(this.params);
       this.layer.canvas.style.cssText = ` position: absolute;
                                           bottom: 0px;
-                                          background-color: white; 
                                           right:0px;
                                           z-index: 10;
                                           cursor: pointer;
+                                          background-color: ${this.params.background};
                                           height:${this.params.heightCanvas}px;
                                           width:${this.params.widthCanvas}px;
                                           /*border: 0.5px solid #38478D;*/
                                           `;
-
-      // console.log("this.layer = ", this.layer);
    }
 
-   drawAxis() {
-      // this.layer.context.beginPath();
-      // this.layer.context.lineWidth = 1;
-      // this.layer.context.strokeStyle = '#ADB5D9';
-      // this.layer.context.font = '10px Arial';
-      // let x, y;
+   drawAxis(x, y, i) {
 
+      this.layer.context.beginPath();
+      this.layer.context.lineWidth = this.params.widthCoordinatsLineY;
 
-      // for (let i = 0; i < this.params.heightCanvas * 2 + Math.abs(this.chart.coordinates.yOffset); i = i + 10) {
-      //    x = this.params.widhtCanvas;
-      //    y = (this.params.heightCanvas * 2 - this.chart.coordinates.yOffset - i * this.chart.scaleY);
+      this.layer.context.strokeStyle = this.params.colorCoordinatsLineY;
+      this.layer.context.font = '20px Arial';
 
-      //    console.log("x = ", x);
-      //    console.log("y = ", y);
-
-      //    // if (y < this.coordinates.yNull && y > this.paddingTop + 10) {
-      //    this.layer.context.moveTo(x, y);   // 10 -- декоративная риска на оси Y 
-      //    this.layer.context.lineTo(x - 10, y);
-      //    this.layer.context.strokeText(i * 100, x, y);
-      //    // }
-
-      // }
-
-      // this.layer.context.stroke();
+      this.layer.context.moveTo(0, y);
+      this.layer.context.lineTo(20, y);
+      this.layer.context.strokeText(i * 100, 35, y);
+      this.layer.context.stroke();
    }
+
+   clearAxis() {
+      this.layer.context.clearRect(0, 0, this.params.widthCanvas * 2, this.params.heightCanvas * 2);
+   }
+
 
    field() {
 

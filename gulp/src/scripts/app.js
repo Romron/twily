@@ -10,32 +10,43 @@ import { MouseControls } from "./MouseControls.js";
 let url = './module_php/parser.php';
 const dP = new DataProcessing(url);   // всё что касается получения и оброботки данных
 
-let params = {
-   idTargetBlock: "wrap-canvas",
-   idCanvas: "canvas-chart",
-   idMainConteiner: 'mainConteiner',
-   heightMainConteiner: 600,
-   widthMainConteiner: 1400,
-   hightXaxis: 25,
-   widthYaxis: 50,
-   scaleX: 2.6,
-   scaleY: 1, // 5.5,
-   // ROWS_AMOUNT: 5,
-   paddingTop: 0,
-   paddingBottom: 0,
-   paddingLeft: 0,
-   paddingRight: 0,
-};
+
 
 class App {
-   constructor(params) {
+
+   params = {
+      idTargetBlock: "wrap-canvas",
+      idCanvas: "canvas-chart",
+      idMainConteiner: 'mainConteiner',
+      heightMainConteiner: 600,
+      widthMainConteiner: 1400,
+      hightXaxis: 25,
+      widthYaxis: 60,
+      scaleX: 2.6,
+      scaleY: 1, // 5.5,
+      paddingTop: 0,
+      paddingBottom: 10,
+      paddingLeft: 0,
+      paddingRight: 10,
+      backgroundChart: '#777777',
+      backgroundXaxis: '#777777',
+      backgroundYaxis: '#777777',
+      colorTextXaxis: '#777777',
+      colorTextYaxis: '#E4E4E4',
+      colorChartLine: '#fff',  // '#ADB5D9',
+      colorCoordinatsLineY: '#E4E4E4',  // '#ADB5D9',
+      colorCoordinatsLineX: '#E4E4E4',  // '#ADB5D9',
+      widthCoordinatsLineX: 0.5,  // '#ADB5D9',
+      widthCoordinatsLineY: 0.5,  // '#ADB5D9',
+   };
+
+   constructor() {
 
       this._mainConteiner();
-      console.log("--- App ---");
-      this.layer = new Layer(params);
-      this.chart = new Chart(this.layer, params);
+      this.layer = new Layer(this.params);
+      this.chart = new Chart(this.layer, this.params);
       this.proxyLoop = new Loop(this.update.bind(this), this.display.bind(this));
-      this.mc = new MouseControls(this.layer, this.proxyLoop, params);
+      this.mc = new MouseControls(this.layer, this.proxyLoop, this.params);
 
       dP.GetData().then((data) => {
          this.chart.data = dP.PreparationData(data);
@@ -72,17 +83,17 @@ class App {
 
 
       // независимая обёртка для всех канвасов нужно для абсолютного позиционирования
-      const TargetBlock = document.getElementById(params.idTargetBlock);
+      const TargetBlock = document.getElementById(this.params.idTargetBlock);
       const mainConteiner = document.createElement("div");
-      mainConteiner.id = params.idMainConteiner;
+      mainConteiner.id = this.params.idMainConteiner;
       TargetBlock.append(mainConteiner);
 
       let heightCont = 600;
       let widhtCont = 1400;
 
       mainConteiner.style.cssText = `  position: relative; 
-                                       height: ${params.heightMainConteiner}px;
-                                       width: ${params.widthMainConteiner}px;
+                                       height: ${this.params.heightMainConteiner}px;
+                                       width: ${this.params.widthMainConteiner}px;
                                        /*background-color: red;*/
                                        border: 1px solid black;
                                    `;
@@ -92,4 +103,4 @@ class App {
 
 }
 
-onload = () => { new App(params) }
+onload = () => { new App() }

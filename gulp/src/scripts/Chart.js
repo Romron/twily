@@ -78,29 +78,22 @@ export class Chart {
 
       this.canvas = canvas;
       this.ctx = canvas.context;
+      this.params = params;
 
-      this.heightCanvas = params.heightMainConteiner - params.hightXaxis;
-      this.widthCanvas = params.widthMainConteiner - params.widthYaxis;
+      this.heightCanvas = this.params.heightMainConteiner - this.params.hightXaxis;
+      this.widthCanvas = this.params.widthMainConteiner - this.params.widthYaxis;
 
       this.HEIGHT_DPI = this.heightCanvas * 2; // canvas.HEIGHT_DPI;
       this.WIDTH_DPI = this.widthCanvas * 2; //canvas.WIDTH_DPI;
 
-      this.scaleX = params.scaleX;
-      this.scaleY = params.scaleY;
-      this.paddingTop = params.paddingTop;
-      this.paddingBottom = params.paddingBottom;
-      this.paddingLeft = params.paddingLeft;
-      this.paddingRight = params.paddingRight;
-      this.widthYaxis = params.widthYaxis;
-      this.hightXaxis = params.hightXaxis;
-
-      this.HEIGHT_GRAPH_FILD = this.HEIGHT_DPI - (this.paddingTop + this.paddingBottom + this.hightXaxis);
-      this.WIDTH_GRAPH_FILD = this.WIDTH_DPI - (this.paddingLeft + this.paddingRight + this.widthYaxis);
+      this.HEIGHT_GRAPH_FILD = this.HEIGHT_DPI - (this.params.paddingTop + this.params.paddingBottom + this.params.hightXaxis);
+      this.WIDTH_GRAPH_FILD = this.WIDTH_DPI - (this.params.paddingLeft + this.params.paddingRight + this.params.widthYaxis);
 
       canvas.canvas.style.cssText = `position: absolute;
                                      top:0px;
                                      left:0px;
                                      z-index: 5;
+                                     background-color: ${this.params.backgroundChart};
                                      height:${this.heightCanvas}px;
                                      width:${this.widthCanvas}px;
                                      border: 1px solid blue;
@@ -109,45 +102,43 @@ export class Chart {
       this.canvas.canvas.height = this.HEIGHT_DPI;
       this.canvas.canvas.width = this.WIDTH_DPI;
 
-
-
       this.oldMousePosX = 0;  // для отслеживания движения курсора 
       this.oldMousePosY = 0;  // для отслеживания движения курсора
 
+
       this.Xaxis = new X_axis(this);      // здесь для того что бы можно было отключать координатную сетку а шкалы оставались
       this.Yaxis = new Y_axis(this);
-
 
    }
 
    coordinateseCalculation() {
 
-      this.coordinates.xNull = this.WIDTH_DPI - this.paddingRight - this.widthYaxis;
-      this.coordinates.yNull = this.HEIGHT_DPI - this.paddingBottom - this.hightXaxis;
+      this.coordinates.xNull = this.WIDTH_DPI - this.params.paddingRight;
+      this.coordinates.yNull = this.HEIGHT_DPI - this.params.paddingBottom;
 
-      this.scaleX = this.scaleX + this.mouse.wheel;
-      this.scaleX = +this.scaleX.toFixed(3);
+      this.params.scaleX = this.params.scaleX + this.mouse.wheel;
+      this.params.scaleX = +this.params.scaleX.toFixed(3);
 
       let deltaX = this.oldMousePosX - this.mouse.pos.x;
       let deltaY = this.oldMousePosY - this.mouse.pos.y;
 
 
-      if (this.scaleX < 0.1) {   // изменение масштаба по оси X 
-         this.scaleX = 0.1;
+      if (this.params.scaleX < 0.1) {   // изменение масштаба по оси X 
+         this.params.scaleX = 0.1;
          this.mouse.wheel = 0.1;
       }
 
       if (this.mouse.isPressed == true && this.mouse.pos.x > this.WIDTH_GRAPH_FILD) {  // изменение масштаба по оси Y 
          if (deltaY > 0) {
-            this.scaleY = this.scaleY + 0.02;
+            this.params.scaleY = this.params.scaleY + 0.02;
          } else {
-            this.scaleY = this.scaleY - 0.02;
+            this.params.scaleY = this.params.scaleY - 0.02;
          }
          this.oldMousePosY = this.mouse.pos.y;
       }
 
       if (this.mouse.isPressed == true &&    // перемещение поля графика вслед за курсором
-         this.mouse.pos.x > this.paddingLeft &&
+         this.mouse.pos.x > this.params.paddingLeft &&
          this.mouse.pos.x < this.WIDTH_GRAPH_FILD) {
 
          if (deltaX < 0) {
@@ -175,9 +166,9 @@ export class Chart {
       // this.mainField();    // для тестов
       this.CoordinateGrid();
 
-      if (this.mouse.pos.x > this.paddingLeft
+      if (this.mouse.pos.x > this.params.paddingLeft
          && this.mouse.pos.x < this.WIDTH_GRAPH_FILD
-         && this.mouse.pos.y > this.paddingTop
+         && this.mouse.pos.y > this.params.paddingTop
          && this.mouse.pos.y < this.HEIGHT_GRAPH_FILD) {
          this.horizontalPointer();
          this.horizontalPointerText();
@@ -186,14 +177,13 @@ export class Chart {
 
       this.ctx.beginPath();
       this.ctx.lineWidth = 2;
-      this.ctx.strokeStyle = '#252229';
+      this.ctx.strokeStyle = this.params.colorChartLine;
       let x, y;
       Object.keys(this.data).forEach((key, n) => {
-         x = this.coordinates.xNull - n * this.scaleX - this.coordinates.xOffset;
-         y = this.coordinates.yNull - this.data[key]['1b. open (USD)'] / 100 * this.scaleY - this.coordinates.yOffset;
+         x = this.coordinates.xNull - n * this.params.scaleX - this.coordinates.xOffset;
+         y = this.coordinates.yNull - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY - this.coordinates.yOffset;
          if (x < this.coordinates.xNull
-            && x > this.paddingLeft) {
-
+            && x > this.params.paddingLeft) {
             if (n == 0) {
                this.ctx.moveTo(x - this.mainX, y);
             }
@@ -217,13 +207,14 @@ export class Chart {
        *    
        */
 
-
       this.Xaxis.drawAxis(this.data);
       this.Yaxis.drawAxis();
 
+
       // координатная сетка по оси X
       this.ctx.beginPath();
-      this.ctx.strokeStyle = '#ADB5D9';
+      this.ctx.lineWidth = this.params.widthCoordinatsLineX;
+      this.ctx.strokeStyle = this.params.colorCoordinatsLineX;
       this.ctx.font = '20px Arial';
 
       this.widthToRight = this.WIDTH_GRAPH_FILD - this.coordinates.xOffset;     // расстояние от нуля графика до края
@@ -238,11 +229,14 @@ export class Chart {
                this.distanceBetweenLines = this.xLineOld - this.xLine;
                nLine++;
                this.xLineOld = this.xLine;
-               this.xLine = Math.round(this.coordinates.xNull - n * this.scaleX - this.coordinates.xOffset);
+               this.xLine = Math.round(this.coordinates.xNull - n * this.params.scaleX - this.coordinates.xOffset);
                this.distanceBetweenLines = this.xLineOld - this.xLine;
-               if (this.xLine < this.coordinates.xNull && this.xLine > this.paddingLeft) {    // запрет отрисовки координамтной сетки на шкале
+               if (this.xLine < this.coordinates.xNull && this.xLine > this.params.paddingLeft) {    // запрет отрисовки координамтной сетки на шкале
                   this._drawLines(nLine);
                   this._writeText(arrDays[n], n, nLine);
+
+                  this.Xaxis.drawAxis();
+
                }
                if (this.distanceBetweenLines < 150 && nLine % 2 != 0) {
                   continue;
@@ -257,26 +251,30 @@ export class Chart {
       }
       this.ctx.stroke();
 
-
       // координатная сетка по оси Y
       this.ctx.beginPath();
-      this.ctx.lineWidth = 0.;
-      this.ctx.strokeStyle = '#ADB5D9';
+      this.ctx.lineWidth = this.params.widthCoordinatsLineY;
+      this.ctx.strokeStyle = this.params.colorCoordinatsLineY;
       this.ctx.font = '20px Arial';
       let x, y;
       for (let i = 0; i < this.HEIGHT_DPI + Math.abs(this.coordinates.yOffset); i = i + 10) {
          x = this.coordinates.xNull;
-         y = this.coordinates.yNull - this.coordinates.yOffset - i * this.scaleY;
-         if (y < this.coordinates.yNull && y > this.paddingTop + 10) {
-            this.ctx.moveTo(x + 10, y);   // 10 -- декоративная риска на оси Y 
-            this.ctx.lineTo(this.paddingLeft, y);
+         y = this.coordinates.yNull - this.coordinates.yOffset - i * this.params.scaleY;
+         if (y < this.coordinates.yNull && y > this.params.paddingTop + 10) {
+            this.ctx.moveTo(x, y);
+            this.ctx.lineTo(this.params.paddingLeft, y);
             this.ctx.strokeText(i * 100, x + 25, y);
+
+            this.Yaxis.drawAxis(x, y, i);
          }
       }
       if (this.coordinates.yOffset > 10) {
          for (let i = 0; i < this.coordinates.yOffset; i = i + 10) {
-            this.ctx.moveTo(this.coordinates.xNull, this.coordinates.yNull - this.coordinates.yOffset + i * this.scaleY);
-            this.ctx.lineTo(this.paddingLeft, this.coordinates.yNull - this.coordinates.yOffset + i * this.scaleY);
+            this.ctx.moveTo(this.coordinates.xNull, this.coordinates.yNull - this.coordinates.yOffset + i * this.params.scaleY);
+            this.ctx.lineTo(this.params.paddingLeft, this.coordinates.yNull - this.coordinates.yOffset + i * this.params.scaleY);
+
+            // this.Yaxis.drawAxis();
+
          }
       }
       this.ctx.stroke();
@@ -285,11 +283,11 @@ export class Chart {
    _drawLines(nLine) {
       if (nLine == 2) {
          for (let xLineTR = this.xLine; xLineTR < this.WIDTH_GRAPH_FILD; xLineTR = xLineTR + this.distanceBetweenLines) {
-            this.ctx.moveTo(xLineTR, this.paddingTop + 20);
+            this.ctx.moveTo(xLineTR, this.params.paddingTop + 20);
             this.ctx.lineTo(xLineTR, this.coordinates.yNull + 20);     // 20 -- декоративная риска на оси Х
          }
       }
-      this.ctx.moveTo(this.xLine, this.paddingTop + 20);
+      this.ctx.moveTo(this.xLine, this.params.paddingTop + 20);
       this.ctx.lineTo(this.xLine, this.coordinates.yNull + 20);    // 20 -- декоративная риска на оси Х
    }
 
@@ -311,14 +309,14 @@ export class Chart {
       this.ctx.font = '25px Arial';
 
       this.ctx.fillText(
-         Math.ceil((this.coordinates.yNull - this.mouse.pos.y - this.paddingTop - this.coordinates.yOffset) / this.scaleY * 100),
-         this.WIDTH_DPI - this.widthYaxis / 1.1,
+         Math.ceil((this.coordinates.yNull - this.mouse.pos.y - this.params.paddingTop - this.coordinates.yOffset) / this.params.scaleY * 100),
+         this.WIDTH_DPI - this.params.widthYaxis / 1.1,
          this.mouse.pos.y
       );
       this.ctx.fillText(
-         Math.ceil(this.coordinates.xNull - this.mouse.pos.x - this.paddingRight),
+         Math.ceil(this.coordinates.xNull - this.mouse.pos.x - this.params.paddingRight),
          this.mouse.pos.x,
-         this.HEIGHT_DPI - this.hightXaxis / 2);
+         this.HEIGHT_DPI - this.params.hightXaxis / 2);
    }
 
    horizontalPointer() {
@@ -329,13 +327,13 @@ export class Chart {
 
 
       // вертикальный указатель
-      this.ctx.moveTo(this.mouse.pos.x + this.paddingRight, this.mouse.pos.y + this.paddingTop);
-      this.ctx.lineTo(this.mouse.pos.x + this.paddingRight, this.coordinates.yNull);
+      this.ctx.moveTo(this.mouse.pos.x + this.params.paddingRight, this.mouse.pos.y + this.params.paddingTop);
+      this.ctx.lineTo(this.mouse.pos.x + this.params.paddingRight, this.coordinates.yNull);
 
       // горизонтальный указатель
 
-      this.ctx.moveTo(this.mouse.pos.x + this.paddingRight, this.mouse.pos.y + this.paddingTop);
-      this.ctx.lineTo(this.coordinates.xNull, this.mouse.pos.y + this.paddingTop);
+      this.ctx.moveTo(this.mouse.pos.x + this.params.paddingRight, this.mouse.pos.y + this.params.paddingTop);
+      this.ctx.lineTo(this.coordinates.xNull, this.mouse.pos.y + this.params.paddingTop);
 
 
       this.ctx.stroke();
@@ -347,12 +345,13 @@ export class Chart {
       this.ctx.beginPath();
       this.ctx.lineWidth = 2;
       this.ctx.strokeStyle = '#3A3A3C';
-      this.ctx.arc(this.mouse.pos.x + this.paddingRight, this.mouse.pos.y + this.paddingTop, 7, 0, Math.PI * 2);
+      this.ctx.arc(this.mouse.pos.x + this.params.paddingRight, this.mouse.pos.y + this.params.paddingTop, 7, 0, Math.PI * 2);
       this.ctx.stroke();
    }
 
    clear() {
       this.ctx.clearRect(0, 0, this.WIDTH_DPI, this.HEIGHT_DPI);
+      this.Yaxis.clearAxis();
    }
 
    mainField() {
@@ -360,10 +359,10 @@ export class Chart {
       this.ctx.lineWidth = 1;
       this.ctx.strokeStyle = 'green';
 
-      this.ctx.moveTo(this.paddingLeft, this.paddingTop);
-      this.ctx.lineTo(this.WIDTH_DPI - this.paddingRight, this.paddingTop);
-      this.ctx.lineTo(this.WIDTH_DPI - this.paddingRight, this.HEIGHT_DPI - this.paddingBottom);
-      this.ctx.lineTo(this.paddingLeft, this.HEIGHT_DPI - this.paddingBottom);
+      this.ctx.moveTo(this.params.paddingLeft, this.params.paddingTop);
+      this.ctx.lineTo(this.WIDTH_DPI - this.params.paddingRight, this.params.paddingTop);
+      this.ctx.lineTo(this.WIDTH_DPI - this.params.paddingRight, this.HEIGHT_DPI - this.params.paddingBottom);
+      this.ctx.lineTo(this.params.paddingLeft, this.HEIGHT_DPI - this.params.paddingBottom);
       this.ctx.closePath();
       this.ctx.stroke();
 
