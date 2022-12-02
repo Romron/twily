@@ -257,7 +257,7 @@ export class Chart {
             this.ctx.lineTo(this.params.paddingLeft, y - i);
             this.ctx.strokeText(i * 100, x + 25, y - i);
 
-            this.Yaxis.drawAxis(y - i, i);
+            this.Yaxis.drawAxis(y, i);
          }
       }
       if (this.coordinates.yOffset > 10) {

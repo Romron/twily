@@ -141,9 +141,9 @@ export class Y_axis {
       this.layer.context.strokeStyle = this.params.colorTextYaxis;
       this.layer.context.font = '20px Arial';
 
-      this.layer.context.moveTo(0, y);
-      this.layer.context.lineTo(20, y);
-      this.layer.context.strokeText(i * 100, 35, y);
+      this.layer.context.moveTo(0, y - i);
+      this.layer.context.lineTo(20, y - i);
+      this.layer.context.strokeText(i * 100, 35, y - i);
       this.layer.context.stroke();
    }
 
