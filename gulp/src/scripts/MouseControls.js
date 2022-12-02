@@ -27,6 +27,8 @@ export class MouseControls {
 
    cangeState(e) {
 
+      console.log("e = ", e);
+
       this.wheel = 0;      // для того что бы при любом другом событии мыши, кроме wheel, не имитировалась прокрутка
 
       if (e.type === 'mousemove') {

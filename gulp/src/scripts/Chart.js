@@ -122,13 +122,14 @@ export class Chart {
       let deltaX = this.oldMousePosX - this.mouse.pos.x;
       let deltaY = this.oldMousePosY - this.mouse.pos.y;
 
-
-      if (this.params.scaleX < 0.1) {   // изменение масштаба по оси X 
+      // изменение масштаба по оси X
+      if (this.params.scaleX < 0.1) {
          this.params.scaleX = 0.1;
          this.mouse.wheel = 0.1;
       }
 
-      if (this.mouse.isPressed == true && this.mouse.pos.x > this.WIDTH_GRAPH_FILD) {  // изменение масштаба по оси Y 
+      // изменение масштаба по оси Y
+      if (this.mouse.isPressed == true && this.mouse.pos.x > this.WIDTH_GRAPH_FILD) {
          if (deltaY > 0) {
             this.params.scaleY = this.params.scaleY + 0.02;
          } else {
