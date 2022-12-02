@@ -96,7 +96,7 @@ export class Chart {
                                      background-color: ${this.params.backgroundChart};
                                      height:${this.heightCanvas}px;
                                      width:${this.widthCanvas}px;
-                                     border: 1px solid blue;
+                                     /*border: 1px solid blue;*/
                                      `;
 
       this.canvas.canvas.height = this.HEIGHT_DPI;
@@ -208,10 +208,6 @@ export class Chart {
        *    
        */
 
-      this.Xaxis.drawAxis(this.data);
-      this.Yaxis.drawAxis();
-
-
       // координатная сетка по оси X
       this.ctx.beginPath();
       this.ctx.lineWidth = this.params.widthCoordinatsLineX;
@@ -232,16 +228,11 @@ export class Chart {
                this.xLineOld = this.xLine;
                this.xLine = Math.round(this.coordinates.xNull - n * this.params.scaleX - this.coordinates.xOffset);
                this.distanceBetweenLines = this.xLineOld - this.xLine;
-               if (this.xLine < this.coordinates.xNull && this.xLine > this.params.paddingLeft) {    // запрет отрисовки координамтной сетки на шкале
-                  this._drawLines(nLine);
-                  this._writeText(arrDays[n], n, nLine);
-
-                  this.Xaxis.drawAxis();
-
-               }
+               this._drawLines(nLine);
                if (this.distanceBetweenLines < 150 && nLine % 2 != 0) {
                   continue;
                }
+               this.Xaxis.drawAxis(arrDays[n], nLine, this.xLine, this.distanceBetweenLines);
             }
             if (this.xLine < 0) {
                break;
@@ -260,21 +251,19 @@ export class Chart {
       let x, y;
       for (let i = 0; i < this.HEIGHT_DPI + Math.abs(this.coordinates.yOffset); i = i + 10) {
          x = this.coordinates.xNull;
-         y = this.coordinates.yNull - this.coordinates.yOffset - i * this.params.scaleY;
-         if (y < this.coordinates.yNull && y > this.params.paddingTop + 10) {
-            this.ctx.moveTo(x, y);
-            this.ctx.lineTo(this.params.paddingLeft, y);
-            this.ctx.strokeText(i * 100, x + 25, y);
+         y = this.coordinates.yNull - this.coordinates.yOffset * this.params.scaleY;
+         if (y - i < this.coordinates.yNull && y - i > this.params.paddingTop + 10) {
+            this.ctx.moveTo(x, y - i);
+            this.ctx.lineTo(this.params.paddingLeft, y - i);
+            this.ctx.strokeText(i * 100, x + 25, y - i);
 
-            this.Yaxis.drawAxis(x, y, i);
+            this.Yaxis.drawAxis(y - i, i);
          }
       }
       if (this.coordinates.yOffset > 10) {
          for (let i = 0; i < this.coordinates.yOffset; i = i + 10) {
-            this.ctx.moveTo(this.coordinates.xNull, this.coordinates.yNull - this.coordinates.yOffset + i * this.params.scaleY);
-            this.ctx.lineTo(this.params.paddingLeft, this.coordinates.yNull - this.coordinates.yOffset + i * this.params.scaleY);
-
-            // this.Yaxis.drawAxis();
+            this.ctx.moveTo(this.coordinates.xNull, y + i);
+            this.ctx.lineTo(this.params.paddingLeft, y + i);
 
          }
       }
@@ -353,6 +342,7 @@ export class Chart {
    clear() {
       this.ctx.clearRect(0, 0, this.WIDTH_DPI, this.HEIGHT_DPI);
       this.Yaxis.clearAxis();
+      this.Xaxis.clearAxis();
    }
 
    mainField() {

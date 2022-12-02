@@ -28,14 +28,14 @@ class App {
       paddingBottom: 10,
       paddingLeft: 0,
       paddingRight: 10,
-      backgroundChart: '#858483',
-      backgroundXaxis: '#777777',
-      backgroundYaxis: '#777777',
-      colorTextXaxis: '#7B7B7B',
-      colorTextYaxis: '#011F01',
-      colorChartLine: '#fff',  // '#ADB5D9',
-      colorCoordinatsLineY: '#E4E4E4',  // '#ADB5D9',
-      colorCoordinatsLineX: '#E4E4E4',  // '#ADB5D9',
+      backgroundChart: '#E0E0E0',
+      backgroundXaxis: '#E0E0E0',
+      backgroundYaxis: '#E0E0E0',
+      colorTextXaxis: 'red',
+      colorTextYaxis: '#5F5F5F',
+      colorChartLine: '#031B42',  // '#ADB5D9',
+      colorCoordinatsLineX: '#B6B6B6',  // '#ADB5D9',
+      colorCoordinatsLineY: '#B6B6B6',  // '#ADB5D9',
       widthCoordinatsLineX: 0.5,  // '#ADB5D9',
       widthCoordinatsLineY: 0.5,  // '#ADB5D9',
    };
@@ -94,8 +94,7 @@ class App {
       mainConteiner.style.cssText = `  position: relative; 
                                        height: ${this.params.heightMainConteiner}px;
                                        width: ${this.params.widthMainConteiner}px;
-                                       /*background-color: red;*/
-                                       border: 1px solid black;
+                                       border: 1px solid #9ea8a0;
                                    `;
 
 

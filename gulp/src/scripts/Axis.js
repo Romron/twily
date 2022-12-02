@@ -17,8 +17,8 @@ export class X_axis {
          heightCanvas: chart.params.hightXaxis,
          widthCanvas: chart.params.widthMainConteiner,
          background: chart.params.backgroundXaxis,
-         colorCoordinatsLineY: chart.params.colorCoordinatsLineY,
-         widthCoordinatsLineY: chart.params.widthCoordinatsLineY,
+         colorCoordinatsLineX: chart.params.colorTextXaxis,
+         widthCoordinatsLineX: chart.params.widthCoordinatsLineX,
       }
 
       this.layer = new Layer(this.params);
@@ -34,7 +34,37 @@ export class X_axis {
                                        `;
 
    }
-   drawAxis(data) {
+   drawAxis(key, nLine, xLine, distanceBetweenLines) {
+
+      // _drawLines(nLine)
+
+      this.layer.context.beginPath();
+      this.layer.context.lineWidth = this.params.widthCoordinatsLineX;
+      this.layer.context.strokeStyle = this.params.colorCoordinatsLineX;
+      this.layer.context.font = '20px Arial';
+
+
+      if (nLine == 2) {
+         for (let xLineTR = xLine; xLineTR < this.params.widthCanvas * 2; xLineTR = xLineTR + distanceBetweenLines) {
+            this.layer.context.moveTo(xLineTR, 0);
+            this.layer.context.lineTo(xLineTR, 20);     // 20 -- декоративная риска на оси Х
+         }
+      }
+      this.layer.context.moveTo(xLine, 0);
+      this.layer.context.lineTo(xLine, 20);    // 20 -- декоративная риска на оси Х
+      this.layer.context.stroke();
+
+      // _writeText(key)
+      let str = '';
+      let str_1 = '';
+      let str_2 = '';
+      let str_3 = '';
+
+      str_1 = key.slice(8, 10);
+      str_2 = key.slice(5, 7);
+      str_3 = key.slice(0, 4).slice(2, 4);
+      str = `${str_1}.${str_2}.${str_3}`;
+      this.layer.context.strokeText(str, xLine - 40, this.params.heightCanvas * 1.3);
 
 
    }
@@ -52,6 +82,10 @@ export class X_axis {
       this.chart.ctx.lineTo(this.chart.paddingLeft, this.chart.HEIGHT_DPI - this.chart.paddingBottom - this.chart.hightXaxis);
       this.chart.ctx.closePath();
       this.chart.ctx.stroke();
+   }
+
+   clearAxis() {
+      this.layer.context.clearRect(0, 0, this.params.widthCanvas * 2, this.params.heightCanvas * 2);
    }
 }
 
@@ -90,8 +124,9 @@ export class Y_axis {
 
    }
 
-   drawAxis(x, y, i) {
+   drawAxis(y, i) {
 
+      // нулевая линия
       this.layer.context.beginPath();
       this.layer.context.lineWidth = this.params.widthCoordinatsLineY * 6;
       this.layer.context.strokeStyle = this.params.colorCoordinatsLineY;
@@ -100,13 +135,9 @@ export class Y_axis {
       this.layer.context.lineTo(0, this.params.heightCanvas * 2);
       this.layer.context.stroke();
 
-      this.drawLines(y, i);
-   }
-
-   drawLines(y, i) {
+      // декоративные  засечки
       this.layer.context.beginPath();
       this.layer.context.lineWidth = this.params.widthCoordinatsLineY;
-
       this.layer.context.strokeStyle = this.params.colorTextYaxis;
       this.layer.context.font = '20px Arial';
 
