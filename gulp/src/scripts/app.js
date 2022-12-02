@@ -31,7 +31,7 @@ class App {
       backgroundChart: '#E0E0E0',
       backgroundXaxis: '#E0E0E0',
       backgroundYaxis: '#E0E0E0',
-      colorTextXaxis: 'red',
+      colorTextXaxis: '#5F5F5F',
       colorTextYaxis: '#5F5F5F',
       colorChartLine: '#031B42',  // '#ADB5D9',
       colorCoordinatsLineX: '#B6B6B6',  // '#ADB5D9',
