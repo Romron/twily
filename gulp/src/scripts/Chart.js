@@ -116,8 +116,7 @@ export class Chart {
       this.coordinates.xNull = this.WIDTH_DPI - this.params.paddingRight;
       this.coordinates.yNull = this.HEIGHT_DPI - this.params.paddingBottom;
 
-      this.params.scaleX = this.params.scaleX + this.mouse.wheel;
-      this.params.scaleX = +this.params.scaleX.toFixed(3);
+      this.params.scaleX = this.params.scaleX + parseFloat(this.mouse.wheel.toFixed(3));
 
       let deltaX = this.oldMousePosX - this.mouse.pos.x;
       let deltaY = this.oldMousePosY - this.mouse.pos.y;
