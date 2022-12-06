@@ -19,6 +19,7 @@ export class X_axis {
          background: chart.params.backgroundXaxis,
          colorCoordinatsLineX: chart.params.colorTextXaxis,
          widthCoordinatsLineX: chart.params.widthCoordinatsLineX,
+         widthYaxis: chart.params.widthYaxis,
       }
 
       this.layer = new Layer(this.params);
@@ -38,11 +39,21 @@ export class X_axis {
 
       // _drawLines(nLine)
 
+
+      // нулевая линия
+      this.layer.context.beginPath();
+      this.layer.context.lineWidth = this.params.widthCoordinatsLineX * 6;
+      this.layer.context.strokeStyle = this.params.colorCoordinatsLineX;
+
+      this.layer.context.moveTo((this.params.widthCanvas - this.params.widthYaxis) * 2, 0);
+      this.layer.context.lineTo(0, 0);
+      this.layer.context.stroke();
+
+
       this.layer.context.beginPath();
       this.layer.context.lineWidth = this.params.widthCoordinatsLineX;
       this.layer.context.strokeStyle = this.params.colorCoordinatsLineX;
       this.layer.context.font = '20px Arial';
-
 
       if (nLine == 2) {
          for (let xLineTR = xLine; xLineTR < this.params.widthCanvas * 2; xLineTR = xLineTR + distanceBetweenLines) {
@@ -106,6 +117,7 @@ export class Y_axis {
          background: chart.params.backgroundXaxis,
          colorTextYaxis: chart.params.colorTextYaxis,
          widthCoordinatsLineY: chart.params.widthCoordinatsLineY,
+         hightXaxis: chart.params.hightXaxis,
       }
 
       this.layer = new Layer(this.params);
@@ -132,7 +144,7 @@ export class Y_axis {
       this.layer.context.strokeStyle = this.params.colorCoordinatsLineY;
 
       this.layer.context.moveTo(0, 0);
-      this.layer.context.lineTo(0, this.params.heightCanvas * 2);
+      this.layer.context.lineTo(0, (this.params.heightCanvas - this.params.hightXaxis) * 2);
       this.layer.context.stroke();
 
       // декоративные  засечки
