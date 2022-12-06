@@ -147,6 +147,22 @@ export class Y_axis {
       this.layer.context.stroke();
    }
 
+   horizontalPointerText() {
+      this.layer.context.font = '25px Arial';
+
+      this.layer.context.fillText(
+         Math.ceil((this.chart.coordinates.yNull - this.chart.mouse.pos.y - this.chart.params.paddingTop - this.chart.coordinates.yOffset) / this.chart.params.scaleY * 100),
+         this.chart.WIDTH_DPI - this.chart.params.widthYaxis / 1.1,
+         this.chart.mouse.pos.y
+      );
+      this.layer.context.fillText(
+         Math.ceil(this.chart.coordinates.xNull - this.chart.mouse.pos.x - this.chart.params.paddingRight),
+         this.chart.mouse.pos.x,
+         this.chart.HEIGHT_DPI - this.chart.params.hightXaxis / 2);
+   }
+
+
+
 
 
    clearAxis() {

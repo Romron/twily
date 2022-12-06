@@ -171,7 +171,7 @@ export class Chart {
          && this.mouse.pos.y > this.params.paddingTop
          && this.mouse.pos.y < this.HEIGHT_GRAPH_FILD) {
          this.horizontalPointer();
-         this.horizontalPointerText();
+         this.Yaxis.horizontalPointerText();
          this.circul();
       }
 
@@ -294,19 +294,19 @@ export class Chart {
       this.ctx.strokeText(str, this.xLine - 40, this.coordinates.yNull + 40);
    }
 
-   horizontalPointerText() {
-      this.ctx.font = '25px Arial';
+   // horizontalPointerText() {
+   //    this.ctx.font = '25px Arial';
 
-      this.ctx.fillText(
-         Math.ceil((this.coordinates.yNull - this.mouse.pos.y - this.params.paddingTop - this.coordinates.yOffset) / this.params.scaleY * 100),
-         this.WIDTH_DPI - this.params.widthYaxis / 1.1,
-         this.mouse.pos.y
-      );
-      this.ctx.fillText(
-         Math.ceil(this.coordinates.xNull - this.mouse.pos.x - this.params.paddingRight),
-         this.mouse.pos.x,
-         this.HEIGHT_DPI - this.params.hightXaxis / 2);
-   }
+   //    this.ctx.fillText(
+   //       Math.ceil((this.coordinates.yNull - this.mouse.pos.y - this.params.paddingTop - this.coordinates.yOffset) / this.params.scaleY * 100),
+   //       this.WIDTH_DPI - this.params.widthYaxis / 1.1,
+   //       this.mouse.pos.y
+   //    );
+   //    this.ctx.fillText(
+   //       Math.ceil(this.coordinates.xNull - this.mouse.pos.x - this.params.paddingRight),
+   //       this.mouse.pos.x,
+   //       this.HEIGHT_DPI - this.params.hightXaxis / 2);
+   // }
 
    horizontalPointer() {
       this.ctx.beginPath();
