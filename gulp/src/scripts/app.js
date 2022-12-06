@@ -16,8 +16,8 @@ class App {
 
    params = {
       idTargetBlock: "wrap-canvas",
-      idCanvas: "canvas-chart",
       idMainConteiner: 'mainConteiner',
+      idCanvas: "canvas-chart",
       heightMainConteiner: 600,
       widthMainConteiner: 1400,
       hightXaxis: 25,

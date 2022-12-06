@@ -122,13 +122,16 @@ export class Chart {
       let deltaY = this.oldMousePosY - this.mouse.pos.y;
 
       // изменение масштаба по оси X
-      if (this.params.scaleX < 0.1) {
-         this.params.scaleX = 0.1;
-         this.mouse.wheel = 0.1;
+      if (this.mouse.event.target.id == 'canvas-chart') {
+
+         if (this.params.scaleX < 0.1) {
+            this.params.scaleX = 0.1;
+            this.mouse.wheel = 0.1;
+         }
       }
 
       // изменение масштаба по оси Y
-      if (this.mouse.isPressed == true && this.mouse.pos.x > this.WIDTH_GRAPH_FILD) {
+      if (this.mouse.isPressed == true && this.mouse.event.target.id == 'Y_axis') {
          if (deltaY > 0) {
             this.params.scaleY = this.params.scaleY + 0.02;
          } else {
@@ -137,9 +140,13 @@ export class Chart {
          this.oldMousePosY = this.mouse.pos.y;
       }
 
-      if (this.mouse.isPressed == true &&    // перемещение поля графика вслед за курсором
-         this.mouse.pos.x > this.params.paddingLeft &&
-         this.mouse.pos.x < this.WIDTH_GRAPH_FILD) {
+
+      // перемещение поля графика вслед за курсором
+
+      // if (this.mouse.isPressed == true &&    
+      //    this.mouse.pos.x > this.params.paddingLeft &&
+      //    this.mouse.pos.x < this.WIDTH_GRAPH_FILD) {      
+      if (this.mouse.isPressed == true && this.mouse.event.target.id == 'canvas-chart') {
 
          if (deltaX < 0) {
             this.coordinates.xOffset = this.coordinates.xOffset - 5;

@@ -14,6 +14,7 @@ export class X_axis {
 
       this.params = {
          idMainConteiner: chart.params.idMainConteiner,
+         idCanvas: "X_axis",
          heightCanvas: chart.params.hightXaxis,
          widthCanvas: chart.params.widthMainConteiner,
          background: chart.params.backgroundXaxis,
@@ -111,6 +112,7 @@ export class Y_axis {
 
       this.params = {
          idMainConteiner: chart.params.idMainConteiner,
+         idCanvas: "Y_axis",
          heightCanvas: chart.params.heightMainConteiner,
          widthCanvas: chart.params.widthYaxis,
          background: chart.params.backgroundYaxis,

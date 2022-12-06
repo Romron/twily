@@ -1,6 +1,12 @@
 export class MouseControls {
    constructor(conteiner, proxy = {}, params) {
-      this.conteiner = conteiner.canvas;
+
+
+      // this.conteiner = conteiner.canvas;
+      this.conteiner = document.getElementById(params.idMainConteiner);
+
+
+
       const { left, top } = this.conteiner.getBoundingClientRect()      // т.к. координаты канваса не савпадают с координатами экрана
       this.left = left;
       this.top = top;
@@ -12,6 +18,8 @@ export class MouseControls {
       this.isUp = false;
       this.pos = { x: -10, y: -10 };         // прячу курсор до начала работы приложения
       this.wheel = 0;
+
+      // this.target
 
       // conteiner.addEventListener('click', e => this.cangeState(e));
       // conteiner.addEventListener('dblclick', e => this.cangeState(e));
@@ -26,6 +34,9 @@ export class MouseControls {
    }
 
    cangeState(e) {
+
+      this.event = e;
+      // console.log("this.event.target.id = ", this.event.target.id);
 
       this.wheel = 0;      // для того что бы при любом другом событии мыши, кроме wheel, не имитировалась прокрутка
 
