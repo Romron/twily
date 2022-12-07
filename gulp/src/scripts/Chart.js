@@ -119,7 +119,6 @@ export class Chart {
       this.coordinates.xNull = this.WIDTH_DPI - this.params.paddingRight;
       this.coordinates.yNull = this.HEIGHT_DPI - this.params.paddingBottom;
 
-
       let deltaX = this.oldMousePosX - this.mouse.pos.x;
       let deltaY = this.oldMousePosY - this.mouse.pos.y;
 
@@ -130,28 +129,15 @@ export class Chart {
 
          if (this.mouse.event.target.id == 'canvas-chart') {
 
-            console.log("this.mouse.event.type = ", this.mouse.event.type);
-            console.log("this.mouse = ", this.mouse);
-
-
             if (this.mouse.event.type === 'wheel') {
                this.mouse.event.preventDefault();     // запрещает перемотку всей страницы
-
-               console.log("this.mouse = ", this.mouse);
-
                if (this.mouse.wheel.wheelY > 0) {
-                  this.params.scaleX = this.params.scaleX + parseFloat(this.mouse.wheel.wheelY.toFixed(3));
-                  // this.wheel = 0.1;
-                  console.log("this.mouse.wheel.wheelY = ", this.mouse.wheel.wheelY);
-               } else if (this.mouse.wheel.wheelX < 0) {
-                  // this.wheel = -0.1;
-                  console.log("this.mouse.wheel.wheelY = ", this.mouse.wheel.wheelY);
+                  this.params.scaleX = this.params.scaleX + 0.01;
+               } else if (this.mouse.wheel.wheelY < 0) {
+                  this.params.scaleX = this.params.scaleX - 0.01;
                } else {
-                  // this.wheel = 0;
+                  console.log("this.mouse.wheel.wheelY = ", this.mouse.wheel.wheelY);  // для тестов
                }
-               console.log("this.mouse.wheel.wheelY = ", this.mouse.wheel.wheelY);
-               // console.log("e.deltaX = ", e.deltaX);
-               // console.log("q =  ", q);
 
 
             }
