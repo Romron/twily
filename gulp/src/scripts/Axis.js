@@ -123,6 +123,8 @@ export class Y_axis {
          widthCoordinatsLineY: chart.params.widthCoordinatsLineY,
          hightXaxis: chart.params.hightXaxis,
          cursor: 'pointer',
+         pointerFrimeWidth: 90,
+         pointerFrimeHight: 30,
       }
 
       this.layer = new Layer(this.params);
@@ -170,9 +172,7 @@ export class Y_axis {
       this.layer.context.lineWidth = this.params.widthCoordinatsLineY * 2;
       this.layer.context.strokeStyle = "red";
 
-
-      console.log("mousePos = ", mousePos);
-      this.layer.context.rect(mousePos.X, mousePos.y, 90, 30);
+      this.layer.context.rect(10, mousePos.y - this.params.pointerFrimeHight / 2, this.params.pointerFrimeWidth, this.params.pointerFrimeHight);
 
 
       this.layer.context.stroke();
