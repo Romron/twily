@@ -20,6 +20,7 @@ class App {
       idCanvas: "canvas-chart",
       heightMainConteiner: 600,
       widthMainConteiner: 1400,
+      DPI: 2,   // показывает восколько раз внутренний размер canvas больше размера заданного в CSS 
       hightXaxis: 25,
       widthYaxis: 60,
       scaleX: 2.6,
@@ -46,7 +47,9 @@ class App {
       this.layer = new Layer(this.params);
       this.proxyLoop = new Loop(this.update.bind(this), this.display.bind(this));
       this.chart = new Chart(this.layer, this.proxyLoop, this.params);
-      this.mc = new MouseControls(this.mainConteiner, this.proxyLoop);
+
+
+      this.mc = new MouseControls(this.mainConteiner, this.proxyLoop, this.params.DPI);
 
       dP.GetData().then((data) => {
          this.chart.data = dP.PreparationData(data);

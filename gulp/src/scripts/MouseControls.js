@@ -12,18 +12,15 @@ export class MouseControls {
     * 
     */
 
-   constructor(conteiner, proxy) {
+   constructor(conteiner, proxy, DPI) {
 
       this.conteiner = conteiner;
-      // this.conteiner = document.getElementById(params.idMainConteiner);
-
-
+      this.DPI = DPI;
+      this.proxy = proxy;
 
       const { left, top } = this.conteiner.getBoundingClientRect()      // т.к. координаты канваса не савпадают с координатами экрана
       this.left = left;
       this.top = top;
-      this.proxy = proxy;
-      // this.params = params;
 
       this.isPressed = false;
       this.isDown = false;
@@ -31,8 +28,6 @@ export class MouseControls {
       this.pos = { x: -10, y: -10 };         // прячу курсор до начала работы приложения
       this.wheel = { wheelX: 0, wheelY: 0 };
       this.event = {};
-
-      // this.target
 
       // conteiner.addEventListener('click', e => this.cangeState(e));
       // conteiner.addEventListener('dblclick', e => this.cangeState(e));
@@ -47,28 +42,21 @@ export class MouseControls {
    }
 
    cangeState(e) {
-
-      this.event = e;
-
-      // this.wheel = 0;      // для того что бы при любом другом событии мыши, кроме wheel, не имитировалась прокрутка
-
-
+      this.event = e;      // для обработки событий вне этого класса
 
       if (e.type === 'mousemove') {
          // возвращает координаты мыши внутри контейнера
          this.pos = {
-            x: (e.clientX - this.left),
-            y: (e.clientY - this.top)
+            x: (e.clientX - this.left) * this.DPI,
+            y: (e.clientY - this.top) * this.DPI,
          }
          this.proxy.mouse = this.pos;
-      } else if (e.type === 'wheel') {  // изменение масштаба по оси X
-
+      } else if (e.type === 'wheel') {
          this.wheel = {
             wheelX: e.deltaX,
             wheelY: e.deltaY,
          }
          this.proxy.mouse = this.wheel;
-
       } else if (e.type === 'mousedown') {
          this.isPressed = true;
          this.isDown = true;

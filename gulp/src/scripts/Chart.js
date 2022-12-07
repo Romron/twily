@@ -122,14 +122,10 @@ export class Chart {
       let deltaX = this.oldMousePosX - this.mouse.pos.x;
       let deltaY = this.oldMousePosY - this.mouse.pos.y;
 
-
-      // изменение масштаба по оси X
-
       if (Object.keys(this.mouse.event).length != 0) {
 
          if (this.mouse.event.target.id == 'canvas-chart') {
-
-            if (this.mouse.event.type === 'wheel') {
+            if (this.mouse.event.type === 'wheel') {  // изменение масштаба по оси X
                this.mouse.event.preventDefault();     // запрещает перемотку всей страницы
                if (this.mouse.wheel.wheelY > 0) {
                   this.params.scaleX = this.params.scaleX + 0.01;
@@ -138,46 +134,58 @@ export class Chart {
                } else {
                   console.log("this.mouse.wheel.wheelY = ", this.mouse.wheel.wheelY);  // для тестов
                }
-
-
             }
-
+            // перемещение поля графика вслед за курсором
+            if (this.mouse.isPressed == true) {
+               if (deltaX < 0) {
+                  if (Math.abs(deltaX) < 200) {
+                     this.coordinates.xOffset = this.coordinates.xOffset - Math.abs(deltaX);
+                     this.oldMousePosX = this.mouse.pos.x;
+                  } else {
+                     this.coordinates.xOffset = this.coordinates.xOffset - 5;
+                     this.oldMousePosX = this.mouse.pos.x;
+                  }
+               } else if (deltaX > 0) {
+                  if (Math.abs(deltaX) < 200) {
+                     this.coordinates.xOffset = this.coordinates.xOffset + Math.abs(deltaX);
+                     this.oldMousePosX = this.mouse.pos.x;
+                  } else {
+                     this.coordinates.xOffset = this.coordinates.xOffset + 5;
+                     this.oldMousePosX = this.mouse.pos.x;
+                  }
+               }
+               if (deltaY < 0) {
+                  if (Math.abs(deltaY) < 200) {
+                     this.coordinates.yOffset = this.coordinates.yOffset - Math.abs(deltaY);
+                     this.oldMousePosY = this.mouse.pos.y;
+                  } else {
+                     this.coordinates.yOffset = this.coordinates.yOffset - 5;
+                     this.oldMousePosY = this.mouse.pos.y;
+                  }
+               } else if (deltaY > 0) {
+                  if (Math.abs(deltaY) < 200) {
+                     this.coordinates.yOffset = this.coordinates.yOffset + Math.abs(deltaY);
+                     this.oldMousePosY = this.mouse.pos.y;
+                  } else {
+                     this.coordinates.yOffset = this.coordinates.yOffset + 5;
+                     this.oldMousePosY = this.mouse.pos.y;
+                  }
+               }
+            }
          }
 
-         // изменение масштаба по оси Y
-         if (this.mouse.isPressed == true && this.mouse.event.target.id == 'Y_axis') {
-            if (deltaY > 0) {
-               this.params.scaleY = this.params.scaleY + 0.02;
-            } else {
-               this.params.scaleY = this.params.scaleY - 0.02;
-            }
-            this.oldMousePosY = this.mouse.pos.y;
-         }
-
-
-         // перемещение поля графика вслед за курсором
-
-         // if (this.mouse.isPressed == true &&    
-         //    this.mouse.pos.x > this.params.paddingLeft &&
-         //    this.mouse.pos.x < this.WIDTH_GRAPH_FILD) {      
-         if (this.mouse.isPressed == true && this.mouse.event.target.id == 'canvas-chart') {
-
-            if (deltaX < 0) {
-               this.coordinates.xOffset = this.coordinates.xOffset - 5;
-               this.oldMousePosX = this.mouse.pos.x;
-            } else if (deltaX > 0) {
-               this.coordinates.xOffset = this.coordinates.xOffset + 5;
-               this.oldMousePosX = this.mouse.pos.x;
-            }
-            if (deltaY < 0) {
-               this.coordinates.yOffset = this.coordinates.yOffset - 5;
+         if (this.mouse.event.target.id == 'Y_axis') {
+            if (this.mouse.isPressed == true) {    // изменение масштаба по оси Y
+               if (deltaY > 0) {
+                  this.params.scaleY = this.params.scaleY + 0.01;
+               } else {
+                  this.params.scaleY = this.params.scaleY - 0.01;
+               }
                this.oldMousePosY = this.mouse.pos.y;
-            } else if (deltaY > 0) {
-               this.coordinates.yOffset = this.coordinates.yOffset + 5;
-               this.oldMousePosY = this.mouse.pos.y;
             }
 
          }
+
       }
 
 

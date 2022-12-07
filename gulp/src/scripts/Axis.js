@@ -15,6 +15,7 @@ export class X_axis {
       this.params = {
          idMainConteiner: chart.params.idMainConteiner,
          idCanvas: "X_axis",
+         DPI: 2,   // показывает восколько раз внутренний размер canvas больше размера заданного в CSS
          heightCanvas: chart.params.hightXaxis,
          widthCanvas: chart.params.widthMainConteiner,
          background: chart.params.backgroundXaxis,
@@ -113,6 +114,7 @@ export class Y_axis {
       this.params = {
          idMainConteiner: chart.params.idMainConteiner,
          idCanvas: "Y_axis",
+         DPI: 2,   // показывает восколько раз внутренний размер canvas больше размера заданного в CSS
          heightCanvas: chart.params.heightMainConteiner,
          widthCanvas: chart.params.widthYaxis,
          background: chart.params.backgroundYaxis,
@@ -120,6 +122,7 @@ export class Y_axis {
          colorTextYaxis: chart.params.colorTextYaxis,
          widthCoordinatsLineY: chart.params.widthCoordinatsLineY,
          hightXaxis: chart.params.hightXaxis,
+         cursor: 'pointer',
       }
 
       this.layer = new Layer(this.params);
@@ -127,14 +130,12 @@ export class Y_axis {
                                           bottom: 0px;
                                           right:0px;
                                           z-index: 10;
-                                          cursor: pointer;
+                                          cursor: ${this.params.cursor};
                                           background-color: ${this.params.background};
                                           height:${this.params.heightCanvas}px;
                                           width:${this.params.widthCanvas}px;
                                           /*border: 0.5px solid #38478D;*/
                                           `;
-
-
 
    }
 

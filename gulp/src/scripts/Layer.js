@@ -1,8 +1,9 @@
 export class Layer {
 
    constructor(params) {
-      this.HEIGHT_DPI = params.heightCanvas * 2;      // для плавности у величиваю количество точек холста в двое
-      this.WIDTH_DPI = params.widthCanvas * 2;
+
+      this.HEIGHT_DPI = params.heightCanvas * params.DPI;      // для плавности у величиваю количество точек холста в двое
+      this.WIDTH_DPI = params.widthCanvas * params.DPI;
       const container = document.getElementById(params.idMainConteiner);
 
       this.canvas = document.createElement("canvas");
