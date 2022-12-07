@@ -200,15 +200,6 @@ export class Chart {
       // this.mainField();    // для тестов
       this.CoordinateGrid();
 
-      // if (this.mouse.pos.x > this.params.paddingLeft
-      //    && this.mouse.pos.x < this.WIDTH_GRAPH_FILD
-      //    && this.mouse.pos.y > this.params.paddingTop
-      //    && this.mouse.pos.y < this.HEIGHT_GRAPH_FILD) {
-      //    this.horizontalPointer();
-      //    this.Yaxis.horizontalPointerText();
-      //    this.circul();
-      // }
-
       this.ctx.beginPath();
       this.ctx.lineWidth = 2;
       this.ctx.strokeStyle = this.params.colorChartLine;
