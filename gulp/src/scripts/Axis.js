@@ -141,6 +141,8 @@ export class Y_axis {
 
    drawAxis(y, i) {
 
+
+
       // нулевая линия
       this.layer.context.beginPath();
       this.layer.context.lineWidth = this.params.widthCoordinatsLineY * 6;
@@ -149,6 +151,8 @@ export class Y_axis {
       this.layer.context.moveTo(0, 0);
       this.layer.context.lineTo(0, (this.params.heightCanvas - this.params.hightXaxis) * 2);
       this.layer.context.stroke();
+
+      this.pointer();
 
       // декоративные  засечки
       this.layer.context.beginPath();
@@ -160,11 +164,23 @@ export class Y_axis {
       this.layer.context.lineTo(20, y - i);
       this.layer.context.strokeText(i * 100, 35, y - i);
       this.layer.context.stroke();
+
    }
+
+   pointer() {
+      this.layer.context.beginPath();
+      this.layer.context.lineWidth = this.params.widthCoordinatsLineY * 2;
+      this.layer.context.strokeStyle = "red";
+
+      this.layer.context.rect(10, 20, 90, 30);
+
+
+      this.layer.context.stroke();
+   }
+
 
    horizontalPointerText() {
       this.layer.context.font = '25px Arial';
-
       this.layer.context.fillText(
          Math.ceil((this.chart.coordinates.yNull - this.chart.mouse.pos.y - this.chart.params.paddingTop - this.chart.coordinates.yOffset) / this.chart.params.scaleY * 100),
          this.chart.WIDTH_DPI - this.chart.params.widthYaxis / 1.1,
