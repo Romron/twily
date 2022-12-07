@@ -152,8 +152,6 @@ export class Y_axis {
       this.layer.context.lineTo(0, (this.params.heightCanvas - this.params.hightXaxis) * 2);
       this.layer.context.stroke();
 
-      this.pointer();
-
       // декоративные  засечки
       this.layer.context.beginPath();
       this.layer.context.lineWidth = this.params.widthCoordinatsLineY;

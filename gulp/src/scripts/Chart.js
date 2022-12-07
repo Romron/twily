@@ -124,6 +124,10 @@ export class Chart {
 
       if (Object.keys(this.mouse.event).length != 0) {
 
+         this.horizontalPointer();
+         this.Yaxis.pointer();
+         this.circul();
+
          if (this.mouse.event.target.id == 'canvas-chart') {
             if (this.mouse.event.type === 'wheel') {  // изменение масштаба по оси X
                this.mouse.event.preventDefault();     // запрещает перемотку всей страницы
@@ -196,14 +200,14 @@ export class Chart {
       // this.mainField();    // для тестов
       this.CoordinateGrid();
 
-      if (this.mouse.pos.x > this.params.paddingLeft
-         && this.mouse.pos.x < this.WIDTH_GRAPH_FILD
-         && this.mouse.pos.y > this.params.paddingTop
-         && this.mouse.pos.y < this.HEIGHT_GRAPH_FILD) {
-         this.horizontalPointer();
-         this.Yaxis.horizontalPointerText();
-         this.circul();
-      }
+      // if (this.mouse.pos.x > this.params.paddingLeft
+      //    && this.mouse.pos.x < this.WIDTH_GRAPH_FILD
+      //    && this.mouse.pos.y > this.params.paddingTop
+      //    && this.mouse.pos.y < this.HEIGHT_GRAPH_FILD) {
+      //    this.horizontalPointer();
+      //    this.Yaxis.horizontalPointerText();
+      //    this.circul();
+      // }
 
       this.ctx.beginPath();
       this.ctx.lineWidth = 2;
