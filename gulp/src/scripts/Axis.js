@@ -165,12 +165,14 @@ export class Y_axis {
 
    }
 
-   pointer() {
+   pointer(mousePos) {
       this.layer.context.beginPath();
       this.layer.context.lineWidth = this.params.widthCoordinatsLineY * 2;
       this.layer.context.strokeStyle = "red";
 
-      this.layer.context.rect(10, 20, 90, 30);
+
+      console.log("mousePos = ", mousePos);
+      this.layer.context.rect(mousePos.X, mousePos.y, 90, 30);
 
 
       this.layer.context.stroke();

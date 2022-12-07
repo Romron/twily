@@ -125,7 +125,7 @@ export class Chart {
       if (Object.keys(this.mouse.event).length != 0) {
 
          this.horizontalPointer();
-         this.Yaxis.pointer();
+         this.Yaxis.pointer(this.mouse.pos);
          this.circul();
 
          if (this.mouse.event.target.id == 'canvas-chart') {
