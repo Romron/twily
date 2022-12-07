@@ -128,9 +128,9 @@ export class Chart {
             if (this.mouse.event.type === 'wheel') {  // изменение масштаба по оси X
                this.mouse.event.preventDefault();     // запрещает перемотку всей страницы
                if (this.mouse.wheel.wheelY > 0) {
-                  this.params.scaleX = this.params.scaleX + 0.01;
+                  this.params.scaleX = this.params.scaleX + 0.02;
                } else if (this.mouse.wheel.wheelY < 0) {
-                  this.params.scaleX = this.params.scaleX - 0.01;
+                  this.params.scaleX = this.params.scaleX - 0.02;
                } else {
                   console.log("this.mouse.wheel.wheelY = ", this.mouse.wheel.wheelY);  // для тестов
                }
