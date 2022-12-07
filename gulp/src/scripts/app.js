@@ -42,11 +42,11 @@ class App {
 
    constructor() {
 
-      this._mainConteiner();
+      this.mainConteiner = this._mainConteiner();
       this.layer = new Layer(this.params);
-      this.chart = new Chart(this.layer, this.params);
       this.proxyLoop = new Loop(this.update.bind(this), this.display.bind(this));
-      this.mc = new MouseControls(this.layer, this.proxyLoop, this.params);
+      this.chart = new Chart(this.layer, this.proxyLoop, this.params);
+      this.mc = new MouseControls(this.mainConteiner, this.proxyLoop);
 
       dP.GetData().then((data) => {
          this.chart.data = dP.PreparationData(data);
@@ -72,7 +72,6 @@ class App {
       this.chart.coordinateseCalculation(0, 0);
       this.chart.graph();
 
-
    }
 
    _mainConteiner() {
@@ -97,7 +96,7 @@ class App {
                                        border: 1px solid #9ea8a0;
                                    `;
 
-
+      return mainConteiner;
    }
 
 }

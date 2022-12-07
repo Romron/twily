@@ -1,9 +1,21 @@
 export class MouseControls {
-   constructor(conteiner, proxy = {}, params) {
 
+   /**
+    * этот класс должен быть универсальным 
+    *    т.е. должен подключаться к любому(!!) контейнеру
+    * отслеживает манипуляции мыши
+    * формирует управляющий сигнал
+    * 
+    * принимает: 
+    *    контейнер - блок для отслеживания
+    *    proxy - для запуска ф-ции обновления
+    * 
+    */
 
-      // this.conteiner = conteiner.canvas;
-      this.conteiner = document.getElementById(params.idMainConteiner);
+   constructor(conteiner, proxy) {
+
+      this.conteiner = conteiner;
+      // this.conteiner = document.getElementById(params.idMainConteiner);
 
 
 
@@ -11,13 +23,14 @@ export class MouseControls {
       this.left = left;
       this.top = top;
       this.proxy = proxy;
-      this.params = params;
+      // this.params = params;
 
       this.isPressed = false;
       this.isDown = false;
       this.isUp = false;
       this.pos = { x: -10, y: -10 };         // прячу курсор до начала работы приложения
-      this.wheel = 0;
+      this.wheel = { wheelX: 0, wheelY: 0 };
+      this.event = {};
 
       // this.target
 
@@ -36,25 +49,23 @@ export class MouseControls {
    cangeState(e) {
 
       this.event = e;
-      // console.log("this.event.target.id = ", this.event.target.id);
 
-      this.wheel = 0;      // для того что бы при любом другом событии мыши, кроме wheel, не имитировалась прокрутка
+      // this.wheel = 0;      // для того что бы при любом другом событии мыши, кроме wheel, не имитировалась прокрутка
+
+
 
       if (e.type === 'mousemove') {
+         // возвращает координаты мыши внутри контейнера
          this.pos = {
-            x: (e.clientX - this.left) * 2 - this.params.paddingRight,      // преобразование в WIDTH_DPI
-            y: (e.clientY - this.top) * 2 - this.params.paddingTop,       // преобразование в HEIGHT_DPI
+            x: (e.clientX - this.left),
+            y: (e.clientY - this.top)
          }
          this.proxy.mouse = this.pos;
-      } else if (e.type === 'wheel') {
-         e.preventDefault();     // запрещает перемотку всей страницы
-         let q = e.deltaY + e.deltaX;
-         if (q > 0) {
-            this.wheel = 0.1;
-         } else if (q < 0) {
-            this.wheel = -0.1;
-         } else {
-            this.wheel = 0;
+      } else if (e.type === 'wheel') {  // изменение масштаба по оси X
+
+         this.wheel = {
+            wheelX: e.deltaX,
+            wheelY: e.deltaY,
          }
          this.proxy.mouse = this.wheel;
 

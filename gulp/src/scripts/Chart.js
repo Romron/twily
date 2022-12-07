@@ -65,7 +65,8 @@ export class Chart {
    data = {};
    mouse = {
       pos: {},
-      wheel: {}
+      wheel: {},
+      event: {},
    };
    coordinates = {
       xOffset: 0,
@@ -73,12 +74,14 @@ export class Chart {
       xNull: 0,
       yNull: 0,
    }
+   // proxy = {};
 
-   constructor(canvas, params) {
+   constructor(canvas, proxy, params) {
 
       this.canvas = canvas;
       this.ctx = canvas.context;
       this.params = params;
+      this.proxy = proxy;
 
       this.heightCanvas = this.params.heightMainConteiner - this.params.hightXaxis;
       this.widthCanvas = this.params.widthMainConteiner - this.params.widthYaxis;
@@ -116,53 +119,79 @@ export class Chart {
       this.coordinates.xNull = this.WIDTH_DPI - this.params.paddingRight;
       this.coordinates.yNull = this.HEIGHT_DPI - this.params.paddingBottom;
 
-      this.params.scaleX = this.params.scaleX + parseFloat(this.mouse.wheel.toFixed(3));
 
       let deltaX = this.oldMousePosX - this.mouse.pos.x;
       let deltaY = this.oldMousePosY - this.mouse.pos.y;
 
+
       // изменение масштаба по оси X
-      if (this.mouse.event.target.id == 'canvas-chart') {
 
-         if (this.params.scaleX < 0.1) {
-            this.params.scaleX = 0.1;
-            this.mouse.wheel = 0.1;
+      if (Object.keys(this.mouse.event).length != 0) {
+
+         if (this.mouse.event.target.id == 'canvas-chart') {
+
+            console.log("this.mouse.event.type = ", this.mouse.event.type);
+            console.log("this.mouse = ", this.mouse);
+
+
+            if (this.mouse.event.type === 'wheel') {
+               this.mouse.event.preventDefault();     // запрещает перемотку всей страницы
+
+               console.log("this.mouse = ", this.mouse);
+
+               if (this.mouse.wheel.wheelY > 0) {
+                  this.params.scaleX = this.params.scaleX + parseFloat(this.mouse.wheel.wheelY.toFixed(3));
+                  // this.wheel = 0.1;
+                  console.log("this.mouse.wheel.wheelY = ", this.mouse.wheel.wheelY);
+               } else if (this.mouse.wheel.wheelX < 0) {
+                  // this.wheel = -0.1;
+                  console.log("this.mouse.wheel.wheelY = ", this.mouse.wheel.wheelY);
+               } else {
+                  // this.wheel = 0;
+               }
+               console.log("this.mouse.wheel.wheelY = ", this.mouse.wheel.wheelY);
+               // console.log("e.deltaX = ", e.deltaX);
+               // console.log("q =  ", q);
+
+
+            }
+
          }
-      }
 
-      // изменение масштаба по оси Y
-      if (this.mouse.isPressed == true && this.mouse.event.target.id == 'Y_axis') {
-         if (deltaY > 0) {
-            this.params.scaleY = this.params.scaleY + 0.02;
-         } else {
-            this.params.scaleY = this.params.scaleY - 0.02;
-         }
-         this.oldMousePosY = this.mouse.pos.y;
-      }
-
-
-      // перемещение поля графика вслед за курсором
-
-      // if (this.mouse.isPressed == true &&    
-      //    this.mouse.pos.x > this.params.paddingLeft &&
-      //    this.mouse.pos.x < this.WIDTH_GRAPH_FILD) {      
-      if (this.mouse.isPressed == true && this.mouse.event.target.id == 'canvas-chart') {
-
-         if (deltaX < 0) {
-            this.coordinates.xOffset = this.coordinates.xOffset - 5;
-            this.oldMousePosX = this.mouse.pos.x;
-         } else if (deltaX > 0) {
-            this.coordinates.xOffset = this.coordinates.xOffset + 5;
-            this.oldMousePosX = this.mouse.pos.x;
-         }
-         if (deltaY < 0) {
-            this.coordinates.yOffset = this.coordinates.yOffset - 5;
+         // изменение масштаба по оси Y
+         if (this.mouse.isPressed == true && this.mouse.event.target.id == 'Y_axis') {
+            if (deltaY > 0) {
+               this.params.scaleY = this.params.scaleY + 0.02;
+            } else {
+               this.params.scaleY = this.params.scaleY - 0.02;
+            }
             this.oldMousePosY = this.mouse.pos.y;
-         } else if (deltaY > 0) {
-            this.coordinates.yOffset = this.coordinates.yOffset + 5;
-            this.oldMousePosY = this.mouse.pos.y;
          }
 
+
+         // перемещение поля графика вслед за курсором
+
+         // if (this.mouse.isPressed == true &&    
+         //    this.mouse.pos.x > this.params.paddingLeft &&
+         //    this.mouse.pos.x < this.WIDTH_GRAPH_FILD) {      
+         if (this.mouse.isPressed == true && this.mouse.event.target.id == 'canvas-chart') {
+
+            if (deltaX < 0) {
+               this.coordinates.xOffset = this.coordinates.xOffset - 5;
+               this.oldMousePosX = this.mouse.pos.x;
+            } else if (deltaX > 0) {
+               this.coordinates.xOffset = this.coordinates.xOffset + 5;
+               this.oldMousePosX = this.mouse.pos.x;
+            }
+            if (deltaY < 0) {
+               this.coordinates.yOffset = this.coordinates.yOffset - 5;
+               this.oldMousePosY = this.mouse.pos.y;
+            } else if (deltaY > 0) {
+               this.coordinates.yOffset = this.coordinates.yOffset + 5;
+               this.oldMousePosY = this.mouse.pos.y;
+            }
+
+         }
       }
 
 
