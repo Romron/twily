@@ -36,8 +36,6 @@ export class X_axis {
                                           /*border: 1px solid #38478D;*/
                                        `;
 
-      console.log("this.chart = ", this.chart);
-
 
    }
 
@@ -184,13 +182,10 @@ export class Y_axis {
    PointerText(y) {
       this.layer.context.font = '25px Arial';
 
-      console.log("this.chart.mouse.pos.y = ", this.chart.mouse.pos.y);
 
       // let text = this.chart.coordinates.yNull - y.toFixed(3) / 100 * this.chart.params.scaleY - this.chart.coordinates.yOffset;
       // let text = this.chart.xLine - y.toFixed(3);
       let text = this.Y - y.toFixed(3) * 100;
-
-      console.log("text = ", text);
 
       this.layer.context.fillText(
          text,

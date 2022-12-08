@@ -118,11 +118,15 @@ export class Chart {
 
    coordinateseCalculation() {
 
-      this.coordinates.xNull = this.WIDTH_DPI - this.params.paddingRight;
-      this.coordinates.yNull = this.HEIGHT_DPI - this.params.paddingBottom;
+      this.coordinates.xNull = this.WIDTH_DPI - this.params.paddingRight - this.coordinates.xOffset;
+      this.coordinates.yNull = this.HEIGHT_DPI - this.params.paddingBottom - this.coordinates.yOffset;
 
-      this.coordinates.y = this.coordinates.yNull - this.coordinates.yOffset;
-      this.coordinates.x = this.coordinates.xNull - this.coordinates.xOffset;
+      console.log("this.coordinates.xNull = ", this.coordinates.xNull);
+      console.log("this.coordinates.yNull = ", this.coordinates.yNull);
+
+
+      // this.coordinates.x = this.coordinates.xNull - this.coordinates.xOffset;
+      // this.coordinates.y = this.coordinates.yNull - this.coordinates.yOffset;
 
       let deltaX = this.oldMousePosX - this.mouse.pos.x;
       let deltaY = this.oldMousePosY - this.mouse.pos.y;
@@ -277,13 +281,11 @@ export class Chart {
       this.ctx.lineWidth = this.params.widthCoordinatsLineY;
       this.ctx.strokeStyle = this.params.colorCoordinatsLineY;
       this.ctx.font = '20px Arial';
-      // let x = this.coordinates.xNull;
+
       let y;
       for (let i = 0; i < this.HEIGHT_DPI + Math.abs(this.coordinates.yOffset); i = i + 10) {
 
-         // let y = this.coordinates.yNull - this.coordinates.yOffset * this.params.scaleY;
-         y = this.coordinates.y + i * this.params.scaleY;
-
+         y = this.coordinates.y - i * this.params.scaleY;
 
          if (y < this.coordinates.yNull && y > this.params.paddingTop + 10) {
             this.ctx.moveTo(this.coordinates.xNull, y);
@@ -294,8 +296,8 @@ export class Chart {
       }
       if (this.coordinates.yOffset > 10) {
          for (let i = 0; i < this.coordinates.yOffset; i = i + 10) {
-            this.ctx.moveTo(this.coordinates.xNull, y);
-            this.ctx.lineTo(this.params.paddingLeft, y);
+            this.ctx.moveTo(this.coordinates.xNull, y + i);
+            this.ctx.lineTo(this.params.paddingLeft, y + i);
 
          }
       }
