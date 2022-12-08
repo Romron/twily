@@ -118,15 +118,11 @@ export class Chart {
 
    coordinateseCalculation() {
 
-      this.coordinates.xNull = this.WIDTH_DPI - this.params.paddingRight - this.coordinates.xOffset;
-      this.coordinates.yNull = this.HEIGHT_DPI - this.params.paddingBottom - this.coordinates.yOffset;
+      this.coordinates.xNull = this.WIDTH_DPI - this.params.paddingRight;
+      this.coordinates.yNull = this.HEIGHT_DPI - this.params.paddingBottom;
 
-      console.log("this.coordinates.xNull = ", this.coordinates.xNull);
-      console.log("this.coordinates.yNull = ", this.coordinates.yNull);
-
-
-      // this.coordinates.x = this.coordinates.xNull - this.coordinates.xOffset;
-      // this.coordinates.y = this.coordinates.yNull - this.coordinates.yOffset;
+      this.coordinates.x = this.coordinates.xNull - this.coordinates.xOffset;
+      this.coordinates.y = this.coordinates.yNull - this.coordinates.yOffset;
 
       let deltaX = this.oldMousePosX - this.mouse.pos.x;
       let deltaY = this.oldMousePosY - this.mouse.pos.y;
