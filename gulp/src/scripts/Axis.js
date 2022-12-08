@@ -162,7 +162,7 @@ export class Y_axis {
 
       this.layer.context.moveTo(0, y - i);
       this.layer.context.lineTo(20, y - i);
-      this.layer.context.strokeText(i * 100, 35, y - i);
+      this.layer.context.strokeText(i * 100 * 2, 35, y - i);
       this.layer.context.stroke();
 
    }
@@ -184,7 +184,7 @@ export class Y_axis {
 
       // let text = this.chart.coordinates.yNull - y.toFixed(3) / 100 * this.chart.params.scaleY - this.chart.coordinates.yOffset;
       // let text = this.chart.xLine - y.toFixed(3);
-      let text = (this.Y - y.toFixed(3)) * 100;
+      let text = this.Y - y.toFixed(3) * 100;
 
       console.log("text = ", text);
 

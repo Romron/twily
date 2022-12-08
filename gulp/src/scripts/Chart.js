@@ -193,8 +193,6 @@ export class Chart {
          }
 
       }
-
-
    }
 
    graph() {
@@ -209,7 +207,9 @@ export class Chart {
 
       Object.keys(this.data).forEach((key, n) => {
          x = this.coordinates.xNull - this.coordinates.xOffset - n * this.params.scaleX;
-         y = this.coordinates.yNull / 1.15 - this.coordinates.yOffset - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY;
+         // y = this.coordinates.yNull / 1.15 - this.coordinates.yOffset - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY;
+         y = (this.coordinates.yNull - this.coordinates.yOffset - this.data[key]['1b. open (USD)'] / 100) * this.params.scaleY;
+         // y = (this.coordinates.yNull - this.coordinates.yOffset - this.params.scaleY) - i;
          // y = this.coordinates.yNull - this.coordinates.yOffset - i * this.params.scaleY;
          //thixLine = this.coordinates.xNull - this.coordinates.xOffset - n * this.params.scaleX;
          if (x < this.coordinates.xNull
@@ -282,12 +282,12 @@ export class Chart {
       let y;
       for (let i = 0; i < this.HEIGHT_DPI + Math.abs(this.coordinates.yOffset); i = i + 10) {
 
-         y = this.coordinates.yNull - this.coordinates.yOffset - this.params.scaleY * i;
+         y = (this.coordinates.yNull - this.coordinates.yOffset - i) * this.params.scaleY;
 
          if (y < this.coordinates.yNull && y > this.params.paddingTop + 10) {
             this.ctx.moveTo(this.coordinates.xNull, y);
             this.ctx.lineTo(this.params.paddingLeft, y);
-            this.ctx.strokeText(i * 100, this.coordinates.xNull + 25, y);
+            // this.ctx.strokeText('***', this.coordinates.xNull + 25, y);
 
             this.Yaxis.drawAxis(y, i);
          }
