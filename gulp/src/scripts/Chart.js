@@ -73,8 +73,8 @@ export class Chart {
       yOffset: 0,
       xNull: 0,      // вычесленный нуль
       yNull: 0,
-      // x: , // 
-      // y: ,
+      x: 0,    // то же по ходу ноль!! найти способ объединить все формулы в xNull, yNull
+      y: 0,
    }
    // proxy = {};
 
@@ -120,6 +120,9 @@ export class Chart {
 
       this.coordinates.xNull = this.WIDTH_DPI - this.params.paddingRight;
       this.coordinates.yNull = this.HEIGHT_DPI - this.params.paddingBottom;
+
+      this.coordinates.y = this.coordinates.yNull - this.coordinates.yOffset;
+      this.coordinates.x = this.coordinates.xNull - this.coordinates.xOffset;
 
       let deltaX = this.oldMousePosX - this.mouse.pos.x;
       let deltaY = this.oldMousePosY - this.mouse.pos.y;
@@ -206,12 +209,8 @@ export class Chart {
       let x, y;
 
       Object.keys(this.data).forEach((key, n) => {
-         x = this.coordinates.xNull - this.coordinates.xOffset - n * this.params.scaleX;
-         // y = this.coordinates.yNull / 1.15 - this.coordinates.yOffset - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY;
-         y = (this.coordinates.yNull - this.coordinates.yOffset - this.data[key]['1b. open (USD)'] / 100) * this.params.scaleY;
-         // y = (this.coordinates.yNull - this.coordinates.yOffset - this.params.scaleY) - i;
-         // y = this.coordinates.yNull - this.coordinates.yOffset - i * this.params.scaleY;
-         //thixLine = this.coordinates.xNull - this.coordinates.xOffset - n * this.params.scaleX;
+         x = this.coordinates.x - n * this.params.scaleX;
+         y = this.coordinates.y - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY;
          if (x < this.coordinates.xNull
             && x > this.params.paddingLeft) {
             if (n == 0) {
@@ -246,6 +245,7 @@ export class Chart {
       this.widthToRight = this.WIDTH_GRAPH_FILD - this.coordinates.xOffset;     // расстояние от нуля графика до края
       this.widthToLeft = this.coordinates.xOffset;     // расстояние от нуля графика до края
       this.xLine = 0;
+
       // координатная сетка по оси X
       let nLine = 0;
       let arrDays = Object.keys(this.data);
@@ -255,7 +255,7 @@ export class Chart {
                this.distanceBetweenLines = this.xLineOld - this.xLine;
                nLine++;
                this.xLineOld = this.xLine;
-               this.xLine = Math.round(this.coordinates.xNull - this.coordinates.xOffset - n * this.params.scaleX);
+               this.xLine = Math.round(this.coordinates.x - n * this.params.scaleX);
                this.distanceBetweenLines = this.xLineOld - this.xLine;
                this._drawLines(nLine);
                if (this.distanceBetweenLines < 150 && nLine % 2 != 0) {
@@ -278,24 +278,24 @@ export class Chart {
       this.ctx.strokeStyle = this.params.colorCoordinatsLineY;
       this.ctx.font = '20px Arial';
       // let x = this.coordinates.xNull;
-      // let y = this.coordinates.yNull - this.coordinates.yOffset * this.params.scaleY;
       let y;
       for (let i = 0; i < this.HEIGHT_DPI + Math.abs(this.coordinates.yOffset); i = i + 10) {
 
-         y = (this.coordinates.yNull - this.coordinates.yOffset - i) * this.params.scaleY;
+         // let y = this.coordinates.yNull - this.coordinates.yOffset * this.params.scaleY;
+         y = this.coordinates.y + i * this.params.scaleY;
+
 
          if (y < this.coordinates.yNull && y > this.params.paddingTop + 10) {
             this.ctx.moveTo(this.coordinates.xNull, y);
             this.ctx.lineTo(this.params.paddingLeft, y);
-            // this.ctx.strokeText('***', this.coordinates.xNull + 25, y);
 
             this.Yaxis.drawAxis(y, i);
          }
       }
       if (this.coordinates.yOffset > 10) {
          for (let i = 0; i < this.coordinates.yOffset; i = i + 10) {
-            this.ctx.moveTo(this.coordinates.xNull, y + i);
-            this.ctx.lineTo(this.params.paddingLeft, y + i);
+            this.ctx.moveTo(this.coordinates.xNull, y);
+            this.ctx.lineTo(this.params.paddingLeft, y);
 
          }
       }

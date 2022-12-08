@@ -36,7 +36,11 @@ export class X_axis {
                                           /*border: 1px solid #38478D;*/
                                        `;
 
+      console.log("this.chart = ", this.chart);
+
+
    }
+
    drawAxis(key, nLine, xLine, distanceBetweenLines) {
 
       // _drawLines(nLine)
@@ -143,7 +147,7 @@ export class Y_axis {
 
    drawAxis(y, i) {
 
-      this.Y = y; // для использования в PointerText() 
+      this.Y = y; // для использования в PointerText()
 
       // нулевая линия
       this.layer.context.beginPath();
