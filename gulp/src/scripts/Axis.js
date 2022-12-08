@@ -143,7 +143,7 @@ export class Y_axis {
 
    drawAxis(y, i) {
 
-
+      this.Y = y; // для использования в PointerText() 
 
       // нулевая линия
       this.layer.context.beginPath();
@@ -167,34 +167,39 @@ export class Y_axis {
 
    }
 
-   pointer(mousePos) {
+   pointer() {
       this.layer.context.beginPath();
       this.layer.context.lineWidth = this.params.widthCoordinatsLineY * 2;
       this.layer.context.strokeStyle = "red";
 
-      this.layer.context.rect(10, mousePos.y - this.params.pointerFrimeHight / 2, this.params.pointerFrimeWidth, this.params.pointerFrimeHight);
-
-
+      this.layer.context.rect(10, this.chart.mouse.pos.y - this.params.pointerFrimeHight / 2, this.params.pointerFrimeWidth, this.params.pointerFrimeHight);
+      this.PointerText(this.chart.mouse.pos.y);
       this.layer.context.stroke();
    }
 
-
-   horizontalPointerText() {
+   PointerText(y) {
       this.layer.context.font = '25px Arial';
+
+      console.log("this.chart.mouse.pos.y = ", this.chart.mouse.pos.y);
+
+      // let text = this.chart.coordinates.yNull - y.toFixed(3) / 100 * this.chart.params.scaleY - this.chart.coordinates.yOffset;
+      // let text = this.chart.xLine - y.toFixed(3);
+      let text = (this.Y - y.toFixed(3)) * 100;
+
+      console.log("text = ", text);
+
       this.layer.context.fillText(
-         Math.ceil((this.chart.coordinates.yNull - this.chart.mouse.pos.y - this.chart.params.paddingTop - this.chart.coordinates.yOffset) / this.chart.params.scaleY * 100),
-         this.chart.WIDTH_DPI - this.chart.params.widthYaxis / 1.1,
-         this.chart.mouse.pos.y
+         text,
+         10,
+         y + this.params.pointerFrimeHight / 2 - 6
       );
-      this.layer.context.fillText(
-         Math.ceil(this.chart.coordinates.xNull - this.chart.mouse.pos.x - this.chart.params.paddingRight),
-         this.chart.mouse.pos.x,
-         this.chart.HEIGHT_DPI - this.chart.params.hightXaxis / 2);
+
+      // 
+      // this.layer.context.fillText(
+      //    Math.ceil(this.chart.coordinates.xNull - this.chart.mouse.pos.x - this.chart.params.paddingRight),
+      //    this.chart.mouse.pos.x,
+      //    this.chart.HEIGHT_DPI - this.chart.params.hightXaxis / 2);
    }
-
-
-
-
 
    clearAxis() {
       this.layer.context.clearRect(0, 0, this.params.widthCanvas * 2, this.params.heightCanvas * 2);

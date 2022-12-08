@@ -69,10 +69,12 @@ export class Chart {
       event: {},
    };
    coordinates = {
-      xOffset: 0,
+      xOffset: 0,    // смещение графика захватом мышки
       yOffset: 0,
-      xNull: 0,
+      xNull: 0,      // вычесленный нуль
       yNull: 0,
+      // x: , // 
+      // y: ,
    }
    // proxy = {};
 
@@ -125,7 +127,7 @@ export class Chart {
       if (Object.keys(this.mouse.event).length != 0) {
 
          this.horizontalPointer();
-         this.Yaxis.pointer(this.mouse.pos);
+         this.Yaxis.pointer();
          this.circul();
 
          if (this.mouse.event.target.id == 'canvas-chart') {
@@ -204,9 +206,12 @@ export class Chart {
       this.ctx.lineWidth = 2;
       this.ctx.strokeStyle = this.params.colorChartLine;
       let x, y;
+
       Object.keys(this.data).forEach((key, n) => {
-         x = this.coordinates.xNull - n * this.params.scaleX - this.coordinates.xOffset;
-         y = this.coordinates.yNull - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY - this.coordinates.yOffset;
+         x = this.coordinates.xNull - this.coordinates.xOffset - n * this.params.scaleX;
+         y = this.coordinates.yNull / 1.15 - this.coordinates.yOffset - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY;
+         // y = this.coordinates.yNull - this.coordinates.yOffset - i * this.params.scaleY;
+         //thixLine = this.coordinates.xNull - this.coordinates.xOffset - n * this.params.scaleX;
          if (x < this.coordinates.xNull
             && x > this.params.paddingLeft) {
             if (n == 0) {
@@ -241,7 +246,7 @@ export class Chart {
       this.widthToRight = this.WIDTH_GRAPH_FILD - this.coordinates.xOffset;     // расстояние от нуля графика до края
       this.widthToLeft = this.coordinates.xOffset;     // расстояние от нуля графика до края
       this.xLine = 0;
-
+      // координатная сетка по оси X
       let nLine = 0;
       let arrDays = Object.keys(this.data);
       if (arrDays.length != 0) {
@@ -250,7 +255,7 @@ export class Chart {
                this.distanceBetweenLines = this.xLineOld - this.xLine;
                nLine++;
                this.xLineOld = this.xLine;
-               this.xLine = Math.round(this.coordinates.xNull - n * this.params.scaleX - this.coordinates.xOffset);
+               this.xLine = Math.round(this.coordinates.xNull - this.coordinates.xOffset - n * this.params.scaleX);
                this.distanceBetweenLines = this.xLineOld - this.xLine;
                this._drawLines(nLine);
                if (this.distanceBetweenLines < 150 && nLine % 2 != 0) {
@@ -272,14 +277,17 @@ export class Chart {
       this.ctx.lineWidth = this.params.widthCoordinatsLineY;
       this.ctx.strokeStyle = this.params.colorCoordinatsLineY;
       this.ctx.font = '20px Arial';
-      let x, y;
+      // let x = this.coordinates.xNull;
+      // let y = this.coordinates.yNull - this.coordinates.yOffset * this.params.scaleY;
+      let y;
       for (let i = 0; i < this.HEIGHT_DPI + Math.abs(this.coordinates.yOffset); i = i + 10) {
-         x = this.coordinates.xNull;
-         y = this.coordinates.yNull - this.coordinates.yOffset * this.params.scaleY;
-         if (y - i < this.coordinates.yNull && y - i > this.params.paddingTop + 10) {
-            this.ctx.moveTo(x, y - i);
-            this.ctx.lineTo(this.params.paddingLeft, y - i);
-            this.ctx.strokeText(i * 100, x + 25, y - i);
+
+         y = this.coordinates.yNull - this.coordinates.yOffset - this.params.scaleY * i;
+
+         if (y < this.coordinates.yNull && y > this.params.paddingTop + 10) {
+            this.ctx.moveTo(this.coordinates.xNull, y);
+            this.ctx.lineTo(this.params.paddingLeft, y);
+            this.ctx.strokeText(i * 100, this.coordinates.xNull + 25, y);
 
             this.Yaxis.drawAxis(y, i);
          }
