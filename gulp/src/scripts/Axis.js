@@ -181,24 +181,24 @@ export class Y_axis {
       this.layer.context.lineWidth = this.params.widthCoordinatsLineY * 2;
       this.layer.context.strokeStyle = "red";
 
+      // if (this.chart.coordinates.y > this.chart.mouse.pos.y) {
+
       this.layer.context.rect(10, this.chart.mouse.pos.y - this.params.pointerFrimeHight / 2, this.params.pointerFrimeWidth, this.params.pointerFrimeHight);
       this.PointerText(this.chart.mouse.pos.y);
       this.layer.context.stroke();
+      // }
+
    }
 
    PointerText(mousePosY) {
       this.layer.context.font = '25px Arial';
 
-      // let text = this.chart.coordinates.yNull - y.toFixed(3) / 100 * this.chart.params.scaleY - this.chart.coordinates.yOffset;
-      // let text = this.chart.xLine - y.toFixed(3);
-      let text = this.chart.coordinates.y - mousePosY.toFixed(3);
-      if (text > 0) {
-         this.layer.context.fillText(
-            text,
-            10,
-            mousePosY + this.params.pointerFrimeHight / 2 - 6
-         );
-      }
+      let text = (this.chart.coordinates.y - mousePosY.toFixed(3)) * 100;
+      this.layer.context.fillText(
+         text,
+         10,
+         mousePosY + this.params.pointerFrimeHight / 2 - 6
+      );
 
       // 
       // this.layer.context.fillText(

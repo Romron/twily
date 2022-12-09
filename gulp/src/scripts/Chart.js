@@ -85,11 +85,13 @@ export class Chart {
       this.params = params;
       this.proxy = proxy;
 
-      this.heightCanvas = this.params.heightMainConteiner - this.params.hightXaxis;
       this.widthCanvas = this.params.widthMainConteiner - this.params.widthYaxis;
+      this.heightCanvas = this.params.heightMainConteiner - this.params.hightXaxis;
 
-      this.HEIGHT_DPI = this.heightCanvas * 2; // canvas.HEIGHT_DPI;
       this.WIDTH_DPI = this.widthCanvas * 2; //canvas.WIDTH_DPI;
+      this.HEIGHT_DPI = this.heightCanvas * 2; // canvas.HEIGHT_DPI;
+
+
 
       this.HEIGHT_GRAPH_FILD = this.HEIGHT_DPI - (this.params.paddingTop + this.params.paddingBottom + this.params.hightXaxis);
       this.WIDTH_GRAPH_FILD = this.WIDTH_DPI - (this.params.paddingLeft + this.params.paddingRight + this.params.widthYaxis);
@@ -135,9 +137,22 @@ export class Chart {
       let deltaX = this.oldMousePosX - this.mouse.pos.x;
       let deltaY = this.oldMousePosY - this.mouse.pos.y;
 
-      if (Object.keys(this.mouse.event).length != 0) {
+      console.log("-----"); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+         console.log("this.WIDTH_DPI = ", this.WIDTH_DPI);
+      console.log("this.coordinates.xNull = ", this.coordinates.xNull);
+      console.log("this.params.paddingRight = ", this.params.paddingRight);
+      console.log("this.coordinates.x = ", this.coordinates.x);
+      console.log("this.mouse.pos.x = ", this.mouse.pos.x);
+      // console.log("this.coordinates.yNull = ", this.coordinates.yNull);
+      // console.log("this.HEIGHT_DPI = ", this.HEIGHT_DPI);
+      // console.log("this.coordinates.y = ", this.coordinates.y);
+      // console.log("this.mouse.pos.y = ", this.mouse.pos.y);
 
-         this.horizontalPointer();
+      if (Object.keys(this.mouse.event).length != 0
+         && this.coordinates.y > this.mouse.pos.y
+         && this.coordinates.x > this.mouse.pos.x) {
+
+         this.linePointer();
          this.Yaxis.pointer();
          this.circul();
 
@@ -322,12 +337,12 @@ export class Chart {
    _drawLines(nLine) {
       if (nLine == 2) {
          for (let xLineTR = this.xLine; xLineTR < this.WIDTH_GRAPH_FILD; xLineTR = xLineTR + this.distanceBetweenLines) {
-            this.ctx.moveTo(xLineTR, this.params.paddingTop + 20);
-            this.ctx.lineTo(xLineTR, this.coordinates.yNull + 20);     // 20 -- декоративная риска на оси Х
+            this.ctx.moveTo(xLineTR, this.params.paddingTop);
+            this.ctx.lineTo(xLineTR, this.coordinates.yNull);     // 20 -- декоративная риска на оси Х
          }
       }
-      this.ctx.moveTo(this.xLine, this.params.paddingTop + 20);
-      this.ctx.lineTo(this.xLine, this.coordinates.yNull + 20);    // 20 -- декоративная риска на оси Х
+      this.ctx.moveTo(this.xLine, this.params.paddingTop);
+      this.ctx.lineTo(this.xLine, this.coordinates.yNull);    // 20 -- декоративная риска на оси Х
    }
 
    _writeText(key) {
@@ -344,21 +359,8 @@ export class Chart {
       this.ctx.strokeText(str, this.xLine - 40, this.coordinates.yNull + 40);
    }
 
-   // horizontalPointerText() {
-   //    this.ctx.font = '25px Arial';
 
-   //    this.ctx.fillText(
-   //       Math.ceil((this.coordinates.yNull - this.mouse.pos.y - this.params.paddingTop - this.coordinates.yOffset) / this.params.scaleY * 100),
-   //       this.WIDTH_DPI - this.params.widthYaxis / 1.1,
-   //       this.mouse.pos.y
-   //    );
-   //    this.ctx.fillText(
-   //       Math.ceil(this.coordinates.xNull - this.mouse.pos.x - this.params.paddingRight),
-   //       this.mouse.pos.x,
-   //       this.HEIGHT_DPI - this.params.hightXaxis / 2);
-   // }
-
-   horizontalPointer() {
+   linePointer() {
       this.ctx.beginPath();
       this.ctx.lineWidth = 1;
       this.ctx.strokeStyle = '#3A3A3C';
@@ -370,10 +372,8 @@ export class Chart {
       this.ctx.lineTo(this.mouse.pos.x + this.params.paddingRight, this.coordinates.yNull);
 
       // горизонтальный указатель
-
       this.ctx.moveTo(this.mouse.pos.x + this.params.paddingRight, this.mouse.pos.y + this.params.paddingTop);
       this.ctx.lineTo(this.coordinates.xNull, this.mouse.pos.y + this.params.paddingTop);
-
 
       this.ctx.stroke();
       this.ctx.setLineDash([]);     // сброс штриховки и возврат к сплошным линиям

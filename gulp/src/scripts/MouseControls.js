@@ -50,6 +50,9 @@ export class MouseControls {
             x: (e.clientX - this.left) * this.DPI,
             y: (e.clientY - this.top) * this.DPI,
          }
+
+         console.log("this.pos = ", this.pos);
+
          this.proxy.mouse = this.pos;
       } else if (e.type === 'wheel') {
          this.wheel = {
