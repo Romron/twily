@@ -94,14 +94,22 @@ export class Chart {
       this.HEIGHT_GRAPH_FILD = this.HEIGHT_DPI - (this.params.paddingTop + this.params.paddingBottom + this.params.hightXaxis);
       this.WIDTH_GRAPH_FILD = this.WIDTH_DPI - (this.params.paddingLeft + this.params.paddingRight + this.params.widthYaxis);
 
+      console.log("this.params.hightXaxis = ", this.params.hightXaxis);
+      console.log("this.params.widthYaxis = ", this.params.widthYaxis);
+
+
       canvas.canvas.style.cssText = `position: absolute;
-                                     top:0px;
-                                     left:0px;
+                                     /*top:0px;*/
+                                     /*left:0px;*/
+
+                                     bottom:${this.params.hightXaxis}px;
+                                     right:${this.params.widthYaxis}px;
+
                                      z-index: 5;
                                      background-color: ${this.params.backgroundChart};
                                      height:${this.heightCanvas}px;
                                      width:${this.widthCanvas}px;
-                                     /*border: 1px solid blue;*/
+                                     border: 1px solid blue;
                                      `;
 
       this.canvas.canvas.height = this.HEIGHT_DPI;
@@ -236,6 +244,18 @@ export class Chart {
        *    
        */
 
+
+      this.ctx.beginPath();      // для тестов 
+      this.ctx.lineWidth = 1;
+      this.ctx.strokeStyle = 'red';
+      // this.ctx.moveTo(this.params.widthMainConteiner, this.params.heightMainConteiner);
+      // this.ctx.lineTo(this.params.widthMainConteiner - 500, this.params.heightMainConteiner);
+
+      this.ctx.moveTo(this.coordinates.xNull, this.coordinates.yNull);
+      this.ctx.lineTo(this.coordinates.xNull - 500, this.coordinates.yNull);
+      this.ctx.stroke();
+
+
       // координатная сетка по оси X
       this.ctx.beginPath();
       this.ctx.lineWidth = this.params.widthCoordinatsLineX;
@@ -246,7 +266,6 @@ export class Chart {
       this.widthToLeft = this.coordinates.xOffset;     // расстояние от нуля графика до края
       this.xLine = 0;
 
-      // координатная сетка по оси X
       let nLine = 0;
       let arrDays = Object.keys(this.data);
       if (arrDays.length != 0) {

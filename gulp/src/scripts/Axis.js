@@ -24,16 +24,18 @@ export class X_axis {
          widthYaxis: chart.params.widthYaxis,
       }
 
+
+
       this.layer = new Layer(this.params);
       this.layer.canvas.style.cssText = ` position: absolute;
-                                          bottom: 0;
-                                          left:0;
+                                          bottom: 0px;
+                                          left:0px;
                                           z-index: 10;
                                           cursor: pointer;
                                           background-color: ${this.params.background};
                                           height:${this.params.heightCanvas}px;
                                           width:${this.params.widthCanvas}px;
-                                          /*border: 1px solid #38478D;*/
+                                          /*border: 0.5px solid #38478D;*/
                                        `;
 
 
@@ -43,14 +45,19 @@ export class X_axis {
 
       // _drawLines(nLine)
 
+      // console.log("-----");
+      // console.log("this.chart.coordinates.x = ", this.chart.coordinates.x);
+      // console.log("this.chart.coordinates.xNull = ", this.chart.coordinates.xNull);
+
+
 
       // нулевая линия
       this.layer.context.beginPath();
       this.layer.context.lineWidth = this.params.widthCoordinatsLineX * 6;
       this.layer.context.strokeStyle = this.params.colorCoordinatsLineX;
 
-      this.layer.context.moveTo((this.params.widthCanvas - this.params.widthYaxis) * 2, 0);
-      this.layer.context.lineTo(0, 0);
+      this.layer.context.moveTo(0, 0);
+      this.layer.context.lineTo(this.chart.coordinates.x, 0);
       this.layer.context.stroke();
 
 
@@ -153,7 +160,7 @@ export class Y_axis {
       this.layer.context.strokeStyle = this.params.colorCoordinatsLineY;
 
       this.layer.context.moveTo(0, 0);
-      this.layer.context.lineTo(0, (this.params.heightCanvas - this.params.hightXaxis) * 2);
+      this.layer.context.lineTo(0, this.chart.coordinates.yNull);
       this.layer.context.stroke();
 
       // декоративные  засечки
@@ -179,19 +186,19 @@ export class Y_axis {
       this.layer.context.stroke();
    }
 
-   PointerText(y) {
+   PointerText(mousePosY) {
       this.layer.context.font = '25px Arial';
-
 
       // let text = this.chart.coordinates.yNull - y.toFixed(3) / 100 * this.chart.params.scaleY - this.chart.coordinates.yOffset;
       // let text = this.chart.xLine - y.toFixed(3);
-      let text = this.Y - y.toFixed(3) * 100;
-
-      this.layer.context.fillText(
-         text,
-         10,
-         y + this.params.pointerFrimeHight / 2 - 6
-      );
+      let text = this.chart.coordinates.y - mousePosY.toFixed(3);
+      if (text > 0) {
+         this.layer.context.fillText(
+            text,
+            10,
+            mousePosY + this.params.pointerFrimeHight / 2 - 6
+         );
+      }
 
       // 
       // this.layer.context.fillText(

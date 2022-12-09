@@ -26,9 +26,9 @@ class App {
       scaleX: 2.6,
       scaleY: 1,// 5.5,
       paddingTop: 0,
-      paddingBottom: 10,
+      paddingBottom: 50,      // 50 для тестов
       paddingLeft: 0,
-      paddingRight: 0,
+      paddingRight: 50,    // 50 для тестов
       backgroundChart: '#E0E0E0',
       backgroundXaxis: '#E0E0E0',
       backgroundYaxis: '#E0E0E0',
