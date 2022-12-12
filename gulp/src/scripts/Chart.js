@@ -302,7 +302,6 @@ export class Chart {
       this.ctx.strokeStyle = this.params.colorCoordinatsLineY;
       this.ctx.font = '20px Arial';
 
-      console.log("----------");
       let y;
       for (let i = 0; i < this.HEIGHT_DPI + Math.abs(this.coordinates.yOffset); i = i + 10) {
 
@@ -311,11 +310,6 @@ export class Chart {
          if (y < this.coordinates.yNull && y > this.params.paddingTop + 10) {
             this.ctx.moveTo(this.coordinates.xNull, y);
             this.ctx.lineTo(this.params.paddingLeft, y);
-
-            console.log("y = ", y);
-            console.log("i = ", i);
-            console.log("y - i = ", y - i);
-
             this.Yaxis.drawAxis(y, i);
          }
       }
