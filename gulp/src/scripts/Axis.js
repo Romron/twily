@@ -193,6 +193,9 @@ export class Y_axis {
    PointerText(mousePosY) {
       this.layer.context.font = '25px Arial';
 
+показывает неадекватные значения при изменении масштаба по оси X
+
+
       let text = (this.chart.coordinates.y - mousePosY.toFixed(3)) * 100;
       this.layer.context.fillText(
          text,

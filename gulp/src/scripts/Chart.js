@@ -136,13 +136,17 @@ export class Chart {
       let deltaX = this.oldMousePosX - this.mouse.pos.x;
       let deltaY = this.oldMousePosY - this.mouse.pos.y;
 
-      if (Object.keys(this.mouse.event).length != 0
-         && this.coordinates.y > this.mouse.pos.y
-         && this.mouse.pos.x < this.coordinates.xNull) {
 
-         this.linePointer();
-         this.Yaxis.pointer();
-         this.circul();
+
+      if (Object.keys(this.mouse.event).length != 0) {
+
+         if (this.coordinates.y > this.mouse.pos.y
+            && this.mouse.pos.x < this.coordinates.xNull) {
+            this.linePointer();
+            this.Yaxis.pointer();
+            this.circul();
+
+         }
 
          if (this.mouse.event.target.id == 'canvas-chart') {
             if (this.mouse.event.type === 'wheel') {  // изменение масштаба по оси X
@@ -193,8 +197,8 @@ export class Chart {
                }
             }
          }
-
          if (this.mouse.event.target.id == 'Y_axis') {
+
             if (this.mouse.isPressed == true) {    // изменение масштаба по оси Y
                if (deltaY > 0) {
                   this.params.scaleY = this.params.scaleY + 0.01;
