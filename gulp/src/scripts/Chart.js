@@ -201,9 +201,9 @@ export class Chart {
 
             if (this.mouse.isPressed == true) {    // изменение масштаба по оси Y
                if (deltaY > 0) {
-                  this.params.scaleY = this.params.scaleY + 0.01;
+                  this.params.scaleY = this.params.scaleY + 0.02;
                } else {
-                  this.params.scaleY = this.params.scaleY - 0.01;
+                  this.params.scaleY = this.params.scaleY - 0.02;
                }
                this.oldMousePosY = this.mouse.pos.y;
             }
