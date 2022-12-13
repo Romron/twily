@@ -30,9 +30,9 @@ export class MouseControls {
       this.event = {};
 
       // conteiner.addEventListener('click', e => this.cangeState(e));
-      // conteiner.addEventListener('dblclick', e => this.cangeState(e));
       // conteiner.addEventListener('mouseenter', e => this.cangeState(e));
 
+      conteiner.addEventListener('dblclick', e => this.cangeState(e));
       this.conteiner.addEventListener('mousemove', e => this.cangeState(e));
       this.conteiner.addEventListener('mousedown', e => this.cangeState(e));
       this.conteiner.addEventListener('mouseup', e => this.cangeState(e));
@@ -62,13 +62,23 @@ export class MouseControls {
          this.isPressed = true;
          this.isDown = true;
          this.isUp = false;
+
+         this.proxy.mouse = e.type;
       } else if (e.type === 'mouseup') {
          this.isPressed = false;
          this.isDown = false;
          this.isUp = true;
+
+         this.proxy.mouse = e.type;
+      } else if (e.type === 'dblclick') {
+
+
+
+         this.proxy.mouse = e.type
       } else if (e.type === 'contextmenu') {
          e.preventDefault();
       }
+
 
 
 

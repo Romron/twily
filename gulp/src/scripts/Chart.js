@@ -69,20 +69,24 @@ export class Chart {
       event: {},
    };
    coordinates = {
-      xOffset: 0,    // смещение графика захватом мышки
-      yOffset: 0,
+      xOffset: 86,    // смещение графика захватом мышки
+      yOffset: -269,
       xNull: 0,      // вычесленный нуль
       yNull: 0,
-      x: 0,    // то же по ходу ноль!! найти способ объединить все формулы в xNull, yNull
-      y: 0,
+      x: 2594,
+      y: 1419,
    }
-   // proxy = {};
 
    constructor(canvas, proxy, params) {
 
       this.canvas = canvas;
       this.ctx = canvas.context;
       this.params = params;
+
+      this.coordinatesDefault = Object.assign({}, this.coordinates);    // для востановления состояния графика по умолчанию
+      this.scaleXDefault = this.params.scaleX;
+      this.scaleYDefault = this.params.scaleY;
+
       this.proxy = proxy;
 
       this.widthCanvas = this.params.widthMainConteiner - this.params.widthYaxis;
@@ -135,8 +139,6 @@ export class Chart {
 
       let deltaX = this.oldMousePosX - this.mouse.pos.x;
       let deltaY = this.oldMousePosY - this.mouse.pos.y;
-
-
 
       if (Object.keys(this.mouse.event).length != 0) {
 
@@ -207,7 +209,22 @@ export class Chart {
                }
                this.oldMousePosY = this.mouse.pos.y;
             }
+            if (this.mouse.event.type === 'dblclick') {  // возврат графика в начальное положение
 
+               this.coordinates = Object.assign({}, this.coordinatesDefault);
+               this.params.scaleX = this.scaleXDefault;
+               this.params.scaleY = this.scaleYDefault;
+
+
+
+
+               // let event = new Event("mousemove");
+               // elem.dispatchEvent(event);
+
+               // console.log("this.proxy = ", this.proxy);
+               // console.log("this.proxy.mouse.pos.x = ", this.proxy.mouse.pos.x);
+               // this.proxy.this.display();
+            }
          }
 
       }
