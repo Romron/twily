@@ -178,7 +178,7 @@ export class Y_axis {
    pointer() {
       this.layer.context.beginPath();
       this.layer.context.lineWidth = this.params.widthCoordinatsLineY * 2;
-      this.layer.context.strokeStyle = "red";
+      this.layer.context.strokeStyle = "black";
 
       this.PointerText(this.chart.mouse.pos.y);
       this.layer.context.rect(10, this.chart.mouse.pos.y - this.params.pointerFrimeHight / 2, this.params.pointerFrimeWidth, this.params.pointerFrimeHight);
