@@ -24,7 +24,7 @@ class App {
       hightXaxis: 25,
       widthYaxis: 60,
       scaleX: 2.6,
-      scaleY: 1,// 5.5,
+      scaleY: 5.5,
       paddingTop: 0,
       paddingBottom: 0,      // 50 для тестов
       paddingLeft: 0,

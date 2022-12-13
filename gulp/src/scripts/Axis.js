@@ -57,7 +57,7 @@ export class X_axis {
       this.layer.context.strokeStyle = this.params.colorCoordinatsLineX;
 
       this.layer.context.moveTo(0, 0);
-      this.layer.context.lineTo(this.chart.coordinates.x, 0);
+      this.layer.context.lineTo(this.chart.coordinates.xNull, 0);
       this.layer.context.stroke();
 
 
@@ -132,8 +132,7 @@ export class Y_axis {
          widthCoordinatsLineY: chart.params.widthCoordinatsLineY,
          hightXaxis: chart.params.hightXaxis,
          cursor: 'pointer',
-         pointerFrimeWidth: 90,
-         pointerFrimeHight: 30,
+         pointerFontSize: 20,
       }
 
       this.layer = new Layer(this.params);
@@ -169,8 +168,8 @@ export class Y_axis {
       this.layer.context.strokeStyle = this.params.colorTextYaxis;
       this.layer.context.font = '20px Arial';
 
-      this.layer.context.moveTo(0, y - i);
-      this.layer.context.lineTo(20, y - i);
+      this.layer.context.moveTo(0, y);
+      this.layer.context.lineTo(20, y);
       this.layer.context.strokeText(i * 100, 35, y);
       this.layer.context.stroke();
 
@@ -181,33 +180,32 @@ export class Y_axis {
       this.layer.context.lineWidth = this.params.widthCoordinatsLineY * 2;
       this.layer.context.strokeStyle = "red";
 
-      // if (this.chart.coordinates.y > this.chart.mouse.pos.y) {
-
-      this.layer.context.rect(10, this.chart.mouse.pos.y - this.params.pointerFrimeHight / 2, this.params.pointerFrimeWidth, this.params.pointerFrimeHight);
       this.PointerText(this.chart.mouse.pos.y);
+      this.layer.context.rect(10, this.chart.mouse.pos.y - this.params.pointerFrimeHight / 2, this.params.pointerFrimeWidth, this.params.pointerFrimeHight);
       this.layer.context.stroke();
-      // }
 
    }
 
    PointerText(mousePosY) {
-      this.layer.context.font = '25px Arial';
+      this.layer.context.font = `${this.params.pointerFontSize}px Arial`;
 
-показывает неадекватные значения при изменении масштаба по оси X
+      // отделить тысячи пробелом
+      let text0 = ((this.chart.coordinates.y - mousePosY) * 100 / this.chart.params.scaleY).toFixed(3);
+      let indexSpace = text0.indexOf('.') - 3;
+      let text = text0.slice(0, indexSpace) + ' ' + text0.slice(indexSpace);
 
+      //  получаю параметры текста для корректного отображения его и рамки указателя
+      let metricsText = this.layer.context.measureText(text);
+      let actualHeightText = metricsText.actualBoundingBoxAscent + metricsText.actualBoundingBoxDescent;
 
-      let text = (this.chart.coordinates.y - mousePosY.toFixed(3)) * 100;
+      this.params.pointerFrimeHight = actualHeightText + 20;
+      this.params.pointerFrimeWidth = metricsText.width + 10;
+
       this.layer.context.fillText(
          text,
-         10,
-         mousePosY + this.params.pointerFrimeHight / 2 - 6
+         13,
+         mousePosY + actualHeightText / 2
       );
-
-      // 
-      // this.layer.context.fillText(
-      //    Math.ceil(this.chart.coordinates.xNull - this.chart.mouse.pos.x - this.chart.params.paddingRight),
-      //    this.chart.mouse.pos.x,
-      //    this.chart.HEIGHT_DPI - this.chart.params.hightXaxis / 2);
    }
 
    clearAxis() {

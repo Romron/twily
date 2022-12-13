@@ -252,12 +252,12 @@ export class Chart {
        */
 
 
-      this.ctx.beginPath();      // для тестов 
-      this.ctx.lineWidth = 1;
-      this.ctx.strokeStyle = 'red';
-      this.ctx.moveTo(this.coordinates.xNull, this.coordinates.yNull);
-      this.ctx.lineTo(this.coordinates.xNull - 500, this.coordinates.yNull);
-      this.ctx.stroke();
+      // this.ctx.beginPath();      // для тестов 
+      // this.ctx.lineWidth = 1;
+      // this.ctx.strokeStyle = 'red';
+      // this.ctx.moveTo(this.coordinates.xNull, this.coordinates.yNull);
+      // this.ctx.lineTo(this.coordinates.xNull - 500, this.coordinates.yNull);
+      // this.ctx.stroke();
 
 
       // координатная сетка по оси X
