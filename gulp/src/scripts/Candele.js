@@ -1,4 +1,4 @@
-export class Candels {
+export class Candele {
 
 
 
