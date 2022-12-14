@@ -71,8 +71,8 @@ export class Chart {
    coordinates = {
       xOffset: 86,    // смещение графика захватом мышки
       yOffset: -269,
-      xNull: 0,      // вычесленный нуль
-      yNull: 0,
+      xNull: 2680,      // вычесленный нуль
+      yNull: 1150,
       x: 2594,
       y: 1419,
    }
@@ -209,21 +209,12 @@ export class Chart {
                }
                this.oldMousePosY = this.mouse.pos.y;
             }
-            if (this.mouse.event.type === 'dblclick') {  // возврат графика в начальное положение
 
+            if (this.mouse.event.type === 'dblclick') {  // возврат графика в начальное положение
                this.coordinates = Object.assign({}, this.coordinatesDefault);
                this.params.scaleX = this.scaleXDefault;
                this.params.scaleY = this.scaleYDefault;
 
-
-
-
-               // let event = new Event("mousemove");
-               // elem.dispatchEvent(event);
-
-               // console.log("this.proxy = ", this.proxy);
-               // console.log("this.proxy.mouse.pos.x = ", this.proxy.mouse.pos.x);
-               // this.proxy.this.display();
             }
          }
 
