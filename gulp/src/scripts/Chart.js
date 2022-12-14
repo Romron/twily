@@ -1,5 +1,5 @@
 import { X_axis, Y_axis } from "./Axis.js";
-import { Candele } from "./Candele.js";
+import { Candle } from "./Candle.js";
 
 
 
@@ -78,6 +78,9 @@ export class Chart {
       y: 1419,
    }
 
+   candlesArr = [];
+
+
    constructor(canvas, proxy, params) {
 
       this.canvas = canvas;
@@ -155,9 +158,9 @@ export class Chart {
             if (this.mouse.event.type === 'wheel') {  // изменение масштаба по оси X
                this.mouse.event.preventDefault();     // запрещает перемотку всей страницы
                if (this.mouse.wheel.wheelY > 0) {
-                  this.params.scaleX = this.params.scaleX + 0.02;
+                  this.params.scaleX = this.params.scaleX + 0.04;
                } else if (this.mouse.wheel.wheelY < 0) {
-                  this.params.scaleX = this.params.scaleX - 0.02;
+                  this.params.scaleX = this.params.scaleX - 0.04;
                } else {
                   console.log("this.mouse.wheel.wheelY = ", this.mouse.wheel.wheelY);  // для тестов
                }
@@ -227,9 +230,9 @@ export class Chart {
       // this.mainField();    // для тестов
       this.CoordinateGrid();
 
-      this.ctx.beginPath();
-      this.ctx.lineWidth = 2;
-      this.ctx.strokeStyle = this.params.colorChartLine;
+      // this.ctx.beginPath();
+      // this.ctx.lineWidth = 2;
+      // this.ctx.strokeStyle = this.params.colorChartLine;
       let x, y;
 
 
@@ -238,17 +241,29 @@ export class Chart {
          y = this.coordinates.y - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY;
          if (x < this.coordinates.xNull
             && x > this.params.paddingLeft) {
-            if (n == 0) {
-               this.ctx.moveTo(x - this.mainX, y);
-            }
+            // if (n == 0) {
+            //    this.ctx.moveTo(x - this.mainX, y);
+            // }
 
-            let candele = new Candele(x, y, this.ctx);
 
-            this.ctx.lineTo(x, y);
+            // this.ctx.lineTo(x, y);
+            // if (n < 200) {
+            this.candlesArr[n] = new Candle(x, y, this.data[key], this);
+
+            // }
+
          }
+
+
       });
 
-      this.ctx.stroke();
+
+
+
+      // this.ctx.stroke();
+
+
+      // console.log("this.candlesArr = ", this.candlesArr);
 
    }
 
