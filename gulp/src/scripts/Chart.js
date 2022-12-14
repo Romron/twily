@@ -1,4 +1,5 @@
 import { X_axis, Y_axis } from "./Axis.js";
+import { Candele } from "./Candele.js";
 
 
 
@@ -231,6 +232,7 @@ export class Chart {
       this.ctx.strokeStyle = this.params.colorChartLine;
       let x, y;
 
+
       Object.keys(this.data).forEach((key, n) => {
          x = this.coordinates.x - n * this.params.scaleX;
          y = this.coordinates.y - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY;
@@ -239,6 +241,9 @@ export class Chart {
             if (n == 0) {
                this.ctx.moveTo(x - this.mainX, y);
             }
+
+            let candele = new Candele(x, y, this.ctx);
+
             this.ctx.lineTo(x, y);
          }
       });
