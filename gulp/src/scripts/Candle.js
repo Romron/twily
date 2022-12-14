@@ -26,14 +26,21 @@ export class Candle {
       this.layer.ctx.strokeStyle = colorCandels;
       this.layer.ctx.fillStyle = colorCandels;
 
-      this.layer.ctx.moveTo(this.x + this.layer.params.scaleX / 2, Math.abs(this.yOpen));
-      this.layer.ctx.lineTo(this.x + this.layer.params.scaleX / 2, Math.abs(this.yHight));
+      if (this.yLow > 0
+         || this.yOpen > 0
+         || this.yHight > 0
+         || this.yClose > 0
+         || this.yLow > 0
+      ) {
 
-      this.layer.ctx.moveTo(this.x + this.layer.params.scaleX / 2, Math.abs(this.yClose));
-      this.layer.ctx.lineTo(this.x + this.layer.params.scaleX / 2, Math.abs(this.yLow));
+         this.layer.ctx.moveTo(this.x + this.layer.params.scaleX / 2, Math.abs(this.yOpen));
+         this.layer.ctx.lineTo(this.x + this.layer.params.scaleX / 2, Math.abs(this.yHight));
+         this.layer.ctx.moveTo(this.x + this.layer.params.scaleX / 2, Math.abs(this.yClose));
+         this.layer.ctx.lineTo(this.x + this.layer.params.scaleX / 2, Math.abs(this.yLow));
+      }
 
       this.layer.ctx.rect(this.x, this.yOpen, this.layer.params.scaleX, Math.abs(this.lenghtCandle));
-      this.layer.ctx.fill();     // ???
+      this.layer.ctx.fill();
       this.layer.ctx.stroke();
    }
 
