@@ -110,7 +110,7 @@ export class X_axis {
       let actualHeightText = metricsText.actualBoundingBoxAscent + metricsText.actualBoundingBoxDescent;
 
       this.params.pointerFrimeHight = actualHeightText + 10;
-      this.params.pointerFrimeWidth = metricsText.width + 10;
+      this.params.pointerFrimeWidth = metricsText.width + 15;
 
       this.layer.context.fillText(
          text,
