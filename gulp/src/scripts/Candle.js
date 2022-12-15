@@ -9,9 +9,10 @@ export class Candle {
 
       this.yOpen = this.layer.coordinates.y - dateCandle['1b. open (USD)'] / 100 * this.layer.params.scaleY;
       this.yClose = this.layer.coordinates.y - dateCandle['4b. close (USD)'] / 100 * this.layer.params.scaleY;
-      this.lenghtCandle = (dateCandle['4b. close (USD)'] - dateCandle['1b. open (USD)']) / 100 * this.layer.params.scaleY;
       this.yLow = this.layer.coordinates.y - dateCandle['3b. low (USD)'] / 100 * this.layer.params.scaleY;
       this.yHight = this.layer.coordinates.y - dateCandle['2b. high (USD)'] / 100 * this.layer.params.scaleY;
+
+      this.lenghtCandle = (dateCandle['4b. close (USD)'] - dateCandle['1b. open (USD)']) / 100 * this.layer.params.scaleY;
 
       this.layer.ctx.beginPath();
       this.layer.ctx.lineWidth = 2;

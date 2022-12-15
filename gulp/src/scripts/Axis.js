@@ -67,7 +67,6 @@ export class X_axis {
       this.layer.context.stroke();
 
       let dateof = this._transformationDateof(key)
-
       this.layer.context.strokeText(dateof, xLine - 40, this.params.heightCanvas * 1.3);
 
 
