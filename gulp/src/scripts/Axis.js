@@ -89,8 +89,6 @@ export class X_axis {
       this.layer.context.lineWidth = this.params.widthCoordinatsLineX * 2;
       this.layer.context.strokeStyle = "black";
 
-      // console.log("this.chart.data = ", this.chart.data);
-
       // есле дата в будущем больше 30 возвращаеться false
       if (this.PointerText(this.chart.mouse.pos.x)) {
          this.layer.context.rect(this.chart.mouse.pos.x - this.params.pointerFrimeWidth / 2, this.chart.params.hightXaxis / 2, this.params.pointerFrimeWidth, this.params.pointerFrimeHight);
@@ -104,8 +102,6 @@ export class X_axis {
       let text;
       if (this.chart.candlesArr.length != 0) {
          if (this.chart.candelNumber >= 0) {
-
-
             text = this._transformationDateof(this.chart.candlesArr[this.chart.candelNumber]['day']);
          } else {       // сформировать дату в будущем
             let num = Math.abs(this.chart.candelNumber) + +this.chart.candlesArr[0]['day'].slice(8, 10);
