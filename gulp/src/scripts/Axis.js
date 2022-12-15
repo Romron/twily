@@ -101,11 +101,11 @@ export class X_axis {
    PointerText(mousePosX) {
       this.layer.context.font = `${this.params.pointerFontSize}px Arial`;
 
-
       let text;
-      if (typeof this.chart.candlesArr[this.chart.candelNumber] !== undefined) {    //!!!!!!!!!!!!
-
+      if (this.chart.candlesArr.length != 0) {
          if (this.chart.candelNumber >= 0) {
+
+
             text = this._transformationDateof(this.chart.candlesArr[this.chart.candelNumber]['day']);
          } else {       // сформировать дату в будущем
             let num = Math.abs(this.chart.candelNumber) + +this.chart.candlesArr[0]['day'].slice(8, 10);
@@ -115,7 +115,6 @@ export class X_axis {
                return false;
             }
          }
-
       }
       //  получаю параметры текста для корректного отображения его и рамки указателя
       let metricsText = this.layer.context.measureText(text);

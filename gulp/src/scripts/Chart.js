@@ -80,7 +80,6 @@ export class Chart {
 
    candlesArr = [];
 
-
    constructor(canvas, proxy, params) {
 
       this.canvas = canvas;
@@ -150,6 +149,7 @@ export class Chart {
 
             if (this.mouse.event.type === 'mousemove') {
                // получаю номер свечи над которой нахадится курсор
+
                this.candelNumber = Math.ceil((this.coordinates.x - this.mouse.pos.x) / this.params.scaleX)     // есле свеча отрицательная то она находится в будущем
             }
             if (this.mouse.event.type === 'wheel') {  // изменение масштаба по оси X
