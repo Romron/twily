@@ -91,9 +91,11 @@ export class X_axis {
 
       // console.log("this.chart.data = ", this.chart.data);
 
-      this.PointerText(this.chart.mouse.pos.x);
-      this.layer.context.rect(this.chart.mouse.pos.x - this.params.pointerFrimeWidth / 2, this.chart.params.hightXaxis / 2, this.params.pointerFrimeWidth, this.params.pointerFrimeHight);
-      this.layer.context.stroke();
+      // есле дата в будущем больше 30 возвращаеться false
+      if (this.PointerText(this.chart.mouse.pos.x)) {
+         this.layer.context.rect(this.chart.mouse.pos.x - this.params.pointerFrimeWidth / 2, this.chart.params.hightXaxis / 2, this.params.pointerFrimeWidth, this.params.pointerFrimeHight);
+         this.layer.context.stroke();
+      }
    }
 
    PointerText(mousePosX) {
@@ -101,19 +103,17 @@ export class X_axis {
 
 
       let text;
-      if (typeof this.chart.candlesArr[this.chart.candelNumber] !== undefined) {
+      if (typeof this.chart.candlesArr[this.chart.candelNumber] !== undefined) {    //!!!!!!!!!!!!
 
          if (this.chart.candelNumber >= 0) {
-
             text = this._transformationDateof(this.chart.candlesArr[this.chart.candelNumber]['day']);
          } else {       // сформировать дату в будущем
-
-            text = this._transformationDateof(
-               this.chart.candlesArr[0]['day']
-                  .replace(this.chart.candlesArr[0]['day'].slice(8, 10),
-                     Math.abs(this.chart.candelNumber) + +this.chart.candlesArr[0]['day'].slice(8, 10))
-            );
-            console.log("text = ", text);
+            let num = Math.abs(this.chart.candelNumber) + +this.chart.candlesArr[0]['day'].slice(8, 10);
+            if (num < 31) {
+               text = this._transformationDateof(this.chart.candlesArr[0]['day'].replace(this.chart.candlesArr[0]['day'].slice(8, 10), num));
+            } else {
+               return false;
+            }
          }
 
       }
