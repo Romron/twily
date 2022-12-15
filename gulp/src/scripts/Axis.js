@@ -29,7 +29,7 @@ export class X_axis {
       this.layer.canvas.style.cssText = ` position: absolute;
                                           bottom: 0px;
                                           left:0px;
-                                          z-index: 10;
+                                          z-index: 9;
                                           cursor: pointer;
                                           background-color: ${this.params.background};
                                           height:${this.params.heightCanvas}px;
@@ -66,20 +66,23 @@ export class X_axis {
       this.layer.context.lineTo(xLine, 20);    // 20 -- декоративная риска на оси Х
       this.layer.context.stroke();
 
-      // _writeText(key)
-      let str = '';
-      let str_1 = '';
-      let str_2 = '';
-      let str_3 = '';
+      let dateof = this._transformationDateof(key)
 
-      str_1 = key.slice(8, 10);
-      str_2 = key.slice(5, 7);
-      str_3 = key.slice(0, 4).slice(2, 4);
-      str = `${str_1}.${str_2}.${str_3}`;
-      this.layer.context.strokeText(str, xLine - 40, this.params.heightCanvas * 1.3);
+      this.layer.context.strokeText(dateof, xLine - 40, this.params.heightCanvas * 1.3);
 
 
    }
+
+   _transformationDateof(dateof) {
+
+      let str_1 = dateof.slice(8, 10);
+      let str_2 = dateof.slice(5, 7);
+      let str_3 = dateof.slice(0, 4).slice(2, 4);
+      let str = `${str_1}.${str_2}.${str_3}`;
+
+      return str;
+   }
+
 
    pointer() {
       this.layer.context.beginPath();
@@ -96,11 +99,23 @@ export class X_axis {
    PointerText(mousePosX) {
       this.layer.context.font = `${this.params.pointerFontSize}px Arial`;
 
+
       let text;
-      if (this.chart.candlesArr[this.chart.candelNumber] != undefined && this.chart.candelNumber > 0) {
-         text = this.chart.candlesArr[this.chart.candelNumber]['day'];
-      } else {       // сформировать дату в будущем
-         text = '';
+      if (typeof this.chart.candlesArr[this.chart.candelNumber] !== undefined) {
+
+         if (this.chart.candelNumber >= 0) {
+
+            text = this._transformationDateof(this.chart.candlesArr[this.chart.candelNumber]['day']);
+         } else {       // сформировать дату в будущем
+
+            text = this._transformationDateof(
+               this.chart.candlesArr[0]['day']
+                  .replace(this.chart.candlesArr[0]['day'].slice(8, 10),
+                     Math.abs(this.chart.candelNumber) + +this.chart.candlesArr[0]['day'].slice(8, 10))
+            );
+            console.log("text = ", text);
+         }
+
       }
       //  получаю параметры текста для корректного отображения его и рамки указателя
       let metricsText = this.layer.context.measureText(text);

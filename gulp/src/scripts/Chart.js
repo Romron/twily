@@ -70,7 +70,7 @@ export class Chart {
       event: {},
    };
    coordinates = {
-      xOffset: 86,    // смещение графика захватом мышки
+      xOffset: 200,//86,    // смещение графика захватом мышки
       yOffset: -269,
       xNull: 2680,      // вычесленный нуль
       yNull: 1150,
