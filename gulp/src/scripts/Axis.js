@@ -22,7 +22,7 @@ export class X_axis {
          colorCoordinatsLineX: chart.params.colorTextXaxis,
          widthCoordinatsLineX: chart.params.widthCoordinatsLineX,
          widthYaxis: chart.params.widthYaxis,
-         pointerFontSize: 25,
+         pointerFontSize: 22,
       }
 
       this.layer = new Layer(this.params);
@@ -36,19 +36,11 @@ export class X_axis {
                                           width:${this.params.widthCanvas}px;
                                           /*border: 0.5px solid #38478D;*/
                                        `;
-
-
    }
 
    drawAxis(key, nLine, xLine, distanceBetweenLines) {
 
       // _drawLines(nLine)
-
-      // console.log("-----");
-      // console.log("this.chart.coordinates.x = ", this.chart.coordinates.x);
-      // console.log("this.chart.coordinates.xNull = ", this.chart.coordinates.xNull);
-
-
 
       // нулевая линия
       this.layer.context.beginPath();
@@ -58,7 +50,6 @@ export class X_axis {
       this.layer.context.moveTo(0, 0);
       this.layer.context.lineTo(this.chart.coordinates.xNull, 0);
       this.layer.context.stroke();
-
 
       this.layer.context.beginPath();
       this.layer.context.lineWidth = this.params.widthCoordinatsLineX;
@@ -95,11 +86,11 @@ export class X_axis {
       this.layer.context.lineWidth = this.params.widthCoordinatsLineX * 2;
       this.layer.context.strokeStyle = "black";
 
+      console.log("this.chart.params.hightXaxis = ", this.chart.params.hightXaxis);
 
 
       this.PointerText(this.chart.mouse.pos.x);
-      // this.layer.context.rect(10, this.chart.mouse.pos.x - this.params.pointerFrimeHight / 2, this.params.pointerFrimeWidth, this.params.pointerFrimeHight);
-      this.layer.context.rect(this.chart.mouse.pos.x - this.params.pointerFrimeWidth / 2, 10, this.params.pointerFrimeWidth, this.params.pointerFrimeHight);
+      this.layer.context.rect(this.chart.mouse.pos.x - this.params.pointerFrimeWidth / 2, this.chart.params.hightXaxis / 2, this.params.pointerFrimeWidth, this.params.pointerFrimeHight);
       this.layer.context.stroke();
    }
 
@@ -118,13 +109,13 @@ export class X_axis {
       let metricsText = this.layer.context.measureText(text);
       let actualHeightText = metricsText.actualBoundingBoxAscent + metricsText.actualBoundingBoxDescent;
 
-      this.params.pointerFrimeHight = actualHeightText + 20;
+      this.params.pointerFrimeHight = actualHeightText + 10;
       this.params.pointerFrimeWidth = metricsText.width + 10;
 
       this.layer.context.fillText(
          text,
          mousePosX - metricsText.width / 2,
-         this.params.pointerFrimeHight
+         (this.chart.params.hightXaxis + this.params.pointerFrimeHight + actualHeightText) / 2
       );
    }
 

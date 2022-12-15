@@ -12,7 +12,6 @@ export class Candle {
       this.yLow = this.layer.coordinates.y - dateCandle['3b. low (USD)'] / 100 * this.layer.params.scaleY;
       this.yHight = this.layer.coordinates.y - dateCandle['2b. high (USD)'] / 100 * this.layer.params.scaleY;
 
-
       this.layer.ctx.beginPath();
       this.layer.ctx.lineWidth = 2;
 
