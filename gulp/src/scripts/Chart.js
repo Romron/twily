@@ -150,6 +150,7 @@ export class Chart {
             && this.mouse.pos.x < this.coordinates.xNull) {
             this.linePointer();
             this.Yaxis.pointer();
+            this.Xaxis.pointer();
             this.circul();
 
          }

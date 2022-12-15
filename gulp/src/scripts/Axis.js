@@ -22,9 +22,8 @@ export class X_axis {
          colorCoordinatsLineX: chart.params.colorTextXaxis,
          widthCoordinatsLineX: chart.params.widthCoordinatsLineX,
          widthYaxis: chart.params.widthYaxis,
+         pointerFontSize: 25,
       }
-
-
 
       this.layer = new Layer(this.params);
       this.layer.canvas.style.cssText = ` position: absolute;
@@ -89,6 +88,44 @@ export class X_axis {
       this.layer.context.strokeText(str, xLine - 40, this.params.heightCanvas * 1.3);
 
 
+   }
+
+   pointer() {
+      this.layer.context.beginPath();
+      this.layer.context.lineWidth = this.params.widthCoordinatsLineX * 2;
+      this.layer.context.strokeStyle = "black";
+
+
+
+      this.PointerText(this.chart.mouse.pos.x);
+      // this.layer.context.rect(10, this.chart.mouse.pos.x - this.params.pointerFrimeHight / 2, this.params.pointerFrimeWidth, this.params.pointerFrimeHight);
+      this.layer.context.rect(this.chart.mouse.pos.x - this.params.pointerFrimeWidth / 2, 10, this.params.pointerFrimeWidth, this.params.pointerFrimeHight);
+      this.layer.context.stroke();
+   }
+
+   PointerText(mousePosX) {
+      this.layer.context.font = `${this.params.pointerFontSize}px Arial`;
+
+      // // отделить тысячи пробелом
+      // let text0 = ((this.chart.coordinates.y - mousePosX) * 100 / this.chart.params.scaleY).toFixed(3);
+      // let indexSpace = text0.indexOf('.') - 3;
+      // let text = text0.slice(0, indexSpace) + ' ' + text0.slice(indexSpace);
+
+      let text = mousePosX;
+
+
+      //  получаю параметры текста для корректного отображения его и рамки указателя
+      let metricsText = this.layer.context.measureText(text);
+      let actualHeightText = metricsText.actualBoundingBoxAscent + metricsText.actualBoundingBoxDescent;
+
+      this.params.pointerFrimeHight = actualHeightText + 20;
+      this.params.pointerFrimeWidth = metricsText.width + 10;
+
+      this.layer.context.fillText(
+         text,
+         mousePosX - metricsText.width / 2,
+         this.params.pointerFrimeHight
+      );
    }
 
    field() {
