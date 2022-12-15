@@ -23,7 +23,7 @@ class App {
       DPI: 2,   // показывает восколько раз внутренний размер canvas больше размера заданного в CSS 
       hightXaxis: 25,
       widthYaxis: 60,
-      scaleX: 12,
+      scaleX: 20,
       scaleY: 4,
       paddingTop: 0,
       paddingBottom: 0,      // 50 для тестов
