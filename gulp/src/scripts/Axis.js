@@ -96,8 +96,12 @@ export class X_axis {
    PointerText(mousePosX) {
       this.layer.context.font = `${this.params.pointerFontSize}px Arial`;
 
-      let text = mousePosX;
-
+      let text;
+      if (this.chart.candlesArr[this.chart.candelNumber] != undefined && this.chart.candelNumber > 0) {
+         text = this.chart.candlesArr[this.chart.candelNumber]['day'];
+      } else {       // сформировать дату в будущем
+         text = '';
+      }
       //  получаю параметры текста для корректного отображения его и рамки указателя
       let metricsText = this.layer.context.measureText(text);
       let actualHeightText = metricsText.actualBoundingBoxAscent + metricsText.actualBoundingBoxDescent;

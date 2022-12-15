@@ -135,11 +135,11 @@ export class Chart {
 
    coordinateseCalculation() {
 
-      this.coordinates.xNull = this.WIDTH_DPI - this.params.paddingRight;
-      this.coordinates.yNull = this.HEIGHT_DPI - this.params.paddingBottom;
+      this.coordinates.xNull = this.WIDTH_DPI - this.params.paddingRight;     // ноль поля для отрисовки графика по X
+      this.coordinates.yNull = this.HEIGHT_DPI - this.params.paddingBottom;   // ноль поля для отрисовки графика по Y
 
-      this.coordinates.x = this.coordinates.xNull - this.coordinates.xOffset;
-      this.coordinates.y = this.coordinates.yNull - this.coordinates.yOffset;
+      this.coordinates.x = this.coordinates.xNull - this.coordinates.xOffset;    // ноль графика по X
+      this.coordinates.y = this.coordinates.yNull - this.coordinates.yOffset;    // ноль графика по Y
 
       let deltaX = this.oldMousePosX - this.mouse.pos.x;
       let deltaY = this.oldMousePosY - this.mouse.pos.y;
@@ -148,11 +148,10 @@ export class Chart {
 
          if (this.mouse.event.target.id == 'canvas-chart') {
 
-            this.linePointer();
-            this.Yaxis.pointer();
-            this.Xaxis.pointer();
-            this.circul();
-
+            if (this.mouse.event.type === 'mousemove') {
+               // получаю номер свечи над которой нахадится курсор
+               this.candelNumber = Math.ceil((this.coordinates.x - this.mouse.pos.x) / this.params.scaleX)     // есле свеча отрицательная то она находится в будущем
+            }
             if (this.mouse.event.type === 'wheel') {  // изменение масштаба по оси X
                this.mouse.event.preventDefault();     // запрещает перемотку всей страницы
                if (this.mouse.wheel.wheelY > 0) {
@@ -200,6 +199,7 @@ export class Chart {
                   }
                }
             }
+
          }
          if (this.mouse.event.target.id == 'Y_axis') {
 
@@ -220,6 +220,11 @@ export class Chart {
             }
          }
 
+         // проведя все вычисления обновляю график
+         this.linePointer();
+         this.Yaxis.pointer();
+         this.Xaxis.pointer();
+         this.circul();
       }
    }
 
@@ -230,12 +235,10 @@ export class Chart {
 
       let x, y;
       Object.keys(this.data).forEach((key, n) => {
+
          x = this.coordinates.x - n * this.params.scaleX;
          y = this.coordinates.y - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY;
-         if (x < this.coordinates.xNull
-            && x > this.params.paddingLeft) {
-            this.candlesArr[n] = new Candle(x, y, this.data[key], this);
-         }
+         this.candlesArr[n] = new Candle(x, key, this.data[key], this);
       });
 
    }

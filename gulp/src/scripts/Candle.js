@@ -2,9 +2,10 @@ export class Candle {
 
 
 
-   constructor(x, y, dateCandle, layer) {
+   constructor(x, day, dateCandle, layer) {
       this.layer = layer;
       this.x = x;
+      this.day = day;
 
       this.yOpen = this.layer.coordinates.y - dateCandle['1b. open (USD)'] / 100 * this.layer.params.scaleY;
       this.yClose = this.layer.coordinates.y - dateCandle['4b. close (USD)'] / 100 * this.layer.params.scaleY;
