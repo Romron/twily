@@ -146,16 +146,13 @@ export class Chart {
 
       if (Object.keys(this.mouse.event).length != 0) {
 
-         if (this.coordinates.y > this.mouse.pos.y
-            && this.mouse.pos.x < this.coordinates.xNull) {
+         if (this.mouse.event.target.id == 'canvas-chart') {
+
             this.linePointer();
             this.Yaxis.pointer();
             this.Xaxis.pointer();
             this.circul();
 
-         }
-
-         if (this.mouse.event.target.id == 'canvas-chart') {
             if (this.mouse.event.type === 'wheel') {  // изменение масштаба по оси X
                this.mouse.event.preventDefault();     // запрещает перемотку всей страницы
                if (this.mouse.wheel.wheelY > 0) {
@@ -231,40 +228,15 @@ export class Chart {
       // this.mainField();    // для тестов
       this.CoordinateGrid();
 
-      // this.ctx.beginPath();
-      // this.ctx.lineWidth = 2;
-      // this.ctx.strokeStyle = this.params.colorChartLine;
       let x, y;
-
-
       Object.keys(this.data).forEach((key, n) => {
          x = this.coordinates.x - n * this.params.scaleX;
          y = this.coordinates.y - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY;
          if (x < this.coordinates.xNull
             && x > this.params.paddingLeft) {
-            // if (n == 0) {
-            //    this.ctx.moveTo(x - this.mainX, y);
-            // }
-
-
-            // this.ctx.lineTo(x, y);
-            // if (n < 200) {
             this.candlesArr[n] = new Candle(x, y, this.data[key], this);
-
-            // }
-
          }
-
-
       });
-
-
-
-
-      // this.ctx.stroke();
-
-
-      // console.log("this.candlesArr = ", this.candlesArr);
 
    }
 

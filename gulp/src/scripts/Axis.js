@@ -86,8 +86,7 @@ export class X_axis {
       this.layer.context.lineWidth = this.params.widthCoordinatsLineX * 2;
       this.layer.context.strokeStyle = "black";
 
-      console.log("this.chart.params.hightXaxis = ", this.chart.params.hightXaxis);
-
+      // console.log("this.chart.data = ", this.chart.data);
 
       this.PointerText(this.chart.mouse.pos.x);
       this.layer.context.rect(this.chart.mouse.pos.x - this.params.pointerFrimeWidth / 2, this.chart.params.hightXaxis / 2, this.params.pointerFrimeWidth, this.params.pointerFrimeHight);
@@ -97,13 +96,7 @@ export class X_axis {
    PointerText(mousePosX) {
       this.layer.context.font = `${this.params.pointerFontSize}px Arial`;
 
-      // // отделить тысячи пробелом
-      // let text0 = ((this.chart.coordinates.y - mousePosX) * 100 / this.chart.params.scaleY).toFixed(3);
-      // let indexSpace = text0.indexOf('.') - 3;
-      // let text = text0.slice(0, indexSpace) + ' ' + text0.slice(indexSpace);
-
       let text = mousePosX;
-
 
       //  получаю параметры текста для корректного отображения его и рамки указателя
       let metricsText = this.layer.context.measureText(text);
