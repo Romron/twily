@@ -2,37 +2,54 @@ export class Candle {
 
 
 
-   constructor(x, day, dateCandle, layer) {
-      this.layer = layer;
-      this.x = x;
-      this.day = day;
+    constructor(x, day, dateCandle, layer) {
 
-      this.yOpen = this.layer.coordinates.y - dateCandle['1b. open (USD)'] / 100 * this.layer.params.scaleY;
-      this.yClose = this.layer.coordinates.y - dateCandle['4b. close (USD)'] / 100 * this.layer.params.scaleY;
-      this.yLow = this.layer.coordinates.y - dateCandle['3b. low (USD)'] / 100 * this.layer.params.scaleY;
-      this.yHight = this.layer.coordinates.y - dateCandle['2b. high (USD)'] / 100 * this.layer.params.scaleY;
+        this.layer = layer;
+        this.x = x;
+        this.day = day;
 
-      this.lenghtCandle = (dateCandle['4b. close (USD)'] - dateCandle['1b. open (USD)']) / 100 * this.layer.params.scaleY;
+        this.params = {
+            colorGrowingCandels: '#00AE68', // зелёная свеча
+            colorFallingCandels: '#FF7373', // красная свеча
+            widthCandle: this.layer.params.scaleX,
+            distanceBetweenCandles: this.layer.params.scaleX * 0.2,
+        }
 
-      this.layer.ctx.beginPath();
-      this.layer.ctx.lineWidth = 2;
+        this.yOpen = this.layer.coordinates.y - dateCandle['1b. open (USD)'] / 100 * this.layer.params.scaleY;
+        this.yLow = this.layer.coordinates.y - dateCandle['3b. low (USD)'] / 100 * this.layer.params.scaleY;
+        this.yHight = this.layer.coordinates.y - dateCandle['2b. high (USD)'] / 100 * this.layer.params.scaleY;
+        this.yClose = this.layer.coordinates.y - dateCandle['4b. close (USD)'] / 100 * this.layer.params.scaleY;
 
-      if (this.lenghtCandle > 0) {
-         var colorCandels = '#00AE68';    // зелёная свеча
-      } else {
-         var colorCandels = '#FF7373';   // красная свеча
-      }
+        if (this.yOpen > this.yClose) {
+            this.colorCandels = this.params.colorGrowingCandels
+        } else {
+            this.colorCandels = this.params.colorFallingCandels
+        }
+        this._bodyCandle();
+    }
 
-      this.layer.ctx.moveTo(this.x + this.layer.params.scaleX / 2, this.yHight);     // сквозной фетиль 
-      this.layer.ctx.lineTo(this.x + this.layer.params.scaleX / 2, this.yLow);
-      this.layer.ctx.rect(this.x, this.yOpen, this.layer.params.scaleX, Math.abs(this.lenghtCandle));
 
-      this.layer.ctx.strokeStyle = colorCandels;
-      this.layer.ctx.fillStyle = colorCandels;
-      // this.layer.ctx.fill();
-      this.layer.ctx.stroke();
-   }
+    _bodyCandle() {
+        this.layer.ctx.beginPath();
+        this.layer.ctx.lineWidth = 2;
 
+        this.layer.ctx.moveTo(this.x, this.yHight); // сквозной фетиль 
+        this.layer.ctx.lineTo(this.x, this.yLow);
+
+        this.layer.ctx.moveTo(this.x + this.params.distanceBetweenCandles - this.params.widthCandle / 2, this.yOpen);
+        this.layer.ctx.lineTo(this.x - this.params.distanceBetweenCandles + this.params.widthCandle / 2, this.yOpen);
+
+        this.layer.ctx.lineTo(this.x - this.params.distanceBetweenCandles + this.params.widthCandle / 2, this.yClose);
+        this.layer.ctx.lineTo(this.x + this.params.distanceBetweenCandles - this.params.widthCandle / 2, this.yClose);
+        this.layer.ctx.lineTo(this.x + this.params.distanceBetweenCandles - this.params.widthCandle / 2, this.yOpen);
+
+
+        this.layer.ctx.strokeStyle = this.colorCandels;
+        this.layer.ctx.fillStyle = this.colorCandels;
+        this.layer.ctx.fill();
+        this.layer.ctx.stroke();
+
+    }
 
 
 }
