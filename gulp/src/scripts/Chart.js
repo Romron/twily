@@ -300,7 +300,7 @@ export class Chart {
             }
          }
       } else {
-         console.log(" -- Данные ещё не получены -- ");
+         // console.log(" -- Данные ещё не получены -- ");
       }
       this.ctx.stroke();
 
