@@ -90,8 +90,15 @@ export class X_axis {
 
       // есле дата в будущем больше 30 возвращаеться false
       if (this.PointerText(this.chart.mouse.pos.x)) {
-         this.layer.context.rect(this.chart.mouse.pos.x - this.params.pointerFrimeWidth / 2, this.chart.params.hightXaxis / 2, this.params.pointerFrimeWidth, this.params.pointerFrimeHight);
+
+         this.layer.context.rect(
+            this.chart.mouse.pos.x - this.params.pointerFrimeWidth / 2,
+            this.chart.params.hightXaxis / 2,
+            this.params.pointerFrimeWidth,
+            this.params.pointerFrimeHight
+         );
          this.layer.context.stroke();
+
       }
    }
 
@@ -118,11 +125,16 @@ export class X_axis {
       this.params.pointerFrimeHight = actualHeightText + 10;
       this.params.pointerFrimeWidth = metricsText.width + 15;
 
-      this.layer.context.fillText(
-         text,
-         mousePosX - metricsText.width / 2,
-         (this.chart.params.hightXaxis + this.params.pointerFrimeHight + actualHeightText) / 2
-      );
+      if (text !== undefined) {
+
+         this.layer.context.fillText(
+            text,
+            mousePosX - metricsText.width / 2,
+            (this.chart.params.hightXaxis + this.params.pointerFrimeHight + actualHeightText) / 2
+         );
+      }
+
+      return true;
    }
 
    field() {
