@@ -7,7 +7,7 @@ import { Layer } from "./Layer.js";
 import { MouseControls } from "./MouseControls.js";
 
 
-let url = './module_php/parser.php';
+let url = './module_php/parser_day.php';
 const dP = new DataProcessing(url);   // всё что касается получения и оброботки данных
 
 

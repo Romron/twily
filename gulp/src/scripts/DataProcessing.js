@@ -22,37 +22,32 @@ export class DataProcessing {
 
    PreparationData(data) {
       /**
+       * В зависимости от URL с которого пришли данные 
        * преобразует данные в удобный формат
        * разварачивает масив по датам
        *
        */
-      let arrResultsData = [];
-      let arrData = [];
+
+      this.arrResultsData = [];
+
       let str = JSON.parse(data);
 
-      let candles = str['Time Series (Digital Currency Daily)'];
 
-      Object.keys(candles).forEach((key) => {
-         arrResultsData.push(candles[key]['1b. open (USD)']);
-      });
+      if (str["Meta Data"]['data_source'].includes('alphavantage')) {
+         return str['Time Series (Digital Currency Daily)'];
+      } else if (str["Meta Data"]['data_source'].includes('cryptocompare')) {
+         console.log("date with: cryptocompare");
+      }
 
-      console.log("candles = ", candles);
-
-      return candles;
    }
+
+
+
+
+
+
 };
 
 
 
 
-// "2020-12-31":
-// "1a. open (UAH)": "1059732.68500000"
-// "1b. open (USD)": "28875.55000000"
-// "2a. high (UAH)": "1075310.00000000"
-// "2b. high (USD)": "29300.00000000"
-// "3a. low (UAH)": "1022095.00000000"
-// "3b. low (USD)": "27850.00000000"
-// "4a. close (UAH)": "1061497.22100000"
-// "4b. close (USD)": "28923.63000000"
-// "5. volume": "75508.50515200"
-// "6. market cap (USD)": "75508.50515200"
