@@ -90,13 +90,22 @@
 
 
 
-// рабочий вариант
+// рабочий вариант  https://www.alphavantage.co/   Welcome to Alpha Vantage! Your API key is: AH6Q8FIVTHBGOJLC. Please record this API key at a safe place for future data access.
+// $file = $_SERVER['DOCUMENT_ROOT'] . '/twily/gulp/src/module_php/date_0.json';    // резервная копия данных
 $file = $_SERVER['DOCUMENT_ROOT'] . '/twily/gulp/src/module_php/date.json';
 
-// $json = file_get_contents('https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol=BTC&market=UAH&apikey=9PKRO03JZ2KF9LEV');
-// $data = json_decode($json, true);
-// $file_status = file_put_contents($file, $json);
+// день
+// $json = file_get_contents('https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol=BTC&market=UAH&apikey=AH6Q8FIVTHBGOJLC');  // для гривни перестало работать??
+$json = file_get_contents('https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol=BTC&market=CNY&apikey=AH6Q8FIVTHBGOJLC');
+$data = json_decode($json, true);
+$file_status = file_put_contents($file, $json);
+
 
 $data_file = file_get_contents($file);         // для тестов из  файла
 
 echo $data_file;
+
+
+
+// https://www.cryptocompare.com/
+//  API Key: c8bc9016805a75bd7e4e5e407a7ac2062e7d14da7b4cf2db90f9a788842f3d2e

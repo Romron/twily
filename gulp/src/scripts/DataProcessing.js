@@ -36,8 +36,23 @@ export class DataProcessing {
          arrResultsData.push(candles[key]['1b. open (USD)']);
       });
 
-
+      console.log("candles = ", candles);
 
       return candles;
    }
 };
+
+
+
+
+// "2020-12-31":
+// "1a. open (UAH)": "1059732.68500000"
+// "1b. open (USD)": "28875.55000000"
+// "2a. high (UAH)": "1075310.00000000"
+// "2b. high (USD)": "29300.00000000"
+// "3a. low (UAH)": "1022095.00000000"
+// "3b. low (USD)": "27850.00000000"
+// "4a. close (UAH)": "1061497.22100000"
+// "4b. close (USD)": "28923.63000000"
+// "5. volume": "75508.50515200"
+// "6. market cap (USD)": "75508.50515200"
