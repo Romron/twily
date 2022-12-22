@@ -1,6 +1,6 @@
 <?php
 
-$file = $_SERVER['DOCUMENT_ROOT'] . '/twily/gulp/src/module_php/date.json';
+$file = $_SERVER['DOCUMENT_ROOT'] . '/twily/gulp/src/module_php/date_hour.json';
 
 // день
 
@@ -9,6 +9,14 @@ $json = file_get_contents('https://min-api.cryptocompare.com/data/v2/histohour?f
 // 
 
 $data = json_decode($json, true);
+
+echo "<pre>";
+print_r($data);
+echo "</pre>";
+
+
+
+
 $file_status = file_put_contents($file, $json);
 
 
@@ -16,7 +24,7 @@ $file_status = file_put_contents($file, $json);
 $data_file = file_get_contents($file);         // для тестов из  файла
 
 // echo '<pre>';
-echo $data_file;
+// echo $data_file;
 // echo '</pre>';
 
 

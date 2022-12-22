@@ -1,6 +1,6 @@
 <?php
 
-$file = $_SERVER['DOCUMENT_ROOT'] . '/twily/gulp/src/module_php/date.json';
+$file = $_SERVER['DOCUMENT_ROOT'] . '/twily/gulp/src/module_php/date_day.json';
 
 // рабочий вариант  https://www.alphavantage.co/   Welcome to Alpha Vantage! Your API key is: AH6Q8FIVTHBGOJLC. Please record this API key at a safe place for future data access.
 // предидущий ключ  9PKRO03JZ2KF9LEV
@@ -16,7 +16,14 @@ $file = $_SERVER['DOCUMENT_ROOT'] . '/twily/gulp/src/module_php/date.json';
 // использовать данные из файла
 $data_file = file_get_contents($file);
 
-echo $data_file;
+// echo $data_file;
+
+
+echo '<pre>';
+print_r(json_decode($data_file, true));
+echo '</pre>';
+
+
 
 // https://www.cryptocompare.com/
 //  API Key: c8bc9016805a75bd7e4e5e407a7ac2062e7d14da7b4cf2db90f9a788842f3d2e
