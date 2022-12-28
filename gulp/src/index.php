@@ -11,11 +11,21 @@
 
 <body>
    <div class="wrap">
-      <h1>Twily</h1>
-      <div class="block-controls">
-         <div id='initial-data' class="initial-data">Исходные данные</div>
-         <!-- <div class="button" id="parser-start-button" type="submit">Старт парсера</div> -->
+      <div class="neder">
+         <h1>Twily</h1>
       </div>
+      <div class="block-controls">
+         <div id='initial-data' class="initial-data">
+            <div id="nav-fraimtime">
+               <div class="fraimtime-item">houre</div>
+               <div class="fraimtime-item">daily</div>
+               <div class="fraimtime-item">week</div>
+               <div class="fraimtime-item">mounth</div>
+            </div>
+         </div>
+      </div>
+
+
       <div id="wrap-canvas" class="wrap-canvas">
       </div>
 
