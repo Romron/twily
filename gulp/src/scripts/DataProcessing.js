@@ -5,6 +5,7 @@ export class DataProcessing {
 
    constructor(url) {
       this.url = url;
+
    }
 
    GetData() {

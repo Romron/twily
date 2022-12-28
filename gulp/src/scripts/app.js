@@ -7,14 +7,12 @@ import { Layer } from "./Layer.js";
 import { MouseControls } from "./MouseControls.js";
 
 
-let url = './module_php/parser.php';
-const dP = new DataProcessing(url);   // всё что касается получения и оброботки данных
-
 
 
 class App {
 
    params = {
+      dataurl: './module_php/parser.php',
       idTargetBlock: "wrap-canvas",
       idMainConteiner: 'mainConteiner',
       idCanvas: "canvas-chart",
@@ -43,18 +41,31 @@ class App {
 
    constructor() {
 
+
+
+
+
       this.mainConteiner = this._mainConteiner();
       this.layer = new Layer(this.params);
       this.proxyLoop = new Loop(this.update.bind(this), this.display.bind(this));
       this.chart = new Chart(this.layer, this.proxyLoop, this.params);
-
-
       this.mc = new MouseControls(this.mainConteiner, this.proxyLoop, this.params.DPI);
+
+      this._controlsBlock();     // оброботка меню #nav-fraimtime в последствии вывести в отдельный метод
+
+
+
+      let strReqwestData = this.params.dataurl + '?timefraime=1h';
+      const dP = new DataProcessing(strReqwestData);   // всё что касается получения и оброботки данных
 
       dP.GetData().then((data) => {
          this.chart.data = dP.PreparationData(data);
          this.display();
       });
+
+
+
+
 
    }
 
@@ -82,7 +93,6 @@ class App {
        * нужен независимый контейнер
        */
 
-
       // независимая обёртка для всех канвасов нужно для абсолютного позиционирования
       const TargetBlock = document.getElementById(this.params.idTargetBlock);
       const mainConteiner = document.createElement("div");
@@ -100,6 +110,19 @@ class App {
 
       return mainConteiner;
    }
+
+   _controlsBlock() {
+      /*
+         здесь всё что касаеться управления приложением
+      
+      */
+
+      // const navFraimtime = document.querySelectorAll('#nav-fraimtime');
+      const navFraimtime = document.querySelector('#nav-fraimtime').querySelectorAll('.fraimtime-item');
+      console.log("navFraimtime  = ", navFraimtime);
+
+   }
+
 
 }
 

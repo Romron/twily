@@ -99,4 +99,7 @@ $file = $_SERVER['DOCUMENT_ROOT'] . '/twily/gulp/src/module_php/date.json';
 
 $data_file = file_get_contents($file);         // для тестов из  файла
 
-echo $data_file;
+
+echo "timeFraime = " . $_GET["timefraime"] . "<br />";
+
+// echo $data_file;
