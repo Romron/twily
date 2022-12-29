@@ -117,7 +117,7 @@ class App {
 
 
 
-      let strReqwestData = this.params.dataurl + '?timefraime=minute';
+      let strReqwestData = this.params.dataurl + '?timefraime=day';
       // console.log("strReqwestData = ", strReqwestData);
       this.dP = new DataProcessing();   // всё что касается получения и оброботки данных
 

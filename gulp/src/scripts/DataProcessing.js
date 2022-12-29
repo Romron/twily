@@ -32,6 +32,8 @@ export class DataProcessing {
        * разварачивает масив по датам
        *
        */
+      console.log("data = ", data);
+
       let arrResultsData = [];
       let arrData = [];
       let str = JSON.parse(data);
