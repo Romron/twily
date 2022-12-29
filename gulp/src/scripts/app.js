@@ -7,9 +7,6 @@ import { Layer } from "./Layer.js";
 import { MouseControls } from "./MouseControls.js";
 
 
-let url = './module_php/parser.php';
-const dP = new DataProcessing(url);   // всё что касается получения и оброботки данных
-
 
 
 class App {
@@ -48,9 +45,15 @@ class App {
       this.layer = new Layer(this.params);
       this.proxyLoop = new Loop(this.update.bind(this), this.display.bind(this));
       this.chart = new Chart(this.layer, this.proxyLoop, this.params);
-
-
       this.mc = new MouseControls(this.mainConteiner, this.proxyLoop, this.params.DPI);
+
+      this._controlsBlock();     // оброботка меню #nav-fraimtime в последствии вывести в отдельный метод
+
+
+
+      let strReqwestData = this.params.dataurl // + '?timefraime=1h';
+      console.log("strReqwestData = ", strReqwestData);
+      const dP = new DataProcessing(strReqwestData);   // всё что касается получения и оброботки данных
 
       dP.GetData().then((data) => {
          this.chart.data = dP.PreparationData(data);
