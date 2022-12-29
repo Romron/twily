@@ -41,10 +41,6 @@ class App {
 
    constructor() {
 
-
-
-
-
       this.mainConteiner = this._mainConteiner();
       this.layer = new Layer(this.params);
       this.proxyLoop = new Loop(this.update.bind(this), this.display.bind(this));
