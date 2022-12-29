@@ -35,6 +35,8 @@ export class DataProcessing {
 
       let str = JSON.parse(data);
 
+      console.log("str = ", str);
+
 
       if (str["Meta Data"]['data_source'].includes('alphavantage')) {
          return str['Time Series (Digital Currency Daily)'];
