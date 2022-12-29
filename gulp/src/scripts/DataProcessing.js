@@ -3,12 +3,15 @@ export class DataProcessing {
     * всё что касается получения и оброботки данных
     */
 
-   constructor(url) {
-      this.url = url;
+   constructor() {
+
 
    }
 
-   GetData() {
+   GetData(url) {
+
+      this.url = url;
+
       return new Promise((resolve, reject) => {
          const request = new XMLHttpRequest();
          request.onreadystatechange = function () {

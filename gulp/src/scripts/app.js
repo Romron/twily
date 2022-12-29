@@ -47,16 +47,13 @@ class App {
       this.chart = new Chart(this.layer, this.proxyLoop, this.params);
       this.mc = new MouseControls(this.mainConteiner, this.proxyLoop, this.params.DPI);
 
-      this._controlsBlock();     // оброботка меню #nav-fraimtime в последствии вывести в отдельный метод
 
+      let strReqwestData = this.params.dataurl + '?timefraime=day';
+      // console.log("strReqwestData = ", strReqwestData);
+      this.dP = new DataProcessing();   // всё что касается получения и оброботки данных
 
-
-      let strReqwestData = this.params.dataurl // + '?timefraime=1h';
-      console.log("strReqwestData = ", strReqwestData);
-      const dP = new DataProcessing(strReqwestData);   // всё что касается получения и оброботки данных
-
-      dP.GetData().then((data) => {
-         this.chart.data = dP.PreparationData(data);
+      this.dP.GetData(strReqwestData).then((data) => {
+         this.chart.data = this.dP.PreparationData(data);
          this.display();
       });
 
@@ -108,15 +105,27 @@ class App {
       return mainConteiner;
    }
 
-   _controlsBlock() {
+   _timeFraimeChoice() {
       /*
          здесь всё что касаеться управления приложением
       
       */
 
       // const navFraimtime = document.querySelectorAll('#nav-fraimtime');
-      const navFraimtime = document.querySelector('#nav-fraimtime').querySelectorAll('.fraimtime-item');
-      console.log("navFraimtime  = ", navFraimtime);
+      // const navFraimtime = document.querySelector('#nav-fraimtime').querySelectorAll('.fraimtime-item');
+      // console.log("navFraimtime  = ", navFraimtime);
+
+
+
+      let strReqwestData = this.params.dataurl + '?timefraime=minute';
+      // console.log("strReqwestData = ", strReqwestData);
+      this.dP = new DataProcessing();   // всё что касается получения и оброботки данных
+
+      this.dP.GetData(strReqwestData).then((data) => {
+         this.chart.data = this.dP.PreparationData(data);
+         this.display();
+      });
+
 
    }
 
