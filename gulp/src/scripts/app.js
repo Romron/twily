@@ -55,7 +55,8 @@ class App {
 
 
 
-      let strReqwestData = this.params.dataurl + '?timefraime=1h';
+      let strReqwestData = this.params.dataurl // + '?timefraime=1h';
+      console.log("strReqwestData = ", strReqwestData);
       const dP = new DataProcessing(strReqwestData);   // всё что касается получения и оброботки данных
 
       dP.GetData().then((data) => {

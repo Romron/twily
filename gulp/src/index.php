@@ -17,8 +17,9 @@
       <div class="block-controls">
          <div id='initial-data' class="initial-data">
             <div id="nav-fraimtime">
-               <div class="fraimtime-item">houre</div>
                <div class="fraimtime-item">daily</div>
+               <div class="fraimtime-item">minute</div>
+               <div class="fraimtime-item">houre</div>
                <div class="fraimtime-item">week</div>
                <div class="fraimtime-item">mounth</div>
             </div>
