@@ -25,34 +25,22 @@ export class DataProcessing {
 
    PreparationData(data) {
       /**
-       * В зависимости от URL с которого пришли данные 
        * преобразует данные в удобный формат
        * разварачивает масив по датам
        *
        */
-
-      this.arrResultsData = [];
-
+      let arrResultsData = [];
+      let arrData = [];
       let str = JSON.parse(data);
 
-      console.log("str = ", str);
+      let candles = str['Time Series (Digital Currency Daily)'];
+
+      Object.keys(candles).forEach((key) => {
+         arrResultsData.push(candles[key]['1b. open (USD)']);
+      });
 
 
-      if (str["Meta Data"]['data_source'].includes('alphavantage')) {
-         return str['Time Series (Digital Currency Daily)'];
-      } else if (str["Meta Data"]['data_source'].includes('cryptocompare')) {
-         console.log("date with: cryptocompare");
-      }
 
+      return candles;
    }
-
-
-
-
-
-
 };
-
-
-
-
