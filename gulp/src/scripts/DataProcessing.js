@@ -5,6 +5,7 @@ export class DataProcessing {
 
    constructor(url) {
       this.url = url;
+
    }
 
    GetData() {
@@ -17,6 +18,8 @@ export class DataProcessing {
          }
          request.open('GET', this.url);
          request.send();
+         // request.open('POST', this.url);
+         // request.send('timefraime=1h');
       })
    }
 

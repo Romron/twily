@@ -7,7 +7,7 @@ import { Layer } from "./Layer.js";
 import { MouseControls } from "./MouseControls.js";
 
 
-let url = './module_php/parser_day.php';
+let url = './module_php/parser.php';
 const dP = new DataProcessing(url);   // всё что касается получения и оброботки данных
 
 
@@ -15,6 +15,7 @@ const dP = new DataProcessing(url);   // всё что касается полу
 class App {
 
    params = {
+      dataurl: './module_php/parser.php',
       idTargetBlock: "wrap-canvas",
       idMainConteiner: 'mainConteiner',
       idCanvas: "canvas-chart",
@@ -56,6 +57,10 @@ class App {
          this.display();
       });
 
+
+
+
+
    }
 
    update() {
@@ -82,7 +87,6 @@ class App {
        * нужен независимый контейнер
        */
 
-
       // независимая обёртка для всех канвасов нужно для абсолютного позиционирования
       const TargetBlock = document.getElementById(this.params.idTargetBlock);
       const mainConteiner = document.createElement("div");
@@ -100,6 +104,19 @@ class App {
 
       return mainConteiner;
    }
+
+   _controlsBlock() {
+      /*
+         здесь всё что касаеться управления приложением
+      
+      */
+
+      // const navFraimtime = document.querySelectorAll('#nav-fraimtime');
+      const navFraimtime = document.querySelector('#nav-fraimtime').querySelectorAll('.fraimtime-item');
+      console.log("navFraimtime  = ", navFraimtime);
+
+   }
+
 
 }
 

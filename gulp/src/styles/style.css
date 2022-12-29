@@ -5,7 +5,8 @@
 body {
    font-family: 'Montserrat-MediumItalic';
    background-color: #E4E4E4;
-
+   /* box-sizing: content-box; */
+   color: #656175;
 
 }
 
@@ -20,8 +21,12 @@ body {
 
 }
 
+.neder {
+   /* border: 1px solid #bbbbc2; */
+}
+
 h1 {
-   color: #656175;
+
    font-family: 'Montserrat-MediumItalic';
 }
 
@@ -32,88 +37,58 @@ h1 {
    align-items: center;
    margin-bottom: 10px;
 
+   /* border: 1px solid red; */
+
 }
 
-.button {
-   border: 1px solid #bbbbc2;
-   border-radius: 5px;
-   margin: 5px;
-}
 
-.button,
 .initial-data {
-   width: 200px;
-   height: 100px;
-   border-radius: 5px;
-   margin: 5px;
 
+   display: flex;
+
+
+   height: 100px;
+   /* border: 1px solid green; */
+}
+
+#nav-fraimtime {
+   width: 100px;
+   height: 50px;
+   border-radius: 5px;
+   overflow: hidden;
+   border: 1px solid #9ea8a0;
+   align-self: flex-end;
+
+}
+
+.fraimtime-item {
+   width: 100px;
+   height: 50px;
+   font-size: 20px;
+   cursor: pointer;
    display: flex;
    justify-content: center;
    align-items: center;
+   background-color: #E4E4E4;
+
+   text-transform: capitalize;
 }
 
-.initial-data {
-   flex-grow: 1;
-   font-size: 13px;
-   padding-top: 5px;
-   height: 100px;
-   justify-content: space-around;
-   margin-bottom: 10px;
-
-
+#nav-fraimtime:hover {
+   overflow: visible;
+   position: absolute;
+   z-index: 200;
 }
 
-.initBlocks {
-   /* overflow-y: scroll; */
-   overflow-y: auto;
-   height: inherit;
-   color: #443fdc;
-   line-height: 20px;
-   width: 30%;
-   scrollbar-width: thin;
-   scrollbar-color: #b6b7c3 #c7c8cb;
-   border: 1px solid #bbbbc2;
-   border-radius: 5px;
-   padding: 10px;
-   /* margin: 5px; */
-}
-
-/* .wrap-canvas {
-
-   display: flex;
-   justify-content: space-between;
-   position: relative;
-   border-radius: 5px;
+#nav-fraimtime:hover .fraimtime-item {
    border: 1px solid #9ea8a0;
-   padding: 10px;
-
-} */
-
-#formuls-block {
-   margin: 0 10px;
-   display: flex;
-   justify-content: center;
 }
 
-/* #canvas-chart {
-   width: 1800px;
-   height: 600px;
-   border-radius: 5px;
-   align-self: center;
+.fraimtime-item:hover {
+   /* background-color: #A0A0A0; */
+   background-color: #D5D5D5;
 
-
-} */
-
-/* #canvas__X-axis {
-   position: absolute; 
-    border: 1px solid #5103f7;
-
-} */
-
-
-
-
-
+}
 
 
 
