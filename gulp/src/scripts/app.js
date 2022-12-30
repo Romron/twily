@@ -48,7 +48,7 @@ class App {
       this.mc = new MouseControls(this.mainConteiner, this.proxyLoop, this.params.DPI);
 
 
-      let strReqwestData = this.params.dataurl + '?timefraime=day';
+      let strReqwestData = this.params.dataurl //+ '?timefraime=day';
       // console.log("strReqwestData = ", strReqwestData);
       this.dP = new DataProcessing();   // всё что касается получения и оброботки данных
 
