@@ -39,9 +39,20 @@ switch ($_GET['timefraime']) {
 }
 
 
-echo $data;
+
+$str = json_decode($data);
+foreach ($str->Data->Data as $kye) {
+   $kye->time = date("d-m-y H:i:s", $kye->time);
+
+   // echo '<pre>';
+   // print_r($kye);
+   // echo '</pre>';
+}
 
 
-// echo "<pre>";
-// print_r($data);
-// echo "</pre>";
+echo '<pre>';
+print_r($str);
+echo '</pre>';
+
+
+// echo $data;
