@@ -65,21 +65,22 @@ export class X_axis {
       this.layer.context.moveTo(xLine, 0);
       this.layer.context.lineTo(xLine, 20);    // 20 -- декоративная риска на оси Х
       this.layer.context.stroke();
-
-      let dateof = this._transformationDateof(key)
-      this.layer.context.strokeText(dateof, xLine - 40, this.params.heightCanvas * 1.3);
-
-
+      this.layer.context.strokeText(this._transformationDateof(key), xLine - 40, this.params.heightCanvas * 1.3);
    }
 
    _transformationDateof(dateof) {
 
-      let str_1 = dateof.slice(8, 10);
-      let str_2 = dateof.slice(5, 7);
-      let str_3 = dateof.slice(0, 4).slice(2, 4);
-      let str = `${str_1}.${str_2}.${str_3}`;
+      // для данных с https://www.alphavantage.co
+      // let str_1 = dateof.slice(8, 10);
+      // let str_2 = dateof.slice(5, 7);
+      // let str_3 = dateof.slice(0, 4).slice(2, 4);
+      // let str = `${str_1}.${str_2}.${str_3}`;
+      // return str;
 
-      return str;
+      // для данных с https://min-api.cryptocompare.com
+      if (dateof.indexOf(' ') > 0) {
+         return dateof.slice(0, dateof.indexOf(' '));
+      }
    }
 
 
@@ -107,12 +108,12 @@ export class X_axis {
 
       let text;
       if (this.chart.candlesArr.length != 0) {
-         if (this.chart.candelNumber >= 0) {
+         if (typeof this.chart.candlesArr[this.chart.candelNumber] == "object" && this.chart.candelNumber >= 0) {
             text = this._transformationDateof(this.chart.candlesArr[this.chart.candelNumber]['day']);
          } else {       // сформировать дату в будущем
-            let num = Math.abs(this.chart.candelNumber) + +this.chart.candlesArr[0]['day'].slice(8, 10);
+            let num = Math.abs(this.chart.candelNumber) + +this.chart.candlesArr[0]['day'].slice(0, 2);
             if (num < 31) {
-               text = this._transformationDateof(this.chart.candlesArr[0]['day'].replace(this.chart.candlesArr[0]['day'].slice(8, 10), num));
+               text = this._transformationDateof(this.chart.candlesArr[0]['day'].replace(this.chart.candlesArr[0]['day'].slice(0, 2), num));
             } else {
                return false;
             }

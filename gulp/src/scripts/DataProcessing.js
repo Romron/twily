@@ -26,12 +26,13 @@ export class DataProcessing {
       })
    }
 
-   PreparationData(data) {
+   PreparationData_1(data) {     //обработка данных с https://www.alphavantage.co
       /**
        * преобразует данные в удобный формат
        * разварачивает масив по датам
        *
        */
+
       let arrResultsData = [];
       let arrData = [];
       let str = JSON.parse(data);
@@ -42,8 +43,24 @@ export class DataProcessing {
          arrResultsData.push(candles[key]['1b. open (USD)']);
       });
 
+      console.log("candles = ", candles);
+
+      return candles;
+   }
+
+   PreparationData_2(data) {     //обработка данных с https://min-api.cryptocompare.com
+      /**
+       * преобразует данные в удобный формат
+       * разварачивает масив по датам 
+       *
+       */
+
+
+      let str = JSON.parse(data);
+      let candles = str.Data.Data.reverse();    // разворачиваю масив в обратном порядке
 
 
       return candles;
    }
+
 };
