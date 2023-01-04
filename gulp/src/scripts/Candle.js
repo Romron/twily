@@ -15,10 +15,17 @@ export class Candle {
             distanceBetweenCandles: this.layer.params.scaleX * 0.2,
         }
 
-        this.yOpen = this.layer.coordinates.y - dateCandle['1b. open (USD)'] / 100 * this.layer.params.scaleY;
-        this.yLow = this.layer.coordinates.y - dateCandle['3b. low (USD)'] / 100 * this.layer.params.scaleY;
-        this.yHight = this.layer.coordinates.y - dateCandle['2b. high (USD)'] / 100 * this.layer.params.scaleY;
-        this.yClose = this.layer.coordinates.y - dateCandle['4b. close (USD)'] / 100 * this.layer.params.scaleY;
+        // для данных с https://www.alphavantage.co
+        // this.yOpen = this.layer.coordinates.y - dateCandle['1b. open (USD)'] / 100 * this.layer.params.scaleY;
+        // this.yLow = this.layer.coordinates.y - dateCandle['3b. low (USD)'] / 100 * this.layer.params.scaleY;
+        // this.yHight = this.layer.coordinates.y - dateCandle['2b. high (USD)'] / 100 * this.layer.params.scaleY;
+        // this.yClose = this.layer.coordinates.y - dateCandle['4b. close (USD)'] / 100 * this.layer.params.scaleY;
+
+        // для данных с https://min-api.cryptocompare.com
+        this.yOpen = this.layer.coordinates.y - dateCandle['open'] / 100 * this.layer.params.scaleY;
+        this.yLow = this.layer.coordinates.y - dateCandle['low'] / 100 * this.layer.params.scaleY;
+        this.yHight = this.layer.coordinates.y - dateCandle['high'] / 100 * this.layer.params.scaleY;
+        this.yClose = this.layer.coordinates.y - dateCandle['close'] / 100 * this.layer.params.scaleY;
 
         if (this.yOpen > this.yClose) {
             this.colorCandels = this.params.colorGrowingCandels

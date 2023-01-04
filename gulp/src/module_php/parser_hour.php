@@ -6,20 +6,12 @@ $file = $_SERVER['DOCUMENT_ROOT'] . '/twily/gulp/src/module_php/date_hour.json';
 
 // $json = file_get_contents('https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms=USD&api_key={c8bc9016805a75bd7e4e5e407a7ac2062e7d14da7b4cf2db90f9a788842f3d2e}');
 $json = file_get_contents('https://min-api.cryptocompare.com/data/v2/histohour?fsym=BTC&tsym=USD&limit=1000&api_key={c8bc9016805a75bd7e4e5e407a7ac2062e7d14da7b4cf2db90f9a788842f3d2e}');
+// $json = file_get_contents('https://min-api.cryptocompare.com/data/v2/histominute?fsym=BTC&tsym=USD&limit=1000&api_key={c8bc9016805a75bd7e4e5e407a7ac2062e7d14da7b4cf2db90f9a788842f3d2e}');
 // 
 
 $data = json_decode($json, true);
 
-echo "<pre>";
-print_r($data);
-echo "</pre>";
-
-
-
-
 $file_status = file_put_contents($file, $json);
-
-
 
 $data_file = file_get_contents($file);         // для тестов из  файла
 
@@ -30,11 +22,16 @@ $data_file = file_get_contents($file);         // для тестов из  фа
 
 
 // echo $data_file->Data;
-// $str = json_decode($data_file);
-// foreach ($str->Data->Data as $kye) {
+$str = json_decode($data_file);
+foreach ($str->Data->Data as $kye) {
 
-//    echo '<pre>';
-//    print_r($kye);
-//    echo date("y-m-d", $str->Data->Data[0]->time);
-//    echo '</pre>';
-// }
+   // echo '<pre>';
+   $kye->time = date("d-m-y H:i:s", $kye->time);
+   // print_r($kye);
+   // echo '</pre>';
+}
+
+
+echo '<pre>';
+print_r($str);
+echo '</pre>';

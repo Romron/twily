@@ -102,7 +102,10 @@ $json = file_get_contents('https://www.alphavantage.co/query?function=DIGITAL_CU
 $data = json_decode($json, true);
 $file_status = file_put_contents($file, $json);
 
-
-
 $data_file = file_get_contents($file);         // для тестов из  файла
 echo $data_file;
+
+
+// echo "<pre>";
+// print_r($data_file);
+// echo "</pre>";

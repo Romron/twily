@@ -237,8 +237,9 @@ export class Chart {
       Object.keys(this.data).forEach((key, n) => {
 
          x = this.coordinates.x - n * this.params.scaleX;
-         y = this.coordinates.y - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY;
-         this.candlesArr[n] = new Candle(x, key, this.data[key], this);
+         // y = this.coordinates.y - this.data[key]['1b. open (USD)'] / 100 * this.params.scaleY;     // для данных с https://www.alphavantage.co
+         y = this.coordinates.y - this.data[key]['open'] / 100 * this.params.scaleY;
+         this.candlesArr[n] = new Candle(x, this.data[key]['time'], this.data[key], this);
       });
 
    }
@@ -273,28 +274,56 @@ export class Chart {
       this.widthToRight = this.WIDTH_GRAPH_FILD - this.coordinates.xOffset;     // расстояние от нуля графика до края холста
       this.widthToLeft = this.coordinates.xOffset;     // расстояние от нуля графика до края холста
       this.xLine = 0;
-
       let nLine = 0;
-      let arrDays = Object.keys(this.data);
-      if (arrDays.length != 0) {
+      let arrDays = [];
 
-         for (let n = 0; n < arrDays.length; n++) {
-            if (arrDays[n].endsWith('01')) {
+      // для данных с https://www.alphavantage.co
+      // let arrDays = Object.keys(this.data);
+      // if (arrDays.length != 0) {
+
+      //    for (let n = 0; n < arrDays.length; n++) {
+      //       if (arrDays[n].endsWith('01')) {
+      //          this.distanceBetweenLines = this.xLineOld - this.xLine;
+      //          nLine++;
+      //          this.xLineOld = this.xLine;
+      //          this.xLine = Math.round(this.coordinates.x - n * this.params.scaleX);
+      //          this.distanceBetweenLines = this.xLineOld - this.xLine;
+
+      //          this._drawLines(nLine);
+      //          if (this.distanceBetweenLines < 150 && nLine % 2 != 0) {
+      //             continue;
+      //          }
+
+      //          this.Xaxis.drawAxis(arrDays[n], nLine, this.xLine, this.distanceBetweenLines);
+      //       }
+
+
+      //       if (this.xLine < 0) {
+      //          break;
+      //       }
+      //    }
+      // } else {
+      //    // console.log(" -- Данные ещё не получены -- ");
+      // }
+      // this.ctx.stroke();
+
+      // для данных с https://min-api.cryptocompare.com
+
+      if (this.data.length != 0) {     // для того что бы в else иметь возможность выполнять действия до поступления данных 
+
+         for (let n = 0; n < this.data.length; n++) {
+            if (this.data[n]['time'].startsWith('01')) {
                this.distanceBetweenLines = this.xLineOld - this.xLine;
                nLine++;
                this.xLineOld = this.xLine;
                this.xLine = Math.round(this.coordinates.x - n * this.params.scaleX);
                this.distanceBetweenLines = this.xLineOld - this.xLine;
-
                this._drawLines(nLine);
                if (this.distanceBetweenLines < 150 && nLine % 2 != 0) {
                   continue;
                }
-
-               this.Xaxis.drawAxis(arrDays[n], nLine, this.xLine, this.distanceBetweenLines);
+               this.Xaxis.drawAxis(this.data[n]['time'], nLine, this.xLine, this.distanceBetweenLines);
             }
-
-
             if (this.xLine < 0) {
                break;
             }
@@ -303,6 +332,10 @@ export class Chart {
          // console.log(" -- Данные ещё не получены -- ");
       }
       this.ctx.stroke();
+
+
+
+
 
       // координатная сетка по оси Y
       this.ctx.beginPath();
