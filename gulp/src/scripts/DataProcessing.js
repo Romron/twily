@@ -55,7 +55,6 @@ export class DataProcessing {
        *
        */
 
-
       let str = JSON.parse(data);
       let candles = str.Data.Data.reverse();    // разворачиваю масив в обратном порядке
 

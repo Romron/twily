@@ -13,8 +13,8 @@ class App {
 
    params = {
       // timefraime: 'minute',   // для тестов
-      timefraime: 'day',
-      // timefraime: 'hour',  // для тестов
+      // timefraime: 'day',
+      timefraime: 'hour',  // для тестов
       dataurl: './module_php/parser_timefraime.php',
       idTargetBlock: "wrap-canvas",
       idMainConteiner: 'mainConteiner',
@@ -24,8 +24,9 @@ class App {
       DPI: 2,   // показывает восколько раз внутренний размер canvas больше размера заданного в CSS 
       hightXaxis: 25,
       widthYaxis: 60,
-      scaleX: 10,
-      scaleY: 4,
+      // scaleX: 2,  // для дневного таймфрейма
+      scaleX: 5,  // для часового таймфрейма
+      scaleY: 30,
       paddingTop: 0,
       paddingBottom: 0,      // 50 для тестов
       paddingLeft: 0,
@@ -49,11 +50,9 @@ class App {
       this.proxyLoop = new Loop(this.update.bind(this), this.display.bind(this));
       this.chart = new Chart(this.layer, this.proxyLoop, this.params);
       this.mc = new MouseControls(this.mainConteiner, this.proxyLoop, this.params.DPI);
-
-      let strReqwestData = this.params.dataurl + '?timefraime=' + this.params.timefraime;
-
       this.dP = new DataProcessing();   // всё что касается получения и оброботки данных
 
+      let strReqwestData = this.params.dataurl + '?timefraime=' + this.params.timefraime;
       this.dP.GetData(strReqwestData).then((data) => {
          this.chart.data = this.dP.PreparationData_2(data);
          this.display();
