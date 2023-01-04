@@ -12,7 +12,9 @@ import { MouseControls } from "./MouseControls.js";
 class App {
 
    params = {
-      // dataurl: './module_php/parser.php',
+      // timefraime: 'minute',   // для тестов
+      timefraime: 'day',
+      // timefraime: 'hour',  // для тестов
       dataurl: './module_php/parser_timefraime.php',
       idTargetBlock: "wrap-canvas",
       idMainConteiner: 'mainConteiner',
@@ -48,10 +50,7 @@ class App {
       this.chart = new Chart(this.layer, this.proxyLoop, this.params);
       this.mc = new MouseControls(this.mainConteiner, this.proxyLoop, this.params.DPI);
 
-
-      // let strReqwestData = this.params.dataurl + '?timefraime=minute';
-      // let strReqwestData = this.params.dataurl + '?timefraime=hour';
-      let strReqwestData = this.params.dataurl + '?timefraime=day';
+      let strReqwestData = this.params.dataurl + '?timefraime=' + this.params.timefraime;
 
       this.dP = new DataProcessing();   // всё что касается получения и оброботки данных
 
