@@ -13,8 +13,8 @@ class App {
 
    params = {
       // timefraime: 'minute',   // для тестов
-      timefraime: 'day',
-      // timefraime: 'hour',  // для тестов
+      // timefraime: 'day',
+      timefraime: 'hour',  // для тестов
       dataurl: './module_php/parser_timefraime.php',
       idTargetBlock: "wrap-canvas",
       idMainConteiner: 'mainConteiner',

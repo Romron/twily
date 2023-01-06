@@ -229,8 +229,8 @@ export class Chart {
       /* 
          взависимости от полученных данных расчитывает параметры оптимальные для отображения графика
 
-            ширина свечи по умолчанию widthCandleDefault = 10;
-            растоянии между свечами distanceBetweenCandlesDefault = 2;
+            ширина свечи по умолчанию widthCandleDefault = this.params.scaleX = 10;
+            растоянии между свечами distanceBetweenCandlesDefault = this.params.scaleX * 0,2 = 2;
 
          получить координаты условного прямоугольника в который вписана часть графика поместившаяся на экран
             середина последней свечки -- середина графика
@@ -242,10 +242,11 @@ export class Chart {
             максимум и минимум свечей на экране
                перебрать в цикле нужное кол-во свечек ... найти минимум и максимум
          
-         полученные координаты оптимально отобразить на графике т.е. так что бы прямоугольник стал видимым в поле графика
+         полученные координаты оптимально отобразить на графике т.е. так что бы прямоугольник оптимально заполнил поле графика
             изменить 
                this.coordinates.yOffset  
-               this.params.scaleY и this.params.scaleX так что бы прямоугольник максимально заполнил поле графика
+                  this.coordinates.yOffset = (this.coordinates.yNull - middleOfRect / 10) * this.params.scaleY;
+               this.params.scaleY 
 
 
       */
@@ -273,22 +274,30 @@ export class Chart {
 
          if (this.params.timefraime == 'hour') {
 
-            this.params.scaleY = averageHeight * 2;
+            this.params.scaleY = averageHeight * 3;
             this.coordinates.yOffset = -(averagePrice - this.coordinates.yNull - this.params.widthYaxis) / 100 * this.params.scaleY;
          } else if (this.params.timefraime == 'day') {
 
 
-            console.log("----------");
-            console.log("candlesQuantity = ", candlesQuantity);
-            console.log("averageHeight = ", averageHeight);
-            console.log("averagePrice = ", averagePrice);
-            console.log("this.params.scaleY = ", this.params.scaleY);
-            console.log("this.coordinates.yOffset = ", this.coordinates.yOffset);
-            console.log("this.coordinates.xOffset = ", this.coordinates.xOffset);
-            console.log("this.params.scaleX = ", this.params.scaleX);
-            console.log("this.params.scaleX*0,2 = ", this.params.scaleX * 0.2);
+
 
          }
+
+
+         console.log("----------");
+         console.log("candlesQuantity = ", candlesQuantity);
+         console.log("averageHeight = ", averageHeight);
+         console.log("averagePrice = ", averagePrice);
+         console.log("this.coordinates.xOffset = ", this.coordinates.xOffset);
+         console.log("this.params.scaleX = ", this.params.scaleX);
+         console.log("this.params.scaleX*0,2 = ", this.params.scaleX * 0.2);
+         console.log("this.coordinates.yNull = ", this.coordinates.yNull);
+
+         console.log("averageHeight = ", averageHeight);
+         console.log("this.coordinates.yOffset = ", this.coordinates.yOffset);
+         console.log("this.params.scaleY = ", this.params.scaleY);
+
+
       }
 
 
