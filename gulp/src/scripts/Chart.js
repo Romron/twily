@@ -70,9 +70,9 @@ export class Chart {
       event: {},
    };
    coordinates = {
-      xOffset: 200,//86,    // смещение графика захватом мышки
+      xOffset: 130,//86,    // смещение графика захватом мышки
       // yOffset: -269, // для дневного таймфрейма
-      yOffset: 0, // для часового таймфрейма
+      yOffset: -430, // для часового таймфрейма
       // yOffset: 0, // для часового таймфрейма
       xNull: 2680,      // вычесленный нуль
       yNull: 1150,
@@ -130,8 +130,7 @@ export class Chart {
 
    coordinateseCalculation() {
 
-
-      this._calculationOfDisplayParam();
+      this.calculationOfDisplayParam();
 
       this.coordinates.xNull = this.WIDTH_DPI - this.params.paddingRight;     // ноль поля для отрисовки графика по X
       this.coordinates.yNull = this.HEIGHT_DPI - this.params.paddingBottom;   // ноль поля для отрисовки графика по Y
@@ -226,39 +225,54 @@ export class Chart {
       }
    }
 
-   _calculationOfDisplayParam() {
+   calculationOfDisplayParam() {
       /* 
          взависимости от полученных данных расчитывает параметры оптимальные для отображения графика
-      
-         параметры которые нужно задать по умолчанию :
-            смещение по оси Y -4540
-            смещение по оси X 
-            растоиние между свечами 2
-            ширина свечи должна быть 10
-            средняя высота свечи должна быть 
+
+         получить координаты условного прямоугольника в который вписана часть графика поместившаяся на экран
+         полученные координаты оптимально отобразить на графике
 
 
       */
 
       if (this.data.length > 0) {
 
-         let candlesQuantity = this.WIDTH_GRAPH_FILD / (this.params.scaleX + this.params.scaleX * 0.2);  // количество показываемых свечей
-
-         let sumHeight = 0;      // средняя высота свечи
-         let sumPrice = 0;       // средняя цена видимых свечей
+         let sumHeight = 0;      // сумма высот всех видимых свечей
+         let sumPrice = 0;       // сумма цен всех видимых свечей
          let height = 0;
          let price = 0;
-         for (let index = 0; index < candlesQuantity; index++) {
 
+         let averageHeight = 0;  // средняя высота всех видимых свечей
+         let averagePrice = 0;   // средняя цена всех видимых свечей
+
+         let candlesQuantity = this.WIDTH_GRAPH_FILD / (this.params.scaleX + this.params.scaleX * 0.2);  // количество показываемых свечей
+         for (let index = 0; index < candlesQuantity; index++) {
             height = Math.abs(this.data[index]['open'] - this.data[index]['close']);
             price = this.data[index]['open'] - height / 2;
             sumHeight = sumHeight + height;
             sumPrice = sumPrice + price;
          }
 
-         this.coordinates.yOffset = -(sumPrice / candlesQuantity - this.coordinates.yNull - this.params.widthYaxis) / 100 * this.params.scaleY;
+         averageHeight = sumHeight / candlesQuantity;
+         averagePrice = sumPrice / candlesQuantity;
+
+         if (this.params.timefraime == 'hour') {
+
+            this.params.scaleY = averageHeight * 2;
+            this.coordinates.yOffset = -(averagePrice - this.coordinates.yNull - this.params.widthYaxis) / 100 * this.params.scaleY;
+         } else if (this.params.timefraime == 'day') {
 
 
+            console.log("----------");
+            console.log("candlesQuantity = ", candlesQuantity);
+            console.log("averageHeight = ", averageHeight);
+            console.log("averagePrice = ", averagePrice);
+            console.log("this.params.scaleY = ", this.params.scaleY);
+            console.log("this.params.scaleX = ", this.params.scaleX);
+            console.log("this.coordinates.yOffset = ", this.coordinates.yOffset);
+            console.log("this.coordinates.xOffset = ", this.coordinates.xOffset);
+
+         }
       }
 
 

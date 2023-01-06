@@ -13,8 +13,8 @@ class App {
 
    params = {
       // timefraime: 'minute',   // для тестов
-      // timefraime: 'day',
-      timefraime: 'hour',  // для тестов
+      timefraime: 'day',
+      // timefraime: 'hour',  // для тестов
       dataurl: './module_php/parser_timefraime.php',
       idTargetBlock: "wrap-canvas",
       idMainConteiner: 'mainConteiner',
@@ -25,8 +25,8 @@ class App {
       hightXaxis: 25,
       widthYaxis: 60,
       // scaleX: 2,  // для дневного таймфрейма
-      scaleX: 5,  // для часового таймфрейма
-      scaleY: 10,
+      scaleX: 10,  // для часового таймфрейма
+      scaleY: 5,
       paddingTop: 0,
       paddingBottom: 0,      // 50 для тестов
       paddingLeft: 0,
@@ -77,6 +77,7 @@ class App {
    display() {
 
       this.chart.clear();
+      // this.chart.calculationOfDisplayParam();      // расчитываю параметры показа графика в зависимости от полученных данных
       this.chart.coordinateseCalculation();
       this.chart.graph();
 
