@@ -229,8 +229,23 @@ export class Chart {
       /* 
          взависимости от полученных данных расчитывает параметры оптимальные для отображения графика
 
+            ширина свечи по умолчанию widthCandleDefault = 10;
+            растоянии между свечами distanceBetweenCandlesDefault = 2;
+
          получить координаты условного прямоугольника в который вписана часть графика поместившаяся на экран
-         полученные координаты оптимально отобразить на графике
+            середина последней свечки -- середина графика
+               middleOfRect = Math.abs(this.data[0]['open'] - this.data[0]['close'])/2
+            ширина прямоугольника widthRectChart
+               widthRectChart = this.WIDTH_GRAPH_FILD - this.coordinates.xOffset
+            кол-во свечей на экране candlesQuantity 
+               candlesQuantity = widthRectChart / (widthCandleDefault + distanceBetweenCandlesDefault)
+            максимум и минимум свечей на экране
+               перебрать в цикле нужное кол-во свечек ... найти минимум и максимум
+         
+         полученные координаты оптимально отобразить на графике т.е. так что бы прямоугольник стал видимым в поле графика
+            изменить 
+               this.coordinates.yOffset  
+               this.params.scaleY и this.params.scaleX так что бы прямоугольник максимально заполнил поле графика
 
 
       */
@@ -268,9 +283,10 @@ export class Chart {
             console.log("averageHeight = ", averageHeight);
             console.log("averagePrice = ", averagePrice);
             console.log("this.params.scaleY = ", this.params.scaleY);
-            console.log("this.params.scaleX = ", this.params.scaleX);
             console.log("this.coordinates.yOffset = ", this.coordinates.yOffset);
             console.log("this.coordinates.xOffset = ", this.coordinates.xOffset);
+            console.log("this.params.scaleX = ", this.params.scaleX);
+            console.log("this.params.scaleX*0,2 = ", this.params.scaleX * 0.2);
 
          }
       }
