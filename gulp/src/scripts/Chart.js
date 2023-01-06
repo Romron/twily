@@ -72,7 +72,7 @@ export class Chart {
    coordinates = {
       xOffset: 200,//86,    // смещение графика захватом мышки
       // yOffset: -269, // для дневного таймфрейма
-      yOffset: -4540, // для часового таймфрейма
+      yOffset: 0, // для часового таймфрейма
       // yOffset: 0, // для часового таймфрейма
       xNull: 2680,      // вычесленный нуль
       yNull: 1150,
@@ -230,34 +230,36 @@ export class Chart {
       /* 
          взависимости от полученных данных расчитывает параметры оптимальные для отображения графика
       
+         параметры которые нужно задать по умолчанию :
+            смещение по оси Y -4540
+            смещение по оси X 
+            растоиние между свечами 2
+            ширина свечи должна быть 10
+            средняя высота свечи должна быть 
+
+
       */
 
-      console.log("-----------");
-      console.log("this.coordinates.yOffset = ", this.coordinates.yOffset);
-      console.log("this.coordinates.xOffset = ", this.coordinates.xOffset);
-      console.log("this.params.scaleX, = ", this.params.scaleX,);
-      console.log("this.params.scaleY = ", this.params.scaleY);
-      console.log("k = ", this.data[0]['open'] - this.data[0]['close']);
+      if (this.data.length > 0) {
 
-      let open, close;
+         let candlesQuantity = this.WIDTH_GRAPH_FILD / (this.params.scaleX + this.params.scaleX * 0.2);  // количество показываемых свечей
 
-      // yOffset = f(scaleY)
-      // scaleY = f(средей высоты свечи в показываемом диапазоне ~ 100 шт)
-      // кол-во показываемых свечей = this.WIDTH_GRAPH_FILD / this.layer.params.scaleX(ширина свечи) + this.layer.params.scaleX * 0.2,
+         let sumHeight = 0;      // средняя высота свечи
+         let sumPrice = 0;       // средняя цена видимых свечей
+         let height = 0;
+         let price = 0;
+         for (let index = 0; index < candlesQuantity; index++) {
 
-      // console.log("this.candlesArr= ", this.candlesArr);
-      let cand = this.candlesArr[0];
-      console.log("cand = ", cand);
+            height = Math.abs(this.data[index]['open'] - this.data[index]['close']);
+            price = this.data[index]['open'] - height / 2;
+            sumHeight = sumHeight + height;
+            sumPrice = sumPrice + price;
+         }
 
-      // for (let index = 0; index < this.data.length; index++) {
-      //    open = this.data[index]['open'];
-      //    close = this.data[index]['close'];
+         this.coordinates.yOffset = -(sumPrice / candlesQuantity - this.coordinates.yNull - this.params.widthYaxis) / 100 * this.params.scaleY;
 
 
-
-      // }
-
-
+      }
 
 
    }

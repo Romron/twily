@@ -50,7 +50,6 @@ export class Candle {
         this.layer.ctx.lineTo(this.x + this.params.distanceBetweenCandles - this.params.widthCandle / 2, this.yClose);
         this.layer.ctx.lineTo(this.x + this.params.distanceBetweenCandles - this.params.widthCandle / 2, this.yOpen);
 
-
         this.layer.ctx.strokeStyle = this.colorCandels;
         this.layer.ctx.fillStyle = this.colorCandels;
         this.layer.ctx.fill();

@@ -26,7 +26,7 @@ class App {
       widthYaxis: 60,
       // scaleX: 2,  // для дневного таймфрейма
       scaleX: 5,  // для часового таймфрейма
-      scaleY: 30,
+      scaleY: 10,
       paddingTop: 0,
       paddingBottom: 0,      // 50 для тестов
       paddingLeft: 0,
