@@ -247,6 +247,7 @@ export class Chart {
                this.coordinates.yOffset  
                   this.coordinates.yOffset = (this.coordinates.yNull - middleOfRect / 10) * this.params.scaleY;
                this.params.scaleY 
+                  чем меньше свечка тем больше масштаб и на оборот
 
 
       */
@@ -274,7 +275,7 @@ export class Chart {
 
          if (this.params.timefraime == 'hour') {
 
-            this.params.scaleY = averageHeight * 3;
+            this.params.scaleY = averageHeight * 2;
             this.coordinates.yOffset = -(averagePrice - this.coordinates.yNull - this.params.widthYaxis) / 100 * this.params.scaleY;
          } else if (this.params.timefraime == 'day') {
 
