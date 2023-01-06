@@ -247,7 +247,7 @@ export class Chart {
                this.coordinates.yOffset  
                   this.coordinates.yOffset = (this.coordinates.yNull - middleOfRect / 10) * this.params.scaleY;
                this.params.scaleY 
-                  чем меньше свечка тем больше масштаб и на оборот
+                  чем меньше свечка тем больше масштаб чем больше масштаб тем меньше смещение(?)
 
 
       */
