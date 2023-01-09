@@ -88,7 +88,7 @@ export class Chart {
       this.ctx = canvas.context;
       this.params = params;
 
-      this.coordinatesDefault = Object.assign({}, this.coordinates);    // для востановления состояния графика по умолчанию
+      this.coordinates.xOffsetDefault = this.coordinates.xOffset;    // для востановления состояния графика по умолчанию
       this.scaleXDefault = this.params.scaleX;
       this.scaleYDefault = this.params.scaleY;
 
@@ -202,17 +202,17 @@ export class Chart {
 
             if (this.mouse.isPressed == true) {    // изменение масштаба по оси Y
                if (deltaY > 0) {
-                  this.params.scaleY = this.params.scaleY + 0.04;
+                  this.params.scaleY = this.params.scaleY + 0.08;
                } else {
-                  this.params.scaleY = this.params.scaleY - 0.04;
+                  this.params.scaleY = this.params.scaleY - 0.08;
                }
                this.oldMousePosY = this.mouse.pos.y;
             }
 
             if (this.mouse.event.type === 'dblclick') {  // возврат графика в начальное положение
-               this.coordinates = Object.assign({}, this.coordinatesDefault);
-               this.params.scaleX = this.scaleXDefault;
-               this.params.scaleY = this.scaleYDefault;
+
+               this.coordinates.xOffset = this.coordinates.xOffsetDefault;
+               this.calculationDefaultParam();
 
             }
          }
@@ -225,7 +225,7 @@ export class Chart {
       }
    }
 
-   calculationOfDisplayParam() {
+   calculationDefaultParam() {
       /* 
          взависимости от полученных данных расчитывает параметры оптимальные для отображения графика
 
@@ -281,11 +281,7 @@ export class Chart {
             price = this.data[index]['open'] - height / 2;
             sumPrice = sumPrice + price;
          }
-         let lowReckt = this.coordinates.y - Math.min(...arrClose) / 100 * this.params.scaleY;
-         let highReckt = this.coordinates.y - Math.max(...arrHigh) / 100 * this.params.scaleY;
-         let middleOfRect = this.coordinates.y - Math.abs(Math.max(...arrHigh) - Math.min(...arrClose) / 2) / 100 * this.params.scaleY;
          averageHeight = averageHeight = sumHeight / candlesQuantity; // средняя высота всех видимых свечей
-         // let averagePrice = sumPrice / candlesQuantity;
          this.params.scaleY = 1200 / averageHeight;
 
 
