@@ -79,7 +79,6 @@ class App {
 
       this.chart.clear();
       this.chart.calculationDefaultParam();      // расчитываю параметры показа графика в зависимости от полученных данных
-      this.chart.coordinateseCalculation();
       this.chart.graph();
 
    }
