@@ -241,62 +241,154 @@ export class Chart {
                candlesQuantity = widthRectChart / (widthCandleDefault + distanceBetweenCandlesDefault)
             максимум и минимум свечей на экране
                перебрать в цикле нужное кол-во свечек ... найти минимум и максимум
+               highReckt
+               lowReckt
          
          полученные координаты оптимально отобразить на графике т.е. так что бы прямоугольник оптимально заполнил поле графика
             изменить 
-               this.coordinates.yOffset  
-                  this.coordinates.yOffset = (this.coordinates.yNull - middleOfRect / 10) * this.params.scaleY;
-               this.params.scaleY 
-                  чем меньше свечка тем больше масштаб чем больше(?) масштаб тем меньше смещение
+            this.params.scaleY 
+               чем меньше свечка тем больше масштаб чем больше(?) масштаб тем меньше смещение
+               произведение средней высоты свечи на масштаб по оси Y должно быть около 1500 -- проверить!
+            this.coordinates.yOffset  
+               this.coordinates.yOffset = (this.coordinates.yNull - middleOfRect / 10) * this.params.scaleY;
 
 
       */
 
       if (this.data.length > 0) {
 
-         let sumHeight = 0;      // сумма высот всех видимых свечей
-         let sumPrice = 0;       // сумма цен всех видимых свечей
+
+         let widthCandleDefault = this.params.scaleX = 10;
+         let distanceBetweenCandlesDefault = this.params.scaleX * 0.2;
+
+         let middleOfLastCandle = this.coordinates.y - (this.data[0]['low'] + Math.abs(this.data[0]['high'] - this.data[0]['low']) / 2) / 100 * this.params.scaleY;
+         let widthRectChart = this.WIDTH_GRAPH_FILD - this.coordinates.xOffset
+         let candlesQuantity = widthRectChart / (widthCandleDefault + distanceBetweenCandlesDefault)
+
+         let arrClose = [];
+         let arrHigh = [];
          let height = 0;
+         let averageHeight = 0;
+         let sumHeight = 0;      // сумма высот всех видимых свечей
          let price = 0;
-
-         let averageHeight = 0;  // средняя высота всех видимых свечей
-         let averagePrice = 0;   // средняя цена всех видимых свечей
-
-         let candlesQuantity = this.WIDTH_GRAPH_FILD / (this.params.scaleX + this.params.scaleX * 0.2);  // количество показываемых свечей
+         let sumPrice = 0;       // сумма цен всех видимых свечей
          for (let index = 0; index < candlesQuantity; index++) {
+            arrClose.push(this.data[index]['low']);
+            arrHigh.push(this.data[index]['high']);
+
             height = Math.abs(this.data[index]['open'] - this.data[index]['close']);
-            price = this.data[index]['open'] - height / 2;
             sumHeight = sumHeight + height;
+
+            price = this.data[index]['open'] - height / 2;
             sumPrice = sumPrice + price;
          }
-
-         averageHeight = sumHeight / candlesQuantity;
-         averagePrice = sumPrice / candlesQuantity;
-
-         if (this.params.timefraime == 'hour') {
-
-            this.params.scaleY = averageHeight * 2;
-            this.coordinates.yOffset = -(averagePrice - this.coordinates.yNull - this.params.widthYaxis) / 100 * this.params.scaleY;
-         } else if (this.params.timefraime == 'day') {
+         let lowReckt = this.coordinates.y - Math.min(...arrClose) / 100 * this.params.scaleY;
+         let highReckt = this.coordinates.y - Math.max(...arrHigh) / 100 * this.params.scaleY;
+         let middleOfRect = this.coordinates.y - Math.abs(Math.max(...arrHigh) - Math.min(...arrClose) / 2) / 100 * this.params.scaleY;
+         averageHeight = averageHeight = sumHeight / candlesQuantity; // средняя высота всех видимых свечей
+         // let averagePrice = sumPrice / candlesQuantity;
+         this.params.scaleY = 1200 / averageHeight;
 
 
+         if (this.params.timefraime == 'day') {
+            this.params.scaleY = 1200 / averageHeight;
+            this.coordinates.yOffset = -50 * this.params.scaleY;
 
+         } else if (this.params.timefraime == 'hour') {
+            this.params.scaleY = 1200 / averageHeight;
+            this.coordinates.yOffset = -158 * this.params.scaleY;
 
+         } else if (this.params.timefraime == 'minute') {
+            this.params.scaleY = 190 / averageHeight;
+            this.coordinates.yOffset = -165 * this.params.scaleY;
          }
 
 
          console.log("----------");
-         console.log("candlesQuantity = ", candlesQuantity);
-         console.log("averageHeight = ", averageHeight);
-         console.log("averagePrice = ", averagePrice);
-         console.log("this.coordinates.xOffset = ", this.coordinates.xOffset);
-         console.log("this.params.scaleX = ", this.params.scaleX);
-         console.log("this.params.scaleX*0,2 = ", this.params.scaleX * 0.2);
-         console.log("this.coordinates.yNull = ", this.coordinates.yNull);
-
-         console.log("averageHeight = ", averageHeight);
+         console.log("highReckt = ", highReckt);
+         console.log("lowReckt = ", lowReckt);
+         console.log("widthRectChart = ", widthRectChart);
+         console.log("middleOfLastCandle = ", middleOfLastCandle);
+         console.log("this.HEIGHT_GRAPH_FILD / 2 = ", this.HEIGHT_GRAPH_FILD / 2);
+         console.log("middleOfRect = ", middleOfRect);
+         console.log("-----");
          console.log("this.coordinates.yOffset = ", this.coordinates.yOffset);
          console.log("this.params.scaleY = ", this.params.scaleY);
+         console.log("averageHeight = ", averageHeight);
+
+         this.ctx.beginPath();
+         this.ctx.lineWidth = 1;
+         this.ctx.strokeStyle = 'green';
+         this.ctx.lineTo(widthRectChart, highReckt);
+         this.ctx.lineTo(0, highReckt);
+         this.ctx.stroke();
+
+         this.ctx.beginPath();
+         this.ctx.lineWidth = 1;
+         this.ctx.strokeStyle = 'red';
+         this.ctx.moveTo(0, lowReckt);
+         this.ctx.lineTo(widthRectChart, lowReckt);
+         this.ctx.stroke();
+
+         this.ctx.beginPath();
+         this.ctx.lineWidth = 0.5;
+         this.ctx.strokeStyle = 'black';
+         this.ctx.moveTo(widthRectChart, middleOfLastCandle);
+         this.ctx.lineTo(widthRectChart + 200, middleOfLastCandle);
+         this.ctx.stroke();
+
+         this.ctx.beginPath();
+         this.ctx.lineWidth = 0.5;
+         this.ctx.strokeStyle = 'blue';
+         this.ctx.moveTo(widthRectChart, this.HEIGHT_GRAPH_FILD / 2);
+         this.ctx.lineTo(widthRectChart + 200, this.HEIGHT_GRAPH_FILD / 2);
+         this.ctx.stroke();
+
+         this.ctx.beginPath();
+         this.ctx.lineWidth = 3;
+         this.ctx.strokeStyle = "#5A0DAC";
+         this.ctx.moveTo(widthRectChart, middleOfRect);
+         this.ctx.lineTo(widthRectChart + 200, middleOfRect);
+         this.ctx.stroke();
+
+
+
+
+
+
+         // let sumHeight = 0;      // сумма высот всех видимых свечей
+         // let height = 0;
+         // let sumPrice = 0;       // сумма цен всех видимых свечей
+         // let price = 0;
+
+         // let averageHeight = 0;  // средняя высота всех видимых свечей
+         // let averagePrice = 0;   // средняя цена всех видимых свечей
+
+         // let candlesQuantity = this.WIDTH_GRAPH_FILD / (this.params.scaleX + this.params.scaleX * 0.2);  // количество показываемых свечей
+         // for (let index = 0; index < candlesQuantity; index++) {
+         //    height = Math.abs(this.data[index]['open'] - this.data[index]['close']);
+         //    sumHeight = sumHeight + height;
+         //    price = this.data[index]['open'] - height / 2;
+         //    sumPrice = sumPrice + price;
+         // }
+
+         // averageHeight = sumHeight / candlesQuantity;
+         // averagePrice = sumPrice / candlesQuantity;
+
+
+
+         // console.log("----------");
+         // console.log("candlesQuantity = ", candlesQuantity);
+         // console.log("averageHeight = ", averageHeight);
+         // console.log("averagePrice = ", averagePrice);
+         // console.log("this.coordinates.xOffset = ", this.coordinates.xOffset);
+         // console.log("this.params.scaleX = ", this.params.scaleX);
+         // console.log("this.params.scaleX*0,2 = ", this.params.scaleX * 0.2);
+         // console.log("this.coordinates.yNull = ", this.coordinates.yNull);
+
+         // console.log("averageHeight = ", averageHeight);
+         // console.log("this.coordinates.yOffset = ", this.coordinates.yOffset);
+         // console.log("this.params.scaleY = ", this.params.scaleY);
 
 
       }
