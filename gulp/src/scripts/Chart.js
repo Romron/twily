@@ -72,12 +72,12 @@ export class Chart {
    coordinates = {
       xOffset: 130,//86,    // смещение графика захватом мышки
       // yOffset: -269, // для дневного таймфрейма
-      yOffset: -430, // для часового таймфрейма
+      yOffset: 0, // для часового таймфрейма
       // yOffset: 0, // для часового таймфрейма
-      xNull: 2680,      // вычесленный нуль
-      yNull: 1150,
-      x: 2594,
-      y: 1419,
+      xNull: 0,      // вычесленный нуль
+      yNull: 0,
+      x: 0,
+      y: 0,
    }
 
    candlesArr = [];
@@ -126,11 +126,10 @@ export class Chart {
       this.Xaxis = new X_axis(this);      // здесь для того что бы можно было отключать координатную сетку а шкалы оставались
       this.Yaxis = new Y_axis(this);
 
+
    }
 
    coordinateseCalculation() {
-
-      // this.calculationOfDisplayParam();
 
       this.coordinates.xNull = this.WIDTH_DPI - this.params.paddingRight;     // ноль поля для отрисовки графика по X
       this.coordinates.yNull = this.HEIGHT_DPI - this.params.paddingBottom;   // ноль поля для отрисовки графика по Y
@@ -254,6 +253,10 @@ export class Chart {
 
 
       */
+
+
+
+      console.log("calculationDefaultParam");
 
       if (this.data.length > 0) {
 

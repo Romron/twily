@@ -25,9 +25,9 @@ class App {
       hightXaxis: 25,
       widthYaxis: 60,
       // scaleX: 2,  // для дневного таймфрейма
-      scaleX: 10,  // для часового таймфрейма
+      scaleX: 1,  // для часового таймфрейма
       // scaleY: 5,
-      scaleY: 2.8,
+      scaleY: 1,
       paddingTop: 0,
       paddingBottom: 0,      // 50 для тестов
       paddingLeft: 0,
@@ -59,16 +59,11 @@ class App {
          this.display();
       });
 
-
-
-
-
    }
 
    update() {
 
       this.chart.mouse = this.mc;      // получить управляющие сигналы от мыши
-
       this.chart.clear();
       this.chart.coordinateseCalculation();
       this.chart.graph();
