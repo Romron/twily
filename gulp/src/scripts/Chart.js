@@ -255,9 +255,6 @@ export class Chart {
       */
 
 
-
-      console.log("calculationDefaultParam");
-
       if (this.data.length > 0) {
 
 
@@ -287,7 +284,6 @@ export class Chart {
          averageHeight = averageHeight = sumHeight / candlesQuantity; // средняя высота всех видимых свечей
          this.params.scaleY = 1200 / averageHeight;
 
-
          if (this.params.timefraime == 'day') {
             this.params.scaleY = 1200 / averageHeight;
             this.coordinates.yOffset = -50 * this.params.scaleY;
@@ -301,10 +297,7 @@ export class Chart {
             this.coordinates.yOffset = -165 * this.params.scaleY;
          }
 
-
       }
-
-
    }
 
 

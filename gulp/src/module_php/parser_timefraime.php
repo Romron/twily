@@ -44,9 +44,6 @@ foreach ($str->Data->Data as $kye) {
    $kye->time = date("d-m-y H:i:s", $kye->time);
 }
 
-// echo '<pre>';
-// print_r($str);
-// echo '</pre>';
 
 $data = json_encode($str);
 

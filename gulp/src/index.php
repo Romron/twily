@@ -19,9 +19,10 @@
             <div id="nav-fraimtime">
                <div class="fraimtime-item">day</div>
                <div class="fraimtime-item">minute</div>
-               <div class="fraimtime-item">houre</div>
+               <div class="fraimtime-item">hour</div>
                <div class="fraimtime-item">week</div>
                <div class="fraimtime-item">mounth</div>
+               <div class="fraimtime-item"></div>
             </div>
          </div>
       </div>

@@ -53,12 +53,38 @@ class App {
       this.mc = new MouseControls(this.mainConteiner, this.proxyLoop, this.params.DPI);
       this.dP = new DataProcessing();   // всё что касается получения и оброботки данных
 
-      let strReqwestData = this.params.dataurl + '?timefraime=' + this.params.timefraime;
-      this.dP.GetData(strReqwestData).then((data) => {
+      let strReqwest = this.params.dataurl + '?timefraime=' + this.params.timefraime;
+
+      this.dP.GetData(strReqwest).then((data) => {
          this.chart.data = this.dP.PreparationData_2(data);
          this.display();
       });
 
+      this.eventHandler();
+
+   }
+
+   eventHandler() {
+      /* обработка всех событий в окне приложения кроме событий холста
+      */
+      document.querySelector('#nav-fraimtime').addEventListener('click', event => {
+         if (!event.target.innerHTML) {
+            // добавить оброботчик исключений
+            console.log("empty item ???");
+            return;
+         }
+
+         this.params.timefraime = event.target.innerHTML.toLowerCase();
+         let strReqwest = this.params.dataurl + '?timefraime=' + this.params.timefraime;
+         console.log("strReqwest = ", strReqwest);
+
+         this.dP.GetData(strReqwest).then((data) => {
+            this.chart.data = this.dP.PreparationData_2(data);
+            this.chart.calculationDefaultParam();
+            this.update();
+         });
+
+      })
    }
 
    update() {
@@ -102,9 +128,9 @@ class App {
       return mainConteiner;
    }
 
-   _timeFraimeChoice() {
+   timeFraimeChoice() {
       /*
-         здесь всё что касаеться управления приложением
+         выбор таймфрейма по нажатию на кнопку
       
       */
 
