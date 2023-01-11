@@ -86,7 +86,8 @@ class App {
             this.update();
 
 
-            let arrItemsTimeFrime = Object.entries(document.querySelector('#nav-fraimtime').querySelectorAll('.fraimtime-item'));
+            let conteiner = document.querySelector('#nav-fraimtime');
+            let arrItemsTimeFrime = Object.entries(conteiner.querySelectorAll('.fraimtime-item'));
             let arrItemsTimeFrimeNew = [];
             arrItemsTimeFrime.find((element, index) => {
                if (element[1]['innerHTML'] === event.target.innerHTML) {
@@ -96,6 +97,10 @@ class App {
             })
 
             console.log("arrItemsTimeFrimeNew = ", arrItemsTimeFrimeNew);
+
+            console.log("arrItemsTimeFrimeNew.flat() = ", arrItemsTimeFrimeNew.flat());
+
+            conteiner.innerHTML = arrItemsTimeFrimeNew.flat().join('');
 
          });
 
