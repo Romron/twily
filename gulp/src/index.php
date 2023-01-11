@@ -22,7 +22,6 @@
                <div class="fraimtime-item">hour</div>
                <div class="fraimtime-item">week</div>
                <div class="fraimtime-item">mounth</div>
-               <div class="fraimtime-item"></div>
             </div>
          </div>
       </div>

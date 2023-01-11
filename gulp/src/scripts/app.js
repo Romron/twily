@@ -67,6 +67,9 @@ class App {
    eventHandler() {
       /* обработка всех событий в окне приложения кроме событий холста
       */
+
+
+
       document.querySelector('#nav-fraimtime').addEventListener('click', event => {
          if (!event.target.innerHTML) {
             // добавить оброботчик исключений
@@ -76,12 +79,51 @@ class App {
 
          this.params.timefraime = event.target.innerHTML.toLowerCase();
          let strReqwest = this.params.dataurl + '?timefraime=' + this.params.timefraime;
-         console.log("strReqwest = ", strReqwest);
 
          this.dP.GetData(strReqwest).then((data) => {
             this.chart.data = this.dP.PreparationData_2(data);
             this.chart.calculationDefaultParam();
             this.update();
+
+
+
+            let objItemsTimeFrime = document.querySelector('#nav-fraimtime').querySelectorAll('.fraimtime-item');
+            let arrItemsTimeFrime = Object.entries(objItemsTimeFrime);
+
+            // let q = 0;
+            // for (let index = 0; index < arrItemsTimeFrime.length; index++) {
+            //    if (arrItemsTimeFrime[index][1]['innerHTML'] === event.target.innerHTML) {
+            //       q = arrItemsTimeFrime[index][0];
+
+            //    };
+
+            console.log("arrItemsTimeFrime = ", arrItemsTimeFrime);
+            let arrItemsTimeFrimeNew = [];
+            let q = arrItemsTimeFrime.find((element, index) => {
+               if (element[1]['innerHTML'] === event.target.innerHTML) {
+                  console.log("index = ", index);
+
+                  let removed = arrItemsTimeFrime.splice(index, 1);
+                  console.log("removed = ", removed);
+                  console.log("removed[0] = ", removed[0]);
+                  arrItemsTimeFrimeNew = [removed[0], ...arrItemsTimeFrime]
+                  return true;
+               }
+            })
+
+            console.log("arrItemsTimeFrimeNew = ", arrItemsTimeFrimeNew);
+
+            // let n = Object.entries(arrItemsTimeFrime).indexOf(event.target.innerHTML);
+            // console.log("n = ", n);
+
+            // let arrItemsTimeFrimeNew = [];
+            // for (let index = 0; index < array.length; index++) {
+            //    const element = arrItemsTimeFrime[index];
+
+            //    arrItemsTimeFrimeNew[] = 
+
+            // }
+
          });
 
       })
