@@ -55,11 +55,16 @@ export class DataProcessing {
        *
        */
 
+      if (data == 'Time frame is not processing') {
+
+         console.log("time frame is not processing");
+         return false;
+      }
+
       let str = JSON.parse(data);
       let candles = str.Data.Data.reverse();    // разворачиваю масив в обратном порядке
-
-
       return candles;
+
    }
 
 };

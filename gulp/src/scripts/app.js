@@ -84,24 +84,16 @@ class App {
             this.chart.data = this.dP.PreparationData_2(data);
             this.chart.calculationDefaultParam();
             this.update();
-
-
+            let arrItemsTimeFrimeNew = [];
             let conteiner = document.querySelector('#nav-fraimtime');
             let arrItemsTimeFrime = Object.entries(conteiner.querySelectorAll('.fraimtime-item'));
-            let arrItemsTimeFrimeNew = [];
             arrItemsTimeFrime.find((element, index) => {
                if (element[1]['innerHTML'] === event.target.innerHTML) {
                   arrItemsTimeFrimeNew = [arrItemsTimeFrime.splice(index, 1)[0], ...arrItemsTimeFrime]
                   return true;
                }
             })
-
-            console.log("arrItemsTimeFrimeNew = ", arrItemsTimeFrimeNew);
-
-            console.log("arrItemsTimeFrimeNew.flat() = ", arrItemsTimeFrimeNew.flat());
-
-            conteiner.innerHTML = arrItemsTimeFrimeNew.flat().join('');
-
+            conteiner.prepend(arrItemsTimeFrimeNew[0][1]);
          });
 
       })

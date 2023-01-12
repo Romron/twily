@@ -31,8 +31,8 @@ switch ($_GET['timefraime']) {
 
       break;
    default:
-      # code...
-      break;
+      echo 'Time frame is not processing';
+      return;
 }
 
 
